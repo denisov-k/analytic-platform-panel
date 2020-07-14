@@ -1,0 +1,11 @@
+{
+    "api": {
+        "http" : {
+            "baseURL": "http://localhost:3000",
+            "timeout": 60000 
+        }
+    },
+	"client": {
+		"port": 8080
+	}
+}

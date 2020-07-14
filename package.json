@@ -1,0 +1,67 @@
+{
+  "name": "gost-analytic-platform-panel",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@vuikit/icons": "^0.8.1",
+    "@vuikit/theme": "^0.8.1",
+    "axios": "^0.18.0",
+    "bulma": "^0.7.4",
+    "core-js": "^2.6.5",
+    "element-ui": "^2.13.2",
+    "lodash": "^4.17.11",
+    "uikit": "^3.1.5-dev.5e2b6df5",
+    "vue": "^2.6.6",
+    "vue-at": "^2.3.2",
+    "vue-directive-tooltip": "^1.5.1",
+    "vue-multiselect": "^2.1.4",
+    "vue-router": "^3.0.1",
+    "vue2-collapse": "^1.0.15",
+    "vuedraggable": "^2.23.0",
+    "vuelidate": "^0.7.4",
+    "vuex": "^3.0.1",
+    "vuikit": "^0.8.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.5.0",
+    "@vue/cli-plugin-eslint": "^3.5.0",
+    "@vue/cli-service": "^3.5.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

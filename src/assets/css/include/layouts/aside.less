@@ -1,0 +1,41 @@
+.layouts--aside {
+    position: absolute;
+    height: 100%;
+    background: #fff;
+    
+    .menu-holder {
+        overflow-y: auto;
+    }
+    .uk-nav {        
+        a {
+            position: relative;
+            padding-left: 15px;
+            &.active,
+            &:hover {
+                background: @global-highlight-background;
+            }
+            &.active-exact {
+                color: @global-link-color;
+                font-weight: bold;
+                &:before {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 4px;
+                    height: 100%;
+                    background: @global-link-color;
+                    border-radius: 0 @global-border-radius @global-border-radius 0;
+                    content: '';
+                }
+            }
+            &.active {
+                //text-decoration: underline;
+            }
+        }
+    }
+    .uk-nav-sub {
+        li a {
+            padding-left: 30px;
+        }
+    }
+}

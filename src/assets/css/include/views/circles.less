@@ -1,0 +1,35 @@
+.views--circles {
+    .sortable-chosen {
+        .tile-item {
+            background: @admin-color-grey-light;
+        }
+    }
+    .tile-item {
+        position: relative;
+        transition: background .2s ease;
+        padding: 0 .5rem;
+        border-radius: @admin-border-radius;
+        &:hover {
+            background: @admin-color-grey-light;
+        }
+        .tile-item--label {
+            color: @global-placeholder-color;
+            padding-right: 1rem;
+        }
+        .tile-item--label,
+        .tile-item--value {
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .tile-item--controls {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .drag-handle {
+            cursor: move;
+        }
+    }
+}

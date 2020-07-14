@@ -1,0 +1,184 @@
+@import './uikit/theme/_import.less';
+
+html {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+body {
+    display: table-cell;
+    width: 100%;
+    height: 100%;
+}
+.uk-text-white {
+    color: #fff;
+}
+.uk-border-box {
+    box-sizing: border-box;
+}
+.uk-flex-safe-middle {
+    align-items: safe center;
+}
+.v-collapse-content {
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+}
+.v-collapse-content-end {
+    transition: max-height 0.3s ease-in;
+    max-height: 100vh;
+}
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;    
+    line-height: 1;
+    vertical-align: middle;
+    &:not(.uk-form-icon) {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+}
+.tooltip {
+    font-size: 90%;
+    background: rgba(50,50,50,.95);
+
+    .tooltip-arrow {
+        border-color: rgba(50,50,50,.95);
+    }
+}
+.mdi-spin:before {
+    animation: mdi-spin .5s infinite linear;
+}
+
+.uk-select {
+    &[multiple],
+    &[size] {
+        padding-top: 0;
+        padding-bottom: 0;
+        height: auto;
+        min-height: 40px;
+    }
+}
+.multiselect {    
+    &--above {
+        .multiselect__content-wrapper {
+            bottom: 100%;
+        }
+    }
+    .multiselect__select {
+        display: none;
+    }
+    .multiselect__tags {
+        .multiselect__single {
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+    .multiselect__input {
+        display: none;
+        font: inherit;
+        line-height: inherit;
+        padding: 0;
+        border: none;
+        background: transparent;
+    }
+    .multiselect__tags-wrap {
+        .multiselect__tag {
+            .uk-badge();
+            position: relative;
+            margin: 0 5px 5px 0;
+            line-height: 1rem;
+            padding-right: 5px;
+        }
+        .multiselect__tag-icon {
+            width: 1rem;
+            height: 1rem;
+            text-align: center;
+            margin-left: 5px;
+            cursor: pointer;
+            &::before {
+                content: '×'
+            }
+        }
+    }    
+    .multiselect__content-wrapper {
+        position: absolute;
+        z-index: @global-z-index;
+        //left: 0;
+        //top: @global-control-height;
+        width: 100%;
+        margin: 0 -20px 0 -10px;
+        background: #fff;
+        border-radius: @global-border-radius;
+        overflow: auto;
+        .uk-box-shadow-medium();
+
+        .multiselect__content {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: outside none;
+            .multiselect__element {
+                display: block;
+                padding: 0;
+                margin: 0;
+                cursor: default;
+            }
+            .multiselect__option {
+                display: block;
+                padding: 0 @form-padding-horizontal;
+
+                &:not(.multiselect__option--selected):hover {
+                    color: @global-link-color;
+                    background: @global-highlight-background;
+                }
+                &--selected {
+                    color: #fff;
+                    background: @global-primary-background;
+                }
+            }
+        }
+    }
+    &.multiselect--active {
+        .multiselect__input {
+            display: block;
+        }
+    }
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: @global-app-background;
+}
+#app-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    flex-grow: 1;
+    min-height: 0px; // @see https://codepen.io/sulfurious/pen/eWPBjY?editors=1100
+    overflow: auto;
+}
+
+.app-router-fade {
+    &-enter-active, &-leave-active {
+        transition: opacity .35s;
+    }
+    &-enter, &-leave-to {
+        opacity: 0;
+    }
+}
+
+@import './include/layouts/aside.less';
+@import './include/layouts/header.less';
+@import './include/views/home.less';
+@import './include/views/auth.less';
+@import './include/views/circles.less';
+@import './include/views/profile.less';

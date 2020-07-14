@@ -1,0 +1,226 @@
+//
+// Component: Form
+//
+// ========================================================================
+
+
+// Variables
+// ========================================================================
+
+@form-color:                                    @global-color;
+@form-line-height:                              @form-height - (2* @form-border-width);
+
+@form-background:                               @global-form-background;
+@form-focus-background:                         @global-form-focus-background;
+
+@form-small-line-height:                        @form-small-height - (2* @form-border-width);
+@form-large-line-height:                        @form-large-height - (2* @form-border-width);
+
+@form-radio-background:                         transparent;
+@form-radio-size:                               20px;
+@form-stacked-margin-bottom:                    5px;
+@form-placeholder-color:                        @global-placeholder-color;
+@form-icon-color:                               @global-placeholder-color;
+
+//
+// New
+//
+
+@form-border-width:                             1px;
+@form-border:                                   transparent;
+
+@form-focus-border:                             transparent;
+
+@form-disabled-border:                          @global-border;
+
+@form-danger-border:                            @global-danger-background;
+@form-success-border:                           @global-success-background;
+
+@form-blank-focus-border:                       @global-border;
+@form-blank-focus-border-style:                 dashed;
+
+@form-radio-border-width:                       @global-border-width;
+@form-radio-border:                             darken(@global-border, 10%);
+
+@form-radio-focus-border:                       @global-primary-background;
+
+@form-radio-checked-border:                     transparent;
+
+@form-radio-disabled-border:                    @global-border;
+
+@form-label-color:                              @global-emphasis-color;
+@form-label-font-size:                          @global-small-font-size;
+
+
+// Component
+// ========================================================================
+
+.hook-form() {
+    border: @form-border-width solid @form-border;
+    transition: 0.2s ease-in-out;
+    transition-property: color, background-color, border;
+    border-radius: @global-border-radius;
+}
+
+.hook-form-single-line() {}
+
+.hook-form-multi-line() {}
+
+.hook-form-focus() { border-color: @form-focus-border; }
+
+.hook-form-disabled() { border-color: @form-disabled-border; }
+
+
+// Style modifiers
+// ========================================================================
+
+.hook-form-danger() { 
+    color: @form-color;
+    border-color: fade(@form-danger-border, 50%); 
+}
+
+.hook-form-success() {
+    color: @form-color;
+    border-color: fade(@form-success-border, 50%); 
+}
+
+.hook-form-blank() { border-color: transparent; }
+
+.hook-form-blank-focus() {
+    border-color: @form-blank-focus-border;
+    border-style: @form-blank-focus-border-style;
+}
+
+
+// Radio and checkbox
+// ========================================================================
+
+.hook-form-radio() {
+    border: @form-radio-border-width solid @form-radio-border;
+    transition: 0.2s ease-in-out;
+    transition-property: background-color, border;
+    border-radius: @global-border-radius;
+}
+
+.hook-form-radio-focus() { border-color: @form-radio-focus-border; }
+
+.hook-form-radio-checked() { border-color: @form-radio-checked-border; }
+
+.hook-form-radio-checked-focus() {}
+
+.hook-form-radio-disabled() { border-color: @form-radio-disabled-border; }
+
+
+// Legend
+// ========================================================================
+
+.hook-form-legend() {}
+
+
+// Label
+// ========================================================================
+
+.hook-form-label() {
+    color: @form-label-color;
+    font-size: @form-label-font-size;
+}
+
+
+// Layout
+// ========================================================================
+
+.hook-form-stacked-label() {}
+
+.hook-form-horizontal-label() {}
+
+
+// Miscellaneous
+// ========================================================================
+
+.hook-form-misc() {}
+
+
+// Inverse
+// ========================================================================
+
+@inverse-form-label-color:                      @inverse-global-emphasis-color;
+
+.hook-inverse-form() { border-color: @inverse-global-border; }
+.hook-inverse-form-focus() { border-color: @inverse-global-color; }
+
+.hook-inverse-form-radio() { border-color: @inverse-global-border; }
+.hook-inverse-form-radio-focus() { border-color: @inverse-global-color; }
+
+.hook-inverse-form-radio-checked() { border-color: @inverse-global-color; }
+.hook-inverse-form-radio-checked-focus() {}
+
+.hook-inverse-form-label() { color: @inverse-form-label-color; }
+
+// @NOTE new Checkbox-switch
+// ========================================================================
+
+.uk-checkbox-switch {
+    display: inline-block;
+    width: @form-radio-size*2;
+    height: @form-radio-size;
+    box-sizing: border-box;
+    vertical-align: middle;
+    
+    input {
+        display: none;
+    }    
+    input:checked + span {
+        background-color: @form-radio-checked-background;
+        border-color: transparent;
+        &:after {
+            background: #fff;
+            border-color: #fff;
+            transform: translateX(@form-radio-size);
+        }
+    }    
+    span {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: @form-radio-background;
+        border: @form-radio-border-width solid @form-radio-border;
+        transition: 0.2s ease-in-out;
+        transition-property: background-color, border;
+        border-radius: @form-radio-size/2;
+        box-sizing: border-box;
+        &:after {
+            content: '';
+            display: block;
+            width: @form-radio-size - @form-radio-border-width*2 - 4px;
+            height: @form-radio-size - @form-radio-border-width*2 - 4px;
+            margin: 2px;
+            border-radius: @form-radio-size;
+            background: @form-radio-background;
+            border: @form-radio-border-width solid @form-radio-border;
+            box-sizing: border-box;
+            transition: all 0.2s ease-in-out;
+        }
+    }    
+}
+
+// @NOTE new Input/Select + floating label
+// ========================================================================
+
+.uk-input, .uk-select {
+    + .uk-float-label {
+       position: absolute;
+       top: 0;
+       left: 0;
+       height: @global-control-height;
+       line-height: @global-control-height;
+       padding: 0 @form-padding-horizontal;
+       color: @global-placeholder-color;
+       transition: all .2s ease;
+       transform-origin: 0 0;
+       transform: scale(1);
+   }    
+   &:not(:placeholder-shown) + .uk-float-label, 
+   &:focus + .uk-float-label {
+       transform: translateY(-1.7rem) scale(0.8);
+   }
+} 
