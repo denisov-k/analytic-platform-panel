@@ -72,7 +72,7 @@
                 <api-error-modal :show="isApiErrorShow" :error="apiError"></api-error-modal>
 
                 <vk-modal center :overflow-auto="false" size="large" :show.sync="isDeleteConfirmShow">
-                    <vk-modal-close @click="isDeleteConfirmShow = false"></vk-modal-close>
+                    <!--<vk-modal-close @click="isDeleteConfirmShow = false"></vk-modal-close>-->
                     <vk-modal-title slot="header">Удаление метода</vk-modal-title>
                     <p>Вы уверены, что хотите удалить метод <b>{{ entityToDeleteName }}</b> приложения <b>{{ entityToDeleteAppName }}</b>?</p>
                     <div class="uk-text-right" slot="footer">
@@ -82,8 +82,8 @@
                     </div>
                 </vk-modal>
 
-                <vk-modal center :overflow-auto="false" size="xlarge" :show.sync="isEditorShow">
-                    <vk-modal-close @click="isEditorShow = false"></vk-modal-close>
+                <vk-modal center :overflow-auto="false" stuck size="xlarge" :show.sync="isEditorShow">
+                    <!--<vk-modal-close @click="isEditorShow = false"></vk-modal-close>-->
                     <vk-modal-title slot="header">Редактор метода</vk-modal-title>
                     <method-editor :app-ids="appIds" :app-names="appNames" ref="editor"></method-editor>
                     <div class="uk-text-right" slot="footer">
