@@ -88,7 +88,7 @@
                     <method-editor :app-ids="appIds" :app-names="appNames" ref="editor"></method-editor>
                     <div class="uk-text-right" slot="footer">
                         <vk-spinner class="uk-margin-right" v-if="loading"></vk-spinner>
-                        <vk-button @click="onEditorDownloadClick" class="">Скачать</vk-button>
+                        <!--<vk-button @click="onEditorDownloadClick" class="">Скачать</vk-button>-->
                         <vk-button @click="isEditorShow = false" class="uk-margin-right">Отмена</vk-button>
                         <vk-button @click="onEditorSubmitClick" type="primary">Сохранить</vk-button>
                     </div>
