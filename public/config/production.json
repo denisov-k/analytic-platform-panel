@@ -2,6 +2,7 @@
     "api": {
         "http" : {
             "baseURL": "https://rfs-gap.gost-group.com",
+          	"logoutPath": "/auth/logout",
             "timeout": 60000 
         }
     },
