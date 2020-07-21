@@ -2,7 +2,7 @@
 <div class="uk-width-medium uk-position-relative uk-height-1-1">
     <div class="layouts--aside uk-width-medium uk-height-1-1">
         <div class="uk-flex uk-flex-column uk-height-1-1">
-            <div class="uk-flex-1 menu-holder">
+            <div class="menu-holder">
                 <aside-menu class="uk-nav uk-nav-default uk-padding uk-padding-remove-left uk-padding-remove-right" :menu="menu"></aside-menu>
             </div>
             <div class="version-info">
