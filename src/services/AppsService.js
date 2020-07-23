@@ -27,7 +27,7 @@ export default class AppsService extends Service {
         }, 'post', {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
+            },
         });
     }
     /**

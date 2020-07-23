@@ -10,24 +10,6 @@ Vue.use(Router);
 export default new Router({
     routes: [
         {
-            path: '/auth',
-            name: 'auth',
-            components: { 
-                default: () => import(/* webpackChunkName: "view-auth" */ '@/views/Auth.vue')
-            },
-            meta: {
-                title: 'Авторизация',
-                description: '',
-                viewTitle: '',
-                viewDescription: '',
-                icon: '',
-                visible: false,
-                authRoles: [],
-                authRedirect: { 'name': 'home' }
-            },
-            children: [],
-        },
-        {
             path: '/',
             name: 'home',
             components: { 
@@ -42,7 +24,7 @@ export default new Router({
                 viewDescription: '',
                 icon: '',
                 visible: true,
-                authRoles: [],
+                authGroups: [],
                 authRedirect: { 'name': 'home' }
             },
             children: [],
@@ -62,7 +44,7 @@ export default new Router({
                 viewDescription: '',
                 icon: 'i/i-apps.svg',
                 visible: true,
-                authRoles: [ UsersService.ROLE_ADMIN_TECH ],
+                authGroups: [  ],
                 authRedirect: { 'name': 'home' }
             },
             children: [],
@@ -82,7 +64,7 @@ export default new Router({
                 viewDescription: '',
                 icon: 'i/i-users.svg',
                 visible: true,
-                authRoles: [ UsersService.ROLE_ADMIN_BUSINESS ],
+                authGroups: [  ],
                 authRedirect: { 'name': 'home' }
             },
             children: [],
@@ -102,7 +84,27 @@ export default new Router({
                 viewDescription: '',
                 icon: 'i/i-api.svg',
                 visible: true,
-                authRoles: [ UsersService.ROLE_ADMIN_TECH ],
+                authGroups: [  ],
+                authRedirect: { 'name': 'home' }
+            },
+            children: [],
+        },
+        {
+            path: '/groups',
+            name: 'groups',
+            components: {
+                header: Header,
+                aside: Aside,
+                default: () => import(/* webpackChunkName: "view-api-methods" */ '@/views/Groups.vue')
+            },
+            meta: {
+                title: 'Группы',
+                description: 'В данном разделе вы можете создавать, удалять и редактировать группы и их фильтры для данных',
+                viewTitle: 'Управление группами',
+                viewDescription: '',
+                icon: 'i/i-api.svg',
+                visible: true,
+                authGroups: [ ],
                 authRedirect: { 'name': 'home' }
             },
             children: [],

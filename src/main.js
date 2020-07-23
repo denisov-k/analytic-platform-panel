@@ -12,11 +12,14 @@ import SessionActions from './store/store-session-actions';
 import AuthUtils from './utils/AuthUtils';
 import ElementUI from 'element-ui';
 
+import VueTreeList from 'vue-tree-list'
+
 
 import 'vue-directive-tooltip/src/css/index.scss';
 import './assets/css/style.less';
 import 'element-ui/lib/theme-chalk/index.css';
 
+Vue.use(VueTreeList)
 Vue.use(ElementUI);
 Vue.use(Vuikit);
 Vue.use(VuikitIcons);
@@ -33,16 +36,17 @@ Vue.config.productionTip = false;
 
 // access check
 router.beforeEach((to, from, next) => {
-	let routeRoles = to.meta.authRoles;
+	let routeGroups = to.meta.authGroups;
 	let routeRedirect = to.meta.authRedirect;
-	let userRoles = store.state.session.user.roles;
+	let userGroups = store.state.session.user.groups;
 
-	if (!userRoles) {
+	/*if (!userRoles) {
 		console.warn('User has no permission for route:', to, 'redirecting to:', routeRedirect);
-		return;
-	}
+		alert('No access')
+		document.location.href = Config.data.api.http.loginURL;
+	}*/
 
-	if (AuthUtils.hasRolesAll(userRoles, routeRoles)) {
+	if (AuthUtils.hasGroupsAll(userGroups, routeGroups)) {
 		next();
 	} else {
 		console.warn('User has no permission for route:', to, 'redirecting to:', routeRedirect);
@@ -63,7 +67,7 @@ Config.init().then(() => {
 			store,
 			render: h => h(App),
 		}).$mount('#app');
-	}).catch(() => {
-		store.dispatch(SessionActions.LOGOUT, Config.data.api.http.baseURL)
+	}).catch((err) => {
+		alert(err);
 	})
 });

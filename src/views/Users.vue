@@ -17,7 +17,7 @@
                                     <span class="uk-link" @click="toggleSort('username')">Username<div class="icon"><i class="mdi" :class="{ 'mdi-chevron-up': entitiesSort['username'] == 'asc', 'mdi-chevron-down': entitiesSort['username'] == 'desc', 'mdi-sort-variant': entitiesSort['username'] == null }"></i></div></span>
                                 </th>
                                 <th>Directory</th>
-                                <th>Роли</th>
+                                <th>Группы</th>
                                 <th class="uk-table-shrink">
                                     <span class="uk-link" @click="toggleSort('createdAt')">Дата создания<div class="icon"><i class="mdi" :class="{ 'mdi-chevron-up': entitiesSort['username'] == 'asc', 'mdi-chevron-down': entitiesSort['username'] == 'desc', 'mdi-sort-variant': entitiesSort['username'] == null }"></i></div></span>
                                 </th>
@@ -29,8 +29,8 @@
                                 <td>{{ item.username }}</td>
                                 <td>{{ item.directory }}</td>
                                 <td>
-                                    <template v-if="item.roles != null">
-                                        <div class="uk-badge uk-margin-small-right" v-for="role in item.roles" :key="role">{{role}}</div>
+                                    <template v-if="item.groups != null">
+                                        <div class="uk-badge uk-margin-small-right" v-for="role in item.groups" :key="role">{{role}}</div>
                                     </template>
                                 </td>
                                 <td class="uk-text-nowrap">{{ item.createdAt.toLocaleDateString() }}</td>
@@ -73,7 +73,7 @@
                 <vk-modal center :overflow-auto="false" size="large" :show.sync="isEditorShow">
                     <vk-modal-close @click="isEditorShow = false"></vk-modal-close>
                     <vk-modal-title slot="header">Редактор пользователя</vk-modal-title>
-                    <user-editor ref="editor" :roles="roles"></user-editor>
+                    <user-editor ref="editor" :groups="groups"></user-editor>
                     <div class="uk-text-right" slot="footer">
                         <vk-spinner class="uk-margin-right" v-if="loading"></vk-spinner>
                         <vk-button class="uk-margin-right" @click="isEditorShow = false">Отмена</vk-button>
@@ -124,7 +124,7 @@ export default {
             entitiesSort: {},
             entitiesSearchQuery: '',
             entitiesSearchDelay: 250,
-            roles: [],
+            groups: [],
             page: 1,
             perPage: 10,
         }
@@ -149,8 +149,8 @@ export default {
     created() {
         this.service = new UsersService();
         this.loading = true;
-        Promise.all([ this.service.rolesGetList(), this.service.getList()]).then(([ roles, users ]) => {
-            this.roles = roles;
+        Promise.all([ this.service.getGroupsList(), this.service.getList()]).then(([ groups, users ]) => {
+            this.groups = groups;
             this.entities = users;
             this.loading = false;
         })
@@ -200,10 +200,9 @@ export default {
             }
             let entity = this.$refs.editor.entity;
             this.loading = true;
-            this.service.save(entity).then((entityId) => {
+            this.service.save(entity).then((resEntity) => {
                 if(entity._id == '') {
-                    entity._id = entityId;
-                    this.entities.unshift(entity);
+                    this.$set(this.entities, this.entities.length, resEntity);
                 }else{
                     let i = this.entities.findIndex((elem) => elem._id == entity._id);
                     if(i >= 0) {

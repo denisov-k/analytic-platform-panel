@@ -2,13 +2,9 @@
     "api": {
         "http" : {
             "baseURL": "http://localhost:3000",
-            "loginPath": "/auth",
-            "logoutPath": "/auth/logout",
-            "timeout": 20000,
-            "withCredentials": true
+            "loginURL": "http://localhost:8080/",
+            "logoutURL": "http://localhost:3000/auth/logout",
+            "timeout": 20000
         }
-    },
-	"client": {
-		"port": 8080
-	}
+    }
 }

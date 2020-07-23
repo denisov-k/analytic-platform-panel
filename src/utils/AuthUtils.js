@@ -1,10 +1,10 @@
 export default {
-    hasRolesAll(userRoles, roles) {
-        let intersect = userRoles.filter((elem) => roles.includes(elem));
-        return intersect.length == roles.length;
+    hasGroupsAll(userGroups, groups) {
+        let intersect = userGroups.filter((elem) => groups.includes(elem));
+        return intersect.length == groups.length;
     },
-    hasRolesAny(userRoles, roles) {
-        let intersect = userRoles.filter((elem) => roles.includes(elem));
+    hasGroupsAny(userGroups, groups) {
+        let intersect = userGroups.filter((elem) => groups.includes(elem));
         return intersect.length > 0;
     }
 }

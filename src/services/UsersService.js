@@ -1,23 +1,19 @@
 import Service from './Service';
+import Config from "../utils/Config";
 
 let scope = 'admin/users';
 
 export default class UsersService extends Service {
 
-    static get ROLE_ADMIN_TECH() {
-        return 'admin_tech';
-    }
-    static get ROLE_ADMIN_BUSINESS() {
-        return 'admin_business';
-    }
     static userEntity() {
         return {
             _id: '',
             email: '',
             username: '',
             directory: '',
+            password: '',
             isAdmin: false,
-            roles: []
+            groups: []
         }
     }
     /**
@@ -27,16 +23,14 @@ export default class UsersService extends Service {
      */
     getCurrent() {
 
-        var baseurl = this.transport.getBaseUrl();
-
         let callback = function (response) {
             if (typeof response.data !== 'object')
-                document.location.href = baseurl + '/auth/?redirect=' + document.baseURI;
+                document.location.href = Config.data.api.http.loginURL;
             else
                 return response.data;
         }
 
-        return this.transport.request(`auth/info`, {}, callback);
+        return this.transport.request(`auth/info`, {}, callback, 'get',{ withCredentials: true });
         // @TODO вызов апи нужен здесь вместо заглушки
         /*return new Promise((resolve) => {
             let user = UsersService.userEntity();
@@ -73,7 +67,16 @@ export default class UsersService extends Service {
         if(_id != '') {
             params.id = _id;
         }
-        return this.transport.request(`${scope}/save`, params, (response) => response.data.id, 'post');
+        return this.transport.request(`${scope}/save`, params, (response) => {
+            return {
+                _id: response.data._id,
+                username: response.data.username,
+                directory: response.data.directory,
+                isAdmin: response.data.isAdmin,
+                groups: response.data.groups,
+                createdAt: new Date(response.data.createdAt)
+            }
+        }, 'post');
     }
     /**
      * Удаляет пользователя по id
@@ -90,9 +93,9 @@ export default class UsersService extends Service {
      * Возвращает список ролей
      * @return {Promise}    then(data)
      */
-    rolesGetList() {
+    getGroupsList() {
         return new Promise((resolve) => {
-            resolve([ UsersService.ROLE_ADMIN_BUSINESS, UsersService.ROLE_ADMIN_TECH ]);
+            resolve([ 'admin_tech', 'admin_business' ]);
         })
     }
 }

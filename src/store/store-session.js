@@ -1,6 +1,7 @@
 import Actions from './store-session-actions';
 import Mutations from './store-session-mutations';
 import UsersService from './../services/UsersService';
+import Config from "../utils/Config";
 
 const Session = {
     state: { 
@@ -29,7 +30,7 @@ const Session = {
             });
         },
         [Actions.LOGOUT](context, baseURL) {
-            window.location.href = baseURL + '/auth/?redirect=' + window.location.href
+            window.location.href = Config.data.api.http.logoutURL
         }
     },
     getters: {

@@ -1,7 +1,7 @@
 <template>
     <form>
         <div class="uk-margin-small">
-            <label class="uk-form-label">Эл.почта</label>
+            <label class="uk-form-label">Email</label>
             <div class="uk-form-controls">
                 <div class="uk-inline uk-display-block">
                     <input class="uk-input" :class="{ 'uk-form-danger': $v.entity.email.$error }" type="text" placeholder="" v-model="$v.entity.email.$model">
@@ -25,10 +25,18 @@
             </div>
         </div>
         <div class="uk-margin-small">
-            <label class="uk-form-label">Роли</label>
+            <label class="uk-form-label">Password</label>
             <div class="uk-form-controls">
                 <div class="uk-inline uk-display-block">
-                    <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.roles.$error }" @select="onRolesSelect" @remove="onRolesRemove" v-model="$v.entity.roles.$model" :multiple="true" :options="roles" placeholder="Выберите роли">
+                    <input class="uk-input" :class="{ 'uk-form-danger': $v.entity.directory.$error }" type="password" placeholder="" v-model="$v.entity.password.$model">
+                </div>
+            </div>
+        </div>
+        <div class="uk-margin-small">
+            <label class="uk-form-label">Groups</label>
+            <div class="uk-form-controls">
+                <div class="uk-inline uk-display-block">
+                    <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.groups.$error }" @select="onGroupSelect" @remove="onGroupRemove" v-model="$v.entity.groups.$model" :multiple="true" :options="groups" placeholder="Выберите группы">
                         <template slot="noOptions">Список пуст</template>
                         <template slot="noResult">Ничего не найдено</template>
                     </multiselect>
@@ -63,7 +71,7 @@ export default {
         }
     },
     props: {
-        roles: {
+        groups: {
             type: Array,
             default: function() {
                 return [];
@@ -86,7 +94,8 @@ export default {
                 required,
                 minLength: minLength(2)
             },
-            roles: {},
+            password: {},
+            groups: {},
             isAdmin: {}
         }
     },
@@ -104,13 +113,13 @@ export default {
         validationIsValid() {
             return !this.$v.$invalid;
         },
-        onRolesSelect(selectedOption, id) {
-            console.log('onRolesSelect', selectedOption, id);
-            //this.entity.roles.push(selectedOption);
+        onGroupSelect(selectedOption, id) {
+            console.log('onGroupSelect', selectedOption, id);
+            this.entity.groups.push(selectedOption);
         },
-        onRolesRemove(selectedOption, id) {
-            console.log('onRolesRemove', selectedOption, id)
-            //this.entity.roles = this.entity.roles.filter((elem) => elem != selectedOption);
+        onGroupRemove(selectedOption, id) {
+            console.log('onGroupRemove', selectedOption, id)
+            this.entity.groups = this.entity.groups.filter((elem) => elem !== selectedOption);
         }
     }
 }

@@ -45,7 +45,7 @@
                 window.location.href = '/';
             },
             "onLogoutClick": function() {
-                window.location.href = Config.data.api.http.baseURL + Config.data.api.http.logoutPath;
+                window.location.href = Config.data.api.http.logoutURL;
             },
             "onNavigationButtonClick": function() {
                 this.$parent.navigationIsHide = !this.$parent.navigationIsHide;

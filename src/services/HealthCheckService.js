@@ -56,6 +56,6 @@ export default class HealthCheckService extends Service {
             };
 
             return [qlikStatus, boxStatus, mongoStatus];
-        })
+        }, 'get', { withCredentials: true })
     }
 }

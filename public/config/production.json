@@ -2,11 +2,9 @@
     "api": {
         "http" : {
             "baseURL": "https://rfs-gap.gost-group.com",
-          	"logoutPath": "/auth/logout",
+            "loginURL": "https://rfs-gap.gost-group.com/auth",
+            "logoutURL": "https://rfs-gap.gost-group.com/auth/logout",
             "timeout": 60000 
         }
-    },
-	"client": {
-		"port": 8080
-	}
+    }
 }

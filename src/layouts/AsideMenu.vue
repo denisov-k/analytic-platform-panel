@@ -22,15 +22,15 @@ export default {
     },
     computed: {
         menuItems: function() {
-            return this.menu.filter((elem) => elem.meta.visible && this.checkRouteRoles(elem));
+            return this.menu.filter((elem) => elem.meta.visible && this.checkRouteGroups(elem));
         }        
     },
     methods: {
         menuExactActiveClass: function(menuItem) {
             return menuItem.redirect == null ? 'active-exact' : 'active-exact-redirect'
         },
-        checkRouteRoles(route) {
-            return AuthUtils.hasRolesAll(this.$store.state.session.user.roles, route.meta.authRoles);
+        checkRouteGroups(route) {
+            return AuthUtils.hasGroupsAll(this.$store.state.session.user.groups, route.meta.authGroups);
         }
     }
 }

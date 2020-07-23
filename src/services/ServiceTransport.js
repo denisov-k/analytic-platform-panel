@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {replaceClass} from "vuikit/lib/util/class";
+import Config from "../utils/Config";
 
 // @private
 let REQUEST_ID = 0;
@@ -29,13 +31,16 @@ export default class ServiceTransport {
             method,
             url: url,
             cancelToken: source.token,
+            withCredentials: true,
             ...options
         };
         request[ method == 'get' ? 'params' : 'data' ] = params;
+
         let promise = new Promise((resolve, reject) => {
             this._registerRequest(requestId, source);
             this.axios.request(request)
             .then((response) => {
+
                 this._unregisterRequest(requestId);
                 if (!this.isResponseCorrect(response))
                     this.goToAuth();
@@ -78,7 +83,7 @@ export default class ServiceTransport {
      * Редирект на аутентификацию
      */
     goToAuth() {
-        document.location.href = this.getBaseUrl() + '/auth/?redirect=' + document.baseURI;
+        document.location.href = Config.data.api.http.loginURL;
     }
     /**
      * Отменяет все активные request
