@@ -14,7 +14,7 @@
     "bulma": "^0.7.4",
     "core-js": "^2.6.5",
     "element-ui": "^2.13.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "uikit": "^3.1.5-dev.5e2b6df5",
     "vue": "^2.6.6",
     "vue-at": "^2.3.2",
@@ -38,7 +38,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.14.1",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
