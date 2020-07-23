@@ -36,7 +36,8 @@
             <label class="uk-form-label">Groups</label>
             <div class="uk-form-controls">
                 <div class="uk-inline uk-display-block">
-                    <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.groups.$error }" @select="onGroupSelect" @remove="onGroupRemove" v-model="$v.entity.groups.$model" :multiple="true" :options="groups" placeholder="Выберите группы">
+                    <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.groups.$error }"  v-model="$v.entity.groups.$model" :multiple="true"
+                                 :options="groups" placeholder="Выберите группы" label="name" :searchable="false" track-by="_id">
                         <template slot="noOptions">Список пуст</template>
                         <template slot="noResult">Ничего не найдено</template>
                     </multiselect>
@@ -56,6 +57,7 @@
 <script>
 import { required, minLength, email } from 'vuelidate/lib/validators';
 import UsersService from './../../../services/UsersService';
+import GroupsService from './../../../services/GroupsService';
 import Multiselect from 'vue-multiselect';
 import _ from 'lodash';
 
@@ -67,17 +69,12 @@ export default {
     },
     data() {
         return {
-            entity: defaultEntity
+            entity: defaultEntity,
+            groups: []
         }
     },
     props: {
-        groups: {
-            type: Array,
-            default: function() {
-                return [];
-            },
-            required: true
-        }
+
     },
     validations: {   
         entity: {
@@ -114,13 +111,18 @@ export default {
             return !this.$v.$invalid;
         },
         onGroupSelect(selectedOption, id) {
-            console.log('onGroupSelect', selectedOption, id);
-            this.entity.groups.push(selectedOption);
+            //console.log('onGroupSelect', selectedOption, id);
+            //this.entity.groups.push(selectedOption);
         },
         onGroupRemove(selectedOption, id) {
-            console.log('onGroupRemove', selectedOption, id)
-            this.entity.groups = this.entity.groups.filter((elem) => elem !== selectedOption);
+            //console.log('onGroupRemove', selectedOption, id)
+            //this.entity.groups = this.entity.groups.filter((elem) => elem !== selectedOption);
         }
+    },
+    mounted() {
+        new GroupsService().getList().then(list => {
+            this.groups = list;
+        })
     }
 }
 </script>

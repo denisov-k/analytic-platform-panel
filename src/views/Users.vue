@@ -30,7 +30,7 @@
                                 <td>{{ item.directory }}</td>
                                 <td>
                                     <template v-if="item.groups != null">
-                                        <div class="uk-badge uk-margin-small-right" v-for="role in item.groups" :key="role">{{role}}</div>
+                                        <div class="uk-badge uk-margin-small-right" v-for="group in item.groups" :key="group._id">{{ group.name }}</div>
                                     </template>
                                 </td>
                                 <td class="uk-text-nowrap">{{ item.createdAt.toLocaleDateString() }}</td>

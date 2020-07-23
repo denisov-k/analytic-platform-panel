@@ -1,39 +1,39 @@
 <template>
     <div class="group-tree">
-        <div class="group" v-for="group in groupsTree">
+        <div class="group" v-for="(group, groupIndex) in groupsTree">
             <v-collapse-wrapper>
                 <div class="header" v-collapse-toggle>
                     <vk-icons-users></vk-icons-users>
                     <span class="title">{{ group.name }}</span>
-                    <span class="sub-title">Группа</span>
+                    <span class="sub-title">Группа ({{ group.filters.length }})</span>
                     <div class="manage-buttons">
-                        <div class="add-node" v-on:click.stop.prevent="group.addChild()"><vk-icons-plus-circle></vk-icons-plus-circle></div>
-                        <div class="remove-node" v-on:click.stop.prevent="onDel(group)"><vk-icons-close></vk-icons-close></div>
+                        <div class="add-node" v-on:click.stop.prevent="addFilter(group)"><vk-icons-plus-circle></vk-icons-plus-circle></div>
+                        <div class="remove-node" v-on:click.stop.prevent="deleteGroup(group)"><vk-icons-close></vk-icons-close></div>
                     </div>
                 </div>
                 <div class="my-content" v-collapse-content>
-                    <span v-if="!group.children.length">
+                    <span v-if="!group.filters.length">
                         Список фильтров пуст
                     </span>
-                    <div class="filter" v-for="filter in group.children">
+                    <div class="filter" v-for="(filter, filterIndex) in group.filters">
                         <v-collapse-wrapper>
                             <div class="header" v-collapse-toggle>
                                 <vk-icons-thumbnails></vk-icons-thumbnails>
                                 <span class="title">{{ filter.name }}</span>
-                                <span class="sub-title">Фильтр</span>
+                                <span class="sub-title">Фильтр ({{ filter.values.length }})</span>
                                 <div class="manage-buttons">
-                                    <div class="add-node" v-on:click.stop.prevent="filter.addChild()"><vk-icons-plus-circle></vk-icons-plus-circle></div>
-                                    <div class="remove-node" v-on:click.stop.prevent="onDel(filter)"><vk-icons-close></vk-icons-close></div>
+                                    <div class="add-node" v-on:click.stop.prevent="addValue(group, filterIndex)"><vk-icons-plus-circle></vk-icons-plus-circle></div>
+                                    <div class="remove-node" v-on:click.stop.prevent="deleteFilter(group, filterIndex)"><vk-icons-close></vk-icons-close></div>
                                 </div>
                             </div>
                             <div class="my-content" v-collapse-content>
-                                <div class="value" v-for="value in filter.children">
+                                <div class="value" v-for="(value, valueIndex) in filter.values">
                                     <div class="header">
                                         <vk-icons-hashtag></vk-icons-hashtag>
                                         <span class="title">{{ value.name }}</span>
                                         <span class="sub-title">Значение</span>
                                         <div class="manage-buttons">
-                                            <div class="remove-node" v-on:click.stop.prevent="onDel(value)"><vk-icons-close></vk-icons-close></div>
+                                            <div class="remove-node" v-on:click.stop.prevent="deleteValue(group, filterIndex, valueIndex)"><vk-icons-close></vk-icons-close></div>
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +53,7 @@
 <script>
     import GroupsService from "../../../services/GroupsService";
 
-    const groups = new GroupsService();
+    const groupsManager = new GroupsService();
 
     export default {
         name: "TreeExample",
@@ -79,147 +79,64 @@
         methods: {
             getGroupsList() {
 
-                groups.getList().then(list => {
-                    let groupsTree = list.map((item, id) => {
-
-                        let group = {
-                            id: item._id,
-                            name: item.name,
-                            type: 'group',
-                            children: [],
-                            addChild: function () {
-                                this.children.push({ name: 'New filter' })
-                            }
-                        };
-
-                        group.children = item.filters.map(item => {
-
-                            let filter = {
-                                id: item.id,
-                                name: item.name,
-                                children: [],
-                                type: 'filter',
-                                parent: group,
-                                addChild: function () {
-                                    this.children.push({ name: 'New value' })
-                                }
-                            }
-
-                            filter.children = item.values.map(item => {
-                                return {
-                                    id: item.id,
-                                    name: item.name,
-                                    type: 'value',
-                                    parent: filter
-                                }
-                            })
-
-                            return filter;
-                        })
-
-                        return group
-                    })
+                groupsManager.getList().then(list => {
+                    let groupsTree = list;
 
                     this.groupsTree = groupsTree;
-                    console.log(this.groupsTree)
                 })
 
             },
-            changeFilters(node) {
-                let group = null;
 
-                if (node.type === 'filter')
-                    group = node.parent
-                else if (node.type === 'value')
-                    group = node.parent.parent
-                else
-                    group = node;
+            deleteGroup(group) {
+                groupsManager.delete(group._id).then(() => {
+                    this.groupsTree.splice(this.groupsTree.findIndex(item => item._id === group._id), 1)
+                })
+            },
+            deleteFilter(group, filterIndex) {
+                group.filters.splice(filterIndex, 1);
 
+                this.saveGroup(group);
+            },
+            deleteValue(group, filterIndex, valueIndex) {
+                group.filters[filterIndex].values.splice(valueIndex, 1);
 
-                let children = group.children ? group.children.map(item => {
+                this.saveGroup(group);
+            },
+            addFilter(group) {
+                group.filters.push({ name: 'New filter', values: [] });
 
-                    let values = item.children ? item.children.map(item => {
-                        return {
-                            id: item.id,
-                            name: item.name
-                        }
-                    }) : [];
+                this.saveGroup(group);
+            },
+            addValue(group, filterIndex) {
+                group.filters[filterIndex].values.push({ name: 'New value' });
 
+                this.saveGroup(group);
+            },
+            saveGroup(group) {
+                let filters = Object.keys(group.filters).map((key) => {
                     return {
-                        id: item.id,
-                        name: item.name,
-                        values
-                    }
-                }) : [];
+                        name: group.filters[key].name,
+                        values: group.filters[key].values.map(item => { return { name: item.name } })
+                    };
+                });
 
-                groups.edit(group.id, group.name, children);
-            },
-            onDel(node) {
-                console.log(node);
-
-                if (node.type === 'group')
-                    groups.delete(node.id);
-                else {
-                    this.changeFilters(node);
-                }
-            },
-
-            onChangeName(params) {
-                if (params.eventType === 'blur') {
-                    let node = this.findNode(params.id, this.data.children);
-
-                    this.changeFilters(node);
-                }
-            },
-            findNode(id, array) {
-
-                return array.reduce((accum, item) => {
-
-                    if (accum)
-                        return accum;
-
-                    if (item.id === id)
-                        return item;
-
-                    if (item.children)
-                        return this.findNode(id, item.children);
-
-                    return null;
-                }, null);
-
-            },
-            createNode(type) {
-                params.dragDisabled = true;
-                if (params.parent.type === 'group'){
-                    params.type = 'filter';
-                    params.name = 'New filter';
-                    params.addLeafNodeDisabled = true;
-                    this.changeFilters(params);
-                }
-                else if (params.parent.type === 'filter') {
-                    params.type = 'value';
-                    params.name = 'New value';
-                    params.addTreeNodeDisabled = true;
-                    params.addLeafNodeDisabled = true;
-                    params.isLeaf = true;
-                    this.changeFilters(params);
-                }
+                groupsManager.edit(group._id, group.name, filters);
             },
 
             addGroup() {
-                let name = 'New group',
-                    self = this;
+                let name = 'New group';
 
-                groups.create(name).then(groupId => {
+                groupsManager.create(name).then(groupId => {
 
                     let node = {
+                        _id: groupId,
                         id: groupId,
                         name: name,
                         type: 'group',
-                        children: []
+                        filters: []
                     };
 
-                    self.groupsTree.push(node);
+                    this.groupsTree.push(node);
                 })
             },
         }

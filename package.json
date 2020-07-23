@@ -19,7 +19,7 @@
     "vue": "^2.6.6",
     "vue-at": "^2.3.2",
     "vue-directive-tooltip": "^1.5.1",
-    "vue-multiselect": "^2.1.4",
+    "vue-multiselect": "^2.1.5",
     "vue-router": "^3.0.1",
     "vue-tree-list": "^1.4.6",
     "vue2-collapse": "^1.0.15",

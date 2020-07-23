@@ -67,6 +67,11 @@ export default class UsersService extends Service {
         if(_id != '') {
             params.id = _id;
         }
+
+        params.groups = params.groups.map(item => {
+            return item._id
+        });
+
         return this.transport.request(`${scope}/save`, params, (response) => {
             return {
                 _id: response.data._id,
