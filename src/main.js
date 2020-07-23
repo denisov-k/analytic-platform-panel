@@ -38,13 +38,12 @@ Vue.config.productionTip = false;
 router.beforeEach((to, from, next) => {
 	let routeGroups = to.meta.authGroups;
 	let routeRedirect = to.meta.authRedirect;
-	let userGroups = store.state.session.user.groups;
+	let userGroups = store.state.session.user.groups || [];
 
-	/*if (!userRoles) {
-		console.warn('User has no permission for route:', to, 'redirecting to:', routeRedirect);
-		alert('No access')
+	if (!store.state.session.user.username) {
+		alert('Not authorized')
 		document.location.href = Config.data.api.http.loginURL;
-	}*/
+	}
 
 	if (AuthUtils.hasGroupsAll(userGroups, routeGroups)) {
 		next();
