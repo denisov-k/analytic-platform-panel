@@ -91,8 +91,8 @@ export default class ApiMethodsService extends Service {
     /*
     [ { id, name, lastReloadTime } ]
     */
-    static getFields(appId) {
-        return this.transport.request(`api/getFields/${appId}`, {}, (response) => {
+    getFields(appId) {
+        return this.transport.request(`admin/apps/getFields?app=${appId}`, {}, (response) => {
             return response.data;
         });
     }

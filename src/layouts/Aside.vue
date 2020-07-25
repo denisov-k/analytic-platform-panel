@@ -17,7 +17,7 @@
 <script>
 import AsideMenu from './AsideMenu';
 import Config from '../utils/Config';
-import { version as appVersion } from '@/../package.json';
+import { version as appVersion } from '../../package.json';
 
 export default {
     components: {

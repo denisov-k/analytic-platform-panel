@@ -12,7 +12,9 @@
             <label class="uk-form-label">Приложение</label>
             <div class="uk-form-controls">
                 <div class="uk-inline uk-display-block">
-                    <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.appID.$error }" v-model="$v.entity.appID.$model" :options="appIds" :custom-label="multiselectCustomLabel" placeholder="Выберите приложение">
+                    <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.appID.$error }"
+                                 v-model="$v.entity.appID.$model" :options="appIds" :custom-label="multiselectCustomLabel"
+                                 placeholder="Выберите приложение" @select="updateFields($v.entity.appID.$model)">
                         <template slot="noOptions">Список пуст</template>
                         <template slot="noResult">Ничего не найдено</template>
                     </multiselect>
@@ -105,7 +107,7 @@
                         </div>
                         <div class="uk-width-expand">
                             <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.expression.$model" v-if="item.type.$model == 'id'">
-                            <input class="uk-input uk-form-small" type="text" placeholder="Expression" v-model="item.expression.$model" v-else>
+                            <expression-input  :hints="fields"  v-model="item.expression.$model" v-else></expression-input>
                         </div>
                         <div class="uk-width-auto">
                             <vk-button class="uk-margin-small-left" type="link" @click="onParamDeleteBtnClick(entity.measures, i)">
@@ -149,7 +151,7 @@
                         </div>
                         <div class="uk-width-expand">
                             <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.expression.$model" v-if="item.type.$model == 'id'">
-                            <input class="uk-input uk-form-small" type="text" placeholder="Expression" v-model="item.expression.$model" v-else>
+                            <expression-input  :hints="fields"  v-model="item.expression.$model" v-else></expression-input>
                         </div>
                         <div class="uk-width-auto">
                             <vk-button class="uk-margin-small-left" type="link" @click="onParamDeleteBtnClick(entity.filters, i)">
@@ -183,7 +185,10 @@
                 </span>                                
                 <span class="uk-form-label">Фильтровать по текущему пользователю</span>
             </label>
-        </div>                    
+        </div>
+        <datalist id="fields">
+            <option value="VVO" label="Владивосток"></option>
+        </datalist>
     </form>
 </template>
 <script>
@@ -321,9 +326,9 @@ export default {
         updateFields(appID) {
             var self = this;
 
-            this.transport.request(`api/getFields/${appID}`, {}, (response) => {
-                self.fields = response.data.map((item) => item.qName);
-            });
+            (new ApiMethodsService).getFields(appID).then(data => {
+                self.fields = data.map((item) => item.qName);
+            })
         },
         onExpressionChange(value, item) {
 
