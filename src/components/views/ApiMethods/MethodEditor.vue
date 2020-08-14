@@ -61,7 +61,7 @@
                             </span>
                         </div>
                         <div class="uk-width-expand">
-                            <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.expression.$model" v-if="item.type.$model == 'id'">
+                            <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.id.$model" v-if="item.type.$model == 'id'">
                             <expression-input  :hints="fields"  v-model="item.expression.$model" v-else></expression-input>
 
                         </div>
@@ -106,7 +106,7 @@
                             </span>
                         </div>
                         <div class="uk-width-expand">
-                            <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.expression.$model" v-if="item.type.$model == 'id'">
+                            <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.id.$model" v-if="item.type.$model == 'id'">
                             <expression-input  :hints="fields"  v-model="item.expression.$model" v-else></expression-input>
                         </div>
                         <div class="uk-width-auto">
@@ -150,7 +150,7 @@
                             </span>
                         </div>
                         <div class="uk-width-expand">
-                            <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.expression.$model" v-if="item.type.$model == 'id'">
+                            <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.id.$model" v-if="item.type.$model == 'id'">
                             <expression-input  :hints="fields"  v-model="item.expression.$model" v-else></expression-input>
                         </div>
                         <div class="uk-width-auto">
