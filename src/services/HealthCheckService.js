@@ -30,9 +30,9 @@ export default class HealthCheckService extends Service {
             let qlikStatus = {
                 title: 'Qlik',
                 data: [
-                    //status('System type', data.qlikStatus.systemType),
+                    status('System type', data.qlikStatus.systemType),
                     status('Engine address', data.qlikStatus.address),
-                    //status('Engine version', data.qlikStatus.engineVersion),
+                    status('Engine version', data.qlikStatus.engineVersion),
                     status('Engine status', data.qlikStatus.error ? data.qlikStatus.error : 'OK',
                         data.qlikStatus.error ? statuses.DANGER : statuses.SUCCESS ),
                     //status('QRS status', data.qrsStatus),

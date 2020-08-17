@@ -147,7 +147,7 @@
     .note {
         width: 100%;
         min-height: 100px;
-        height: 100px;
+        height: 185px;
         border: 1px solid #dfe2e8;
         font-size: 14px;
         resize: vertical;

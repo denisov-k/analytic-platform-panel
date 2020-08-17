@@ -4,7 +4,7 @@
             <label class="uk-form-label">Путь</label>
             <div class="uk-form-controls">
                 <div class="uk-inline uk-display-block">
-                    <input class="uk-input" :class="{ 'uk-form-danger': $v.entity.path.$error }" type="text" placeholder="Путь метода" v-model="$v.entity.path.$model">
+                    <input class="uk-input" :class="{ 'uk-form-danger': $v.entity.path.$error }" type="text" placeholder="Путь метода" v-model="$v.entity.path.$model"></input>
                 </div>
             </div>
         </div>                       
