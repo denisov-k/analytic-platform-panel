@@ -4,7 +4,8 @@
             <label class="uk-form-label">Путь</label>
             <div class="uk-form-controls">
                 <div class="uk-inline uk-display-block">
-                    <input class="uk-input" :class="{ 'uk-form-danger': $v.entity.path.$error }" type="text" placeholder="Путь метода" v-model="$v.entity.path.$model"></input>
+                    <input class="uk-input" :class="{ 'uk-form-danger': $v.entity.path.$error }"
+                           type="text" placeholder="Путь метода" v-model="$v.entity.path.$model"/>
                 </div>
             </div>
         </div>                       
@@ -209,9 +210,9 @@ export default {
     data() {
         return {
             entity: defaultEntity(),
-            dimensionCollapseActive: false,
-            measureCollapseActive: false,
-            filterCollapseActive: false,
+            dimensionCollapseActive: true,
+            measureCollapseActive: true,
+            filterCollapseActive: true,
             fields: []
         }
     },
@@ -341,7 +342,7 @@ export default {
         },
         reset() {
             this.entity = defaultEntity();
-            this.collapseAll();
+            this.uncollapseAll();
             this.validationReset();
         },
         validationTouch() {
@@ -352,7 +353,12 @@ export default {
         },
         validationIsValid() {
             return !this.$v.$invalid;
-        }, 
+        },
+        uncollapseAll() {
+            this.dimensionCollapseActive = true;
+            this.measureCollapseActive = true;
+            this.filterCollapseActive = true;
+        },
         collapseAll() {
             this.dimensionCollapseActive = false;
             this.measureCollapseActive = false;

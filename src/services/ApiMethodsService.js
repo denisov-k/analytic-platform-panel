@@ -9,8 +9,8 @@ export default class ApiMethodsService extends Service {
             _id: '',
             path: '',
             appID: '',
-            rowLimit: '',
-            enabled: false,
+            rowLimit: 10000,
+            enabled: true,
             suppressZero: false,
             sectionAccess: false,
             dimensions: [],
@@ -118,7 +118,7 @@ export default class ApiMethodsService extends Service {
      */
     save(methodEntity) {
         let decorator = ({ id, name, expression, type }) => {
-            if(type == 'id') {
+            if(type === 'id') {
                 return { name, id };
             }else{
                 return { name, expression };

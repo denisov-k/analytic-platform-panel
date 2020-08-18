@@ -39,7 +39,7 @@
                                 </td>
                                 <td>
                                     <button class="uk-button uk-button-none" @mouseover="dropdownShowEntityId = item._id"><div class="icon"><i class="mdi mdi-dots-vertical"></i></div></button>
-                                    <vk-dropdown class="uk-border-rounded" v-if="dropdownShowEntityId == item._id && !isEditorShow && !isDeleteConfirmShow">
+                                    <vk-dropdown class="uk-border-rounded" v-if="dropdownShowEntityId === item._id && !isEditorShow && !isDeleteConfirmShow">
                                         <ul class="uk-nav uk-dropdown-nav">
                                             <li><a @click="onRowEditClick(item)">Изменить</a></li>
                                             <li><a @click="onRowDeleteClick(item, i)">Удалить</a></li>
@@ -137,7 +137,7 @@ export default {
         },
         pageEntities: function() {
             if (this.entitesFiltered.length / this.perPage < this.page)
-                this.page = Math.ceil(this.entitesFiltered.length / this.perPage); // FIXME
+                this.setPage(Math.ceil(this.entitesFiltered.length / this.perPage));
 
             let s = (this.page-1)*this.perPage;
 
@@ -192,6 +192,9 @@ export default {
                 this.$refs.editor.entity = _.cloneDeep(method);
             }
             this.isEditorShow = true;
+        },
+        setPage: function(value) {
+            this.page = value;
         },
         getApiMethodPathUrl: function(path) {
             return `${Config.data.api.http.baseURL}/api/${path}`;
