@@ -93,7 +93,7 @@
 </template>
 <script>
 import AppsService from '../services/AppsService';
-import ApiErrorModal from './../components/shared/ApiErrorModal';
+import ApiErrorModal from '../components/ApiErrorModal';
 
 export default {
     components: {
@@ -120,7 +120,7 @@ export default {
         },     
         pageEntities: function() {
             if (this.entitesFiltered.length / this.perPage < this.page)
-                this.page = Math.ceil(this.entitesFiltered.length / this.perPage); // FIXME
+                this.setPage(Math.ceil(this.entitesFiltered.length / this.perPage));
 
             let s = (this.page-1)*this.perPage;
 
@@ -202,6 +202,9 @@ export default {
             }).catch(err => {
                 console.error(err)
             })
+        },
+        setPage: function(value) {
+            this.page = value;
         },
     }
 }

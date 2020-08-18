@@ -99,8 +99,8 @@
 <script>
 import _ from 'lodash';
 import UsersService from '../services/UsersService';
-import UserEditor from './../components/views/Users/UserEditor';
-import ApiErrorModal from './../components/shared/ApiErrorModal';
+import UserEditor from '../components/Users/UserEditor';
+import ApiErrorModal from '../components/ApiErrorModal';
 import { clearTimeout, setTimeout } from 'timers';
 
 const SORT_ASC = 'asc';

@@ -2,7 +2,7 @@ import Service from './Service';
 
 let scope = 'admin/endpoints';
 
-export default class ApiMethodsService extends Service {
+export default class EndpointsService extends Service {
 
     static methodEntity() {
         return {

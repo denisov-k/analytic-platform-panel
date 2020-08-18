@@ -13,7 +13,7 @@
 </template>
 
 <script>
-    import Tree from '../components/views/Groups/GroupsTree';
+    import Tree from '../components/Groups/GroupsTree';
 
     export default {
         components: {

@@ -3,11 +3,11 @@ import Vuex from 'vuex'
 import session from './store-session';
 
 Vue.use(Vuex);
-const debug = process.env.NODE_ENV !== 'production';
+const isDebug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
-    trict: debug,
-    devtools: debug,
+    trict: isDebug,
+    devtools: isDebug,
     modules: {
         session
     }

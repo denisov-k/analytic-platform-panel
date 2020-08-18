@@ -196,14 +196,14 @@
 import { required, numeric, minLength, minValue } from 'vuelidate/lib/validators';
 import Multiselect from 'vue-multiselect';
 import ExpressionInput from './ExpressionInput';
-import ApiMethodsService from './../../../services/ApiMethodsService';
-import Service from './../../../services/Service';
+import EndpointsService from '../../services/EndpointsService';
+import Service from '../../services/Service';
 import _ from 'lodash';
 
-let defaultEntity = ApiMethodsService.methodEntity;
-let defaultDimensionEntity = ApiMethodsService.methodDimensionEntity;
-let defaultFilterEntity = ApiMethodsService.methodFilterEntity;
-let defaultMeasureEntity = ApiMethodsService.methodMeasureEntity;
+let defaultEntity = EndpointsService.methodEntity;
+let defaultDimensionEntity = EndpointsService.methodDimensionEntity;
+let defaultFilterEntity = EndpointsService.methodFilterEntity;
+let defaultMeasureEntity = EndpointsService.methodMeasureEntity;
 
 export default {
     components: { Multiselect, ExpressionInput },
@@ -327,7 +327,7 @@ export default {
         updateFields(appID) {
             var self = this;
 
-            (new ApiMethodsService).getFields(appID).then(data => {
+            (new EndpointsService).getFields(appID).then(data => {
                 self.fields = data.map((item) => item.qName);
             })
         },

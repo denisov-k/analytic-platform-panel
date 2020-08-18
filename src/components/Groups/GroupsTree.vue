@@ -51,7 +51,7 @@
 </template>
 
 <script>
-    import GroupsService from "../../../services/GroupsService";
+    import GroupsService from "../../services/GroupsService";
 
     const groupsManager = new GroupsService();
 

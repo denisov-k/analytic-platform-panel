@@ -56,8 +56,8 @@
 </template>
 <script>
 import { required, minLength, email } from 'vuelidate/lib/validators';
-import UsersService from './../../../services/UsersService';
-import GroupsService from './../../../services/GroupsService';
+import UsersService from '../../services/UsersService';
+import GroupsService from '../../services/GroupsService';
 import Multiselect from 'vue-multiselect';
 import _ from 'lodash';
 

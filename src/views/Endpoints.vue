@@ -16,6 +16,7 @@
                             <tr>
                                 <th>Путь</th>
                                 <th>Приложение</th>
+                                <th>D/M</th>
                                 <th>Макс. кол-во записей</th>
                                 <th>Доступ метода</th>
                                 <th>Ограничение нулей</th>
@@ -27,6 +28,7 @@
                             <tr v-for="(item, i) in pageEntities" :key="item._id">
                                 <td><a :href="getApiMethodPathUrl(item.path)" target="_blank" rel="noopener">{{ item.path }}</a></td>
                                 <td>{{ getAppName(item.appID) }}</td>
+                                <td>{{ item.dimensions.length }}/{{ item.measures.length }}</td>
                                 <td>{{ item.rowLimit }}</td>
                                 <td>
                                     <div class="icon" v-if="item.enabled"><i class="mdi mdi-check"></i></div>
@@ -100,10 +102,10 @@
 </template>
 <script>
 import _ from 'lodash';
-import ApiMethodsService from './../services/ApiMethodsService';
+import EndpointsService from '../services/EndpointsService';
 import AppsService from './../services/AppsService';
-import ApiErrorModal from './../components/shared/ApiErrorModal';
-import MethodEditor from './../components/views/ApiMethods/MethodEditor';
+import ApiErrorModal from '../components/ApiErrorModal';
+import MethodEditor from '../components/ApiMethods/MethodEditor';
 import Config from '../utils/Config';
 
 export default {
@@ -160,7 +162,7 @@ export default {
     },
     created() {
         this.appsService = new AppsService();
-        this.apiMethodsService = new ApiMethodsService();
+        this.apiMethodsService = new EndpointsService();
         this.loadData();        
     },
     beforeDestroy() {
