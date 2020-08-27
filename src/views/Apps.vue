@@ -21,14 +21,24 @@
                     <table class="uk-table uk-table-hover uk-table-divider">
                         <thead>
                             <tr>
-                                <th class="uk-width-1-3">Название</th>
-                                <th>ID</th>
+                                <th class="uk-width-1-3">
+                                  <span class="uk-link" @click="toggleSort('name')">Название<div class="icon">
+                                    <i class="mdi" :class="{ 'mdi-chevron-up': entitiesSort['name'] === 'asc', 'mdi-chevron-down': entitiesSort['name'] === 'desc', 'mdi-sort-variant': entitiesSort['name'] == null }"></i>
+                                  </div></span>
+                                </th>
+                                <th>
+                                  <span class="uk-link" @click="toggleSort('stream')">Stream<div class="icon">
+                                    <i class="mdi" :class="{ 'mdi-chevron-up': entitiesSort['stream'] === 'asc', 'mdi-chevron-down': entitiesSort['stream'] === 'desc', 'mdi-sort-variant': entitiesSort['stream'] == null }"></i>
+                                  </div></span>
+                                </th>
+                                <th class="uk-width-1-3">ID</th>
                                 <th class="uk-table-shrink uk-text-nowrap">Время перезагрузки</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item in pageEntities" :key="item.id">
                                 <td>{{ item.name }}</td>
+                                <td>{{ item.stream }}</td>
                                 <td>{{ item.id }}</td>
                                 <td class="uk-text-nowrap">{{ item.lastReloadTime }}</td>
                                 <td>
@@ -95,6 +105,9 @@
 import AppsService from '../services/AppsService';
 import ApiErrorModal from '../components/ApiErrorModal';
 
+const SORT_ASC = 'asc';
+const SORT_DESC = 'desc';
+
 export default {
     components: {
         ApiErrorModal
@@ -105,6 +118,7 @@ export default {
             inProgressAction: '',
             apiError: '',
             entities: [],
+            entitiesSort: {},
             entitiesSearchQuery: '',
             entitiesSearchDelay: 250,
             entityForAction: {},
@@ -113,7 +127,7 @@ export default {
             perPage: 10,
         }
     },
-    computed: {   
+    computed: {
         entitesFiltered: function() {
             let q = this.entitiesSearchQuery;
             return q.length ? this.entities.filter((item) => item.name && item.name.indexOf(q) >= 0 || item.id && item.id.indexOf(q) >= 0) : this.entities;
@@ -205,6 +219,17 @@ export default {
         },
         setPage: function(value) {
             this.page = value;
+        },
+        toggleSort: function(field) {
+          let s = this.entitiesSort[field];
+          s = (s == null) ? SORT_ASC : s;
+          this.entities.sort((a, b) => {
+            let ac = String(a[field]) || '';
+            let bc = String(b[field]) || '';
+            let n = ac.localeCompare(bc);
+            return (s == SORT_ASC) ? n : n*-1;
+          });
+          this.$set(this.entitiesSort, field, (s == SORT_ASC) ? SORT_DESC : SORT_ASC);
         },
     }
 }

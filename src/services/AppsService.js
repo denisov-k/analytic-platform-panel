@@ -45,6 +45,7 @@ export default class AppsService extends Service {
                     id: elem.qDocId,
                     name: elem.qDocName,
                     lastReloadTime: elem.qLastReloadTime,
+                    stream: elem.qMeta.stream.name
                 }
             });
         });
