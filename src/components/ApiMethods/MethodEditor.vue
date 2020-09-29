@@ -119,7 +119,7 @@
                 </div>
             </v-collapse-wrapper>
         </v-collapse-group>
-        <v-collapse-group :onlyOneActive="false">
+        <!--<v-collapse-group :onlyOneActive="false">
             <v-collapse-wrapper class="uk-margin-small" :active="filterCollapseActive" @onStatusChange="(data) => filterCollapseActive = data.status">
                 <div>
                     <span class="icon">
@@ -162,7 +162,7 @@
                     </vk-grid>
                 </div>
             </v-collapse-wrapper>
-        </v-collapse-group>
+        </v-collapse-group>-->
         <div class="uk-margin-small">
             <label>
                 <span class="uk-checkbox-switch uk-margin-small-right">
