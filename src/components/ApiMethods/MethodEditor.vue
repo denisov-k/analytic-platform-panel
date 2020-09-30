@@ -163,14 +163,7 @@
                 </div>
             </v-collapse-wrapper>
         </v-collapse-group>-->
-        <div class="uk-margin-small">
-            <label>
-                <span class="uk-checkbox-switch uk-margin-small-right">
-                    <input type="checkbox" v-model="entity.enabled"><span></span>
-                </span>                                
-                <span class="uk-form-label">Доступ метода</span>
-            </label>
-        </div>
+
         <div class="uk-margin-small">
             <label>
                 <span class="uk-checkbox-switch uk-margin-small-right">
@@ -184,11 +177,19 @@
                 <span class="uk-checkbox-switch uk-margin-small-right">
                     <input type="checkbox" v-model="entity.sectionAccess"><span></span>
                 </span>                                
-                <span class="uk-form-label">Фильтровать по текущему пользователю</span>
+                <span class="uk-form-label">Разграничение данных</span>
             </label>
         </div>
+      <div class="uk-margin-small">
+        <label>
+                <span class="uk-checkbox-switch uk-margin-small-right">
+                    <input type="checkbox" v-model="entity.enabled"><span></span>
+                </span>
+          <span class="uk-form-label">Доступ метода</span>
+        </label>
+      </div>
         <datalist id="fields">
-            <option value="VVO" label="Владивосток"></option>
+            <option value="default" label="Default"></option>
         </datalist>
     </form>
 </template>
