@@ -16,6 +16,7 @@
                 </div>
             </div>
         </div>
+        <!--
         <div class="uk-margin-small">
             <label class="uk-form-label">Directory</label>
             <div class="uk-form-controls">
@@ -24,11 +25,12 @@
                 </div>
             </div>
         </div>
+        -->
         <div class="uk-margin-small">
             <label class="uk-form-label">Password</label>
             <div class="uk-form-controls">
                 <div class="uk-inline uk-display-block">
-                    <input class="uk-input" :class="{ 'uk-form-danger': $v.entity.directory.$error }" type="password" placeholder="" v-model="$v.entity.password.$model">
+                    <input class="uk-input" :class="{ 'uk-form-danger': $v.entity.password.$error }" type="password" placeholder="" v-model="$v.entity.password.$model">
                 </div>
             </div>
         </div>
@@ -88,7 +90,6 @@ export default {
                 minLength: minLength(2)
             }, 
             directory: {
-                required,
                 minLength: minLength(2)
             },
             password: {},

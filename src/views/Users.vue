@@ -16,7 +16,7 @@
                                 <th class="uk-width-1-4">
                                     <span class="uk-link" @click="toggleSort('username')">Username<div class="icon"><i class="mdi" :class="{ 'mdi-chevron-up': entitiesSort['username'] == 'asc', 'mdi-chevron-down': entitiesSort['username'] == 'desc', 'mdi-sort-variant': entitiesSort['username'] == null }"></i></div></span>
                                 </th>
-                                <th>Directory</th>
+                                <!--<th>Directory</th>-->
                                 <th>Группы</th>
                                 <th class="uk-table-shrink">
                                     <span class="uk-link" @click="toggleSort('createdAt')">Дата создания<div class="icon"><i class="mdi" :class="{ 'mdi-chevron-up': entitiesSort['username'] == 'asc', 'mdi-chevron-down': entitiesSort['username'] == 'desc', 'mdi-sort-variant': entitiesSort['username'] == null }"></i></div></span>
@@ -27,7 +27,7 @@
                         <tbody>
                             <tr v-for="item in pageEntities" :key="item._id">
                                 <td>{{ item.username }}</td>
-                                <td>{{ item.directory }}</td>
+                                <!--<td>{{ item.directory }}</td>-->
                                 <td>
                                     <template v-if="item.groups != null">
                                         <div class="uk-badge uk-margin-small-right" v-for="group in item.groups" :key="group._id">{{ group.name }}</div>
@@ -94,7 +94,7 @@
 
             </vk-card>
         </section>
-    </div>       
+    </div>
 </template>
 <script>
 import _ from 'lodash';
@@ -159,17 +159,17 @@ export default {
     beforeDestroy() {
         this.service.transport.cancelAllRequests();
     },
-    methods: {        
+    methods: {
         toggleSort: function(field) {
             let s = this.entitiesSort[field];
             s = (s == null) ? SORT_ASC : s;
-            this.entities.sort((a, b) => { 
+            this.entities.sort((a, b) => {
                 let ac = String(a[field]) || '';
                 let bc = String(b[field]) || '';
                 let n = ac.localeCompare(bc);
                 return (s == SORT_ASC) ? n : n*-1;
             });
-            this.$set(this.entitiesSort, field, (s == SORT_ASC) ? SORT_DESC : SORT_ASC);            
+            this.$set(this.entitiesSort, field, (s == SORT_ASC) ? SORT_DESC : SORT_ASC);
         },
         showEditor: function(entity = null) {
             this.$refs.editor.reset();
