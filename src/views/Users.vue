@@ -62,7 +62,7 @@
                     <div class="uk-form-controls search-input-container">
                         <div class="uk-inline">
                             <div class="uk-form-icon"><div class="icon"><i class="mdi mdi-magnify"></i></div></div>
-                            <input class="uk-input" type="search" placeholder="Эл.почта или usename" v-model="entitiesSearchQuery">
+                            <input class="uk-input" type="search" placeholder="Эл.почта или username" v-model="entitiesSearchQuery">
                         </div>
                         <a class="icon" @click="entitiesSearchQuery = ''" v-if="entitiesSearchQuery.length > 0"><i class="mdi mdi-close"></i></a>
                     </div>
