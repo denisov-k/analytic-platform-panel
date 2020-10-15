@@ -7,7 +7,7 @@
             <vk-icons-users></vk-icons-users>
 
             <div class="name">
-              <input class="input-value" v-model="group.newName">
+              <input class="input-value" v-model="group.newName" placeholder="Название группы">
               <div class="accept-changes-button" v-show="group.newName !== group.name" v-on:click="saveValue(group, group)">
                 <vk-icons-check></vk-icons-check>
               </div>
@@ -30,7 +30,7 @@
                   <vk-icons-thumbnails></vk-icons-thumbnails>
 
                   <div class="name">
-                    <input class="input-value" v-model="filter.newName">
+                    <input class="input-value" v-model="filter.newName" placeholder="Поле в Qlik">
                     <div class="accept-changes-button" v-show="filter.newName !== filter.name" v-on:click="saveValue(filter, group)">
                       <vk-icons-check></vk-icons-check>
                     </div>
@@ -47,7 +47,7 @@
                     <div class="header">
                       <vk-icons-hashtag></vk-icons-hashtag>
                       <div class="name">
-                        <input class="input-value" v-model="value.newName">
+                        <input class="input-value" v-model="value.newName" placeholder="Значение фильтра">
                         <div class="accept-changes-button" v-show="value.newName !== value.name" v-on:click="saveValue(value, group)">
                           <vk-icons-check></vk-icons-check>
                         </div>
