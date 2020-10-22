@@ -98,11 +98,11 @@
 </template>
 <script>
 import _ from 'lodash';
-import EndpointsService from '../services/EndpointsService';
-import AppsService from './../services/AppsService';
-import ApiErrorModal from '../components/ApiErrorModal';
-import MethodEditor from '../components/Endpoints/MethodEditor';
-import Config from '../utils/Config';
+import EndpointsService from '@/services/EndpointsService';
+import AppsService from '@/services/AppsService';
+import ApiErrorModal from '@/components/ApiErrorModal';
+import MethodEditor from '@/components/Endpoints/MethodEditor';
+import Config from '@/utils/Config';
 
 export default {
   components: {
