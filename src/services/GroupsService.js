@@ -8,6 +8,7 @@ export default class GroupsService extends Service {
      * @return {Promise}    then(data)
      * data ~ @see below
      */
+
     /*
     [ { id, name, lastReloadTime } ]
     */
@@ -18,19 +19,19 @@ export default class GroupsService extends Service {
     }
 
     create(name) {
-        return this.transport.request(`${scope}/create`, { name }, (response) => {
+        return this.transport.request(`${scope}/create`, {name}, (response) => {
             return response.data.id;
         }, 'post');
     }
 
     edit(id, name, filters) {
-        return this.transport.request(`${scope}/save`, { id, name, filters }, (response) => {
+        return this.transport.request(`${scope}/save`, {id, name, filters}, (response) => {
             return response.data;
         }, 'post');
     }
 
     delete(id) {
-        return this.transport.request(`${scope}/delete`, { id }, (response) => {
+        return this.transport.request(`${scope}/delete`, {id}, (response) => {
             return response.data;
         }, 'post');
     }

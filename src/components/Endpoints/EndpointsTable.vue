@@ -4,7 +4,9 @@
       <div class="uk-float-right">
         <vk-button type="primary" @click="onCreateBtnClick">Создать</vk-button>
       </div>
-      <h2 class="uk-margin-remove">{{ $route.meta.viewTitle }}<vk-spinner class="uk-margin-left" v-if="loading"></vk-spinner></h2>
+      <h2 class="uk-margin-remove">{{ $route.meta.viewTitle }}
+        <vk-spinner class="uk-margin-left" v-if="loading"></vk-spinner>
+      </h2>
       <p class="uk-text-muted uk-margin-remove">{{ $route.meta.viewDescription }}</p>
     </div>
 
@@ -24,7 +26,9 @@
         </thead>
         <tbody>
         <tr v-for="(item, i) in pageEntities" :key="item._id">
-          <td><a :href="getApiMethodPathUrl(item.path)" target="_blank" rel="noopener">{{ item.path }}</a></td>
+          <td>
+            <export-link :url="item.url" :title="item.path"></export-link>
+          </td>
           <td>{{ getAppName(item.appID) }}</td>
           <td>{{ item.dimensions.length }}/{{ item.measures.length }}</td>
           <td>{{ item.rowLimit }}</td>
@@ -38,8 +42,11 @@
             <div class="icon" v-if="item.sectionAccess"><i class="mdi mdi-check"></i></div>
           </td>
           <td>
-            <button class="uk-button uk-button-none" @mouseover="dropdownShowEntityId = item._id"><div class="icon"><i class="mdi mdi-dots-vertical"></i></div></button>
-            <vk-dropdown class="uk-border-rounded" v-if="dropdownShowEntityId === item._id && !isEditorShow && !isDeleteConfirmShow">
+            <button class="uk-button uk-button-none" @mouseover="dropdownShowEntityId = item._id">
+              <div class="icon"><i class="mdi mdi-dots-vertical"></i></div>
+            </button>
+            <vk-dropdown class="uk-border-rounded"
+                         v-if="dropdownShowEntityId === item._id && !isEditorShow && !isDeleteConfirmShow">
               <ul class="uk-nav uk-dropdown-nav">
                 <li><a @click="onRowEditClick(item)">Изменить</a></li>
                 <li><a @click="onRowDeleteClick(item, i)">Удалить</a></li>
@@ -62,10 +69,13 @@
       </div>
       <div class="uk-form-controls search-input-container">
         <div class="uk-inline">
-          <div class="uk-form-icon"><div class="icon"><i class="mdi mdi-magnify"></i></div></div>
+          <div class="uk-form-icon">
+            <div class="icon"><i class="mdi mdi-magnify"></i></div>
+          </div>
           <input class="uk-input" type="search" placeholder="Путь метода" v-model="entitiesSearchQuery">
         </div>
-        <a class="icon" @click="entitiesSearchQuery = ''" v-if="entitiesSearchQuery.length > 0"><i class="mdi mdi-close"></i></a>
+        <a class="icon" @click="entitiesSearchQuery = ''" v-if="entitiesSearchQuery.length > 0"><i
+            class="mdi mdi-close"></i></a>
       </div>
     </div>
 
@@ -74,7 +84,9 @@
     <vk-modal center :overflow-auto="false" size="large" :show.sync="isDeleteConfirmShow">
       <!--<vk-modal-close @click="isDeleteConfirmShow = false"></vk-modal-close>-->
       <vk-modal-title slot="header">Удаление метода</vk-modal-title>
-      <p>Вы уверены, что хотите удалить метод <b>{{ entityToDeleteName }}</b> приложения <b>{{ entityToDeleteAppName }}</b>?</p>
+      <p>Вы уверены, что хотите удалить метод <b>{{ entityToDeleteName }}</b> приложения <b>{{
+          entityToDeleteAppName
+        }}</b>?</p>
       <div class="uk-text-right" slot="footer">
         <vk-spinner class="uk-margin-right" v-if="loading"></vk-spinner>
         <vk-button class="uk-margin-right" @click="isDeleteConfirmShow = false">Отмена</vk-button>
@@ -102,12 +114,14 @@ import EndpointsService from '@/services/EndpointsService';
 import AppsService from '@/services/AppsService';
 import ApiErrorModal from '@/components/ApiErrorModal';
 import MethodEditor from '@/components/Endpoints/MethodEditor';
+import ExportLink from "@/components/Endpoints/ExportLink";
 import Config from '@/utils/Config';
 
 export default {
   components: {
     ApiErrorModal,
-    MethodEditor
+    MethodEditor,
+    ExportLink
   },
   data() {
     return {
@@ -126,33 +140,37 @@ export default {
       isEditorShow: false,
       isDeleteConfirmShow: false,
       isApiErrorShow: false,
+      exportFormats: [
+        {title: 'CSV формат', param: 'csv'},
+        {title: 'Qlik формат', param: 'qlik'},
+      ]
     }
   },
   computed: {
-    entitesFiltered: function() {
+    entitesFiltered: function () {
       let q = this.entitiesSearchQuery;
       return q.length ? this.entities.filter((item) => item.path && item.path.indexOf(q) >= 0) : this.entities;
     },
-    pageEntities: function() {
+    pageEntities: function () {
       if (this.entitesFiltered.length / this.perPage < this.page)
         this.setPage(Math.ceil(this.entitesFiltered.length / this.perPage));
 
-      let s = (this.page-1)*this.perPage;
+      let s = (this.page - 1) * this.perPage;
 
-      return this.entitesFiltered.slice(s, s+this.perPage);
+      return this.entitesFiltered.slice(s, s + this.perPage);
     },
-    entityToDeleteName: function() {
-      if(this.entityToDeleteIndex < 0) {
+    entityToDeleteName: function () {
+      if (this.entityToDeleteIndex < 0) {
         return '';
       }
-      let entity = this.entities[ this.entityToDeleteIndex ];
+      let entity = this.entities[this.entityToDeleteIndex];
       return entity ? entity.path : '';
     },
-    entityToDeleteAppName: function() {
-      if(this.entityToDeleteIndex < 0) {
+    entityToDeleteAppName: function () {
+      if (this.entityToDeleteIndex < 0) {
         return '';
       }
-      let entity = this.entities[ this.entityToDeleteIndex ];
+      let entity = this.entities[this.entityToDeleteIndex];
       return entity ? this.getAppName(entity.appID) : '';
     }
   },
@@ -173,7 +191,7 @@ export default {
       ];
       this.loading = true;
       Promise.all(p).then((data) => {
-        let [ apps, entities ] = data;
+        let [apps, entities] = data;
         let o = {};
         apps.forEach(elem => o[elem.id] = elem.name);
         this.apps = apps;
@@ -184,36 +202,36 @@ export default {
       })
           .catch(this.apiErrorHandler);
     },
-    showEditor: function(method = null) {
+    showEditor: function (method = null) {
       this.$refs.editor.reset();
-      if(method != null) {
+      if (method != null) {
         this.$refs.editor.entity = _.cloneDeep(method);
       }
       this.isEditorShow = true;
     },
-    setPage: function(value) {
+    setPage: function (value) {
       this.page = value;
     },
-    getApiMethodPathUrl: function(path) {
+    getApiMethodPathUrl: function (path) {
       return `${Config.data.api.http.baseURL}/api/${path}`;
     },
-    getAppName: function(appId) {
+    getAppName: function (appId) {
       let app = this.apps.find((elem) => elem.id == appId);
       return app == null ? appId : app.name;
     },
-    apiErrorHandler: function(error) {
+    apiErrorHandler: function (error) {
       this.loading = false;
       this.apiError = error;
       this.isApiErrorShow = true;
     },
-    onEditorSubmitClick: function() {
+    onEditorSubmitClick: function () {
       this.$refs.editor.validationTouch();
-      if(!this.$refs.editor.validationIsValid()) {
+      if (!this.$refs.editor.validationIsValid()) {
         return;
       }
       let entity = this.$refs.editor.entity;
       // create
-      if(entity._id == '') {
+      if (entity._id == '') {
         this.loading = true;
         // создаем
         this.apiMethodsService.create(entity.appID, entity.path).then((entityId) => {
@@ -229,9 +247,9 @@ export default {
             .catch(this.apiErrorHandler);
       }
       // update
-      else{
+      else {
         let i = this.entities.findIndex((elem) => elem._id == entity._id);
-        if(i < 0) {
+        if (i < 0) {
           return;
         }
         this.loading = true;
@@ -245,9 +263,9 @@ export default {
       }
       this.isEditorShow = false;
     },
-    onDeleteConfirmSubmitClick: function() {
+    onDeleteConfirmSubmitClick: function () {
       let entity = this.entities[this.entityToDeleteIndex];
-      if(!entity) {
+      if (!entity) {
         return;
       }
       this.loading = true;
@@ -259,13 +277,13 @@ export default {
       })
           .catch(this.apiErrorHandler);
     },
-    onCreateBtnClick: function() {
+    onCreateBtnClick: function () {
       this.showEditor();
     },
-    onRowEditClick: function(entity) {
+    onRowEditClick: function (entity) {
       this.showEditor(entity);
     },
-    onRowDeleteClick: function(entity) {
+    onRowDeleteClick: function (entity) {
       let absouluteIndex = this.entities.findIndex((item) => {
         return item == entity;
       });
@@ -283,22 +301,27 @@ export default {
 .pages {
   display: inline-block;
 }
+
 .search-input-container {
   width: 400px;
   display: inline-block;
   float: right;
 }
+
 .search-input-container .uk-inline {
   width: calc(100% - 25px);
 }
+
 .methods-list-bottom {
   margin-top: 20px;
 }
+
 .uk-pagination {
   margin-bottom: 0px;
   vertical-align: middle;
   line-height: 40px;
 }
+
 .uk-table a:hover {
   text-decoration: none;
 }

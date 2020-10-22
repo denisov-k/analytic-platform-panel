@@ -12,7 +12,7 @@ export default new Router({
         {
             path: '/',
             name: 'home',
-            components: { 
+            components: {
                 header: Header,
                 aside: Aside,
                 default: () => import(/* webpackChunkName: "view-home" */ '@/views/Home.vue')
@@ -25,14 +25,14 @@ export default new Router({
                 icon: '',
                 visible: true,
                 authGroups: [],
-                authRedirect: { 'name': 'home' }
+                authRedirect: {'name': 'home'}
             },
             children: [],
-        },        
+        },
         {
             path: '/apps',
             name: 'apps',
-            components: { 
+            components: {
                 header: Header,
                 aside: Aside,
                 default: () => import(/* webpackChunkName: "view-apps" */ '@/views/Apps.vue')
@@ -44,8 +44,8 @@ export default new Router({
                 viewDescription: '',
                 icon: 'i/i-apps.svg',
                 visible: true,
-                authGroups: [  ],
-                authRedirect: { 'name': 'home' }
+                authGroups: [],
+                authRedirect: {'name': 'home'}
             },
             children: [],
         },
@@ -64,15 +64,15 @@ export default new Router({
                 viewDescription: '',
                 icon: 'i/i-users.svg',
                 visible: true,
-                authGroups: [  ],
-                authRedirect: { 'name': 'home' }
+                authGroups: [],
+                authRedirect: {'name': 'home'}
             },
             children: [],
         },
         {
             path: '/endpoints',
             name: 'endpoints',
-            components: { 
+            components: {
                 header: Header,
                 aside: Aside,
                 default: () => import(/* webpackChunkName: "view-api-methods" */ '@/views/Endpoints.vue')
@@ -84,8 +84,8 @@ export default new Router({
                 viewDescription: '',
                 icon: 'i/i-api.svg',
                 visible: true,
-                authGroups: [  ],
-                authRedirect: { 'name': 'home' }
+                authGroups: [],
+                authRedirect: {'name': 'home'}
             },
             children: [],
         },
@@ -104,8 +104,8 @@ export default new Router({
                 viewDescription: '',
                 icon: 'i/i-api.svg',
                 visible: true,
-                authGroups: [ ],
-                authRedirect: { 'name': 'home' }
+                authGroups: [],
+                authRedirect: {'name': 'home'}
             },
             children: [],
         }

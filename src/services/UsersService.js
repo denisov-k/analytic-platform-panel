@@ -16,6 +16,7 @@ export default class UsersService extends Service {
             groups: []
         }
     }
+
     /**
      * Возвращает юзера тек. сессии
      * @return {Promise}    then(data)
@@ -30,7 +31,7 @@ export default class UsersService extends Service {
                 return response.data;
         }
 
-        return this.transport.request(`auth/info`, {}, callback, 'get',{ withCredentials: true });
+        return this.transport.request(`auth/info`, {}, callback, 'get', {withCredentials: true});
         // @TODO вызов апи нужен здесь вместо заглушки
         /*return new Promise((resolve) => {
             let user = UsersService.userEntity();
@@ -38,6 +39,7 @@ export default class UsersService extends Service {
             resolve(user);
         });*/
     }
+
     /**
      * Возвращает список пользователей
      * @return {Promise}    then(data)
@@ -56,15 +58,16 @@ export default class UsersService extends Service {
             return users;
         });
     }
+
     /**
      * Создает/Обновляет юзера, в зависимости от наличия _id != ''
-     * @param {object} entity @see userEntity() 
+     * @param {object} entity @see userEntity()
      * @return {Promise}    then(data)
      * data ~ <id>
      */
     save(entity) {
-        let { _id, ...params } = entity;
-        if(_id != '') {
+        let {_id, ...params} = entity;
+        if (_id != '') {
             params.id = _id;
         }
 
@@ -83,9 +86,10 @@ export default class UsersService extends Service {
             }
         }, 'post');
     }
+
     /**
      * Удаляет пользователя по id
-     * @param {string} userId 
+     * @param {string} userId
      * @return {Promise}    then(data)
      */
     delete(userId) {
@@ -94,13 +98,14 @@ export default class UsersService extends Service {
         };
         return this.transport.request(`${scope}/delete`, params, this.defaultResponseHandler, 'post');
     }
+
     /**
      * Возвращает список ролей
      * @return {Promise}    then(data)
      */
     getGroupsList() {
         return new Promise((resolve) => {
-            resolve([ 'admin_tech', 'admin_business' ]);
+            resolve(['admin_tech', 'admin_business']);
         })
     }
 }

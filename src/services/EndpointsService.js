@@ -1,4 +1,5 @@
 import Service from './Service';
+import Config from "@/utils/Config";
 
 let scope = 'admin/endpoints';
 
@@ -18,6 +19,7 @@ export default class EndpointsService extends Service {
             filters: []
         }
     }
+
     static methodDimensionEntity() {
         return {
             id: '',
@@ -26,6 +28,7 @@ export default class EndpointsService extends Service {
             type: ''
         }
     }
+
     static methodMeasureEntity() {
         return {
             id: '',
@@ -34,6 +37,7 @@ export default class EndpointsService extends Service {
             type: ''
         }
     }
+
     static methodFilterEntity() {
         return {
             id: '',
@@ -42,11 +46,13 @@ export default class EndpointsService extends Service {
             type: ''
         }
     }
+
     /**
      * Возвращает список методов
      * @return {Promise}    вида then(data)
      * data ~ @see below
      */
+
     /*
     [
     {
@@ -68,26 +74,29 @@ export default class EndpointsService extends Service {
     getList() {
         let decorator = (elem) => {
             elem.type = (elem.id == null) ? 'expression' : 'id';
-            elem.expression = (elem.expression != null) ? elem.expression : ''; 
+            elem.expression = (elem.expression != null) ? elem.expression : '';
             elem.id = (elem.id != null) ? elem.id : '';
             return elem;
         };
         let filter = (elem) => elem != null;
-        let handler = (response) => {  
+        let handler = (response) => {
             response.data.forEach((elem) => {
+                elem.url = `${Config.data.api.http.baseURL}/api/${elem.path}`;
                 elem.dimensions = elem.dimensions.filter(filter).map(decorator);
                 elem.measures = elem.measures.filter(filter).map(decorator);
                 elem.filters = elem.filters.filter(filter).map(decorator);
-            });        
+            });
             return response.data;
         }
         return this.transport.request(`${scope}/list`, {}, handler);
     }
+
     /**
      * Возвращает список полей
      * @return {Promise}    then(data)
      * data ~ @see below
      */
+
     /*
     [ { id, name, lastReloadTime } ]
     */
@@ -96,10 +105,11 @@ export default class EndpointsService extends Service {
             return response.data;
         });
     }
+
     /**
      * Создает новый метод
      * @param {string} appId    id приложения @see AppsService.getList()
-     * @param {string} path     путь метода @example 'myapi/method' 
+     * @param {string} path     путь метода @example 'myapi/method'
      * @return {Promise}        вида then(data)
      * data ~ id приложения
      */
@@ -110,21 +120,22 @@ export default class EndpointsService extends Service {
         };
         return this.transport.request(`${scope}/create`, params, (response) => response.data.id, 'post')
     }
+
     /**
      * Сохраняет изменения в методе
-     * @param {object} methodEntity     сущность метода @see getList() 
+     * @param {object} methodEntity     сущность метода @see getList()
      * @return {Promise}                вида then(data)
      * data ~ 'ok'
      */
     save(methodEntity) {
-        let decorator = ({ id, name, expression, type }) => {
-            if(type === 'id') {
-                return { name, id };
-            }else{
-                return { name, expression };
+        let decorator = ({id, name, expression, type}) => {
+            if (type === 'id') {
+                return {name, id};
+            } else {
+                return {name, expression};
             }
         };
-        let { appID, _id, dimensions, measures, filters, ...params } = methodEntity;
+        let {appID, _id, dimensions, measures, filters, ...params} = methodEntity;
         params.id = _id;
         params.app = appID;
         params.dimensions = dimensions.map(decorator);
@@ -132,9 +143,10 @@ export default class EndpointsService extends Service {
         params.filters = filters.map(decorator);
         return this.transport.request(`${scope}/save`, params, this.defaultResponseHandler, 'post');
     }
+
     /**
      * Удаляет метод
-     * @param {string} methodId         id метода @see getList() 
+     * @param {string} methodId         id метода @see getList()
      * @return {Promise}                вида then(data)
      * data ~ 'ok'
      */

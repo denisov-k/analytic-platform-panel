@@ -12,14 +12,15 @@ export default class ServiceTransport {
     constructor(options) {
         this._requests = [];
         this.options = options;
-        this.axios = axios.create( this.options );        
+        this.axios = axios.create(this.options);
     }
+
     /**
      * Создает новый http request
-     * @param {string} url                  ссылка api метода @example '/user/edit' 
+     * @param {string} url                  ссылка api метода @example '/user/edit'
      * @param {object} params               params @default {}
-     * @param {function} responseHandler    custom response handler,который орабатывает response @default null @example (response) => { return response.data; } 
-     * @param {string} method               method @default 'get' 
+     * @param {function} responseHandler    custom response handler,который орабатывает response @default null @example (response) => { return response.data; }
+     * @param {string} method               method @default 'get'
      * @param {object} options              request options @default {} @see https://www.npmjs.com/package/axios
      * @return {Promise}                    promise, имеет параметр 'id' для отмены request @see this.cancelRequest()
      */
@@ -34,57 +35,61 @@ export default class ServiceTransport {
             withCredentials: true,
             ...options
         };
-        request[ method == 'get' ? 'params' : 'data' ] = params;
+        request[method == 'get' ? 'params' : 'data'] = params;
 
         let promise = new Promise((resolve, reject) => {
             this._registerRequest(requestId, source);
             this.axios.request(request)
-            .then((response) => {
+                .then((response) => {
 
-                this._unregisterRequest(requestId);
-                if (!this.isResponseCorrect(response))
-                    this.goToAuth();
-                else
-                    resolve(responseHandler ? responseHandler(response) : response);
-            })
-            .catch((error) => {
-                if(axios.isCancel(error)) {
-                    console.log('Request canceled', error);
-                }
-                this._unregisterRequest(requestId);
-                reject(error);
-            });
+                    this._unregisterRequest(requestId);
+                    if (!this.isResponseCorrect(response))
+                        this.goToAuth();
+                    else
+                        resolve(responseHandler ? responseHandler(response) : response);
+                })
+                .catch((error) => {
+                    if (axios.isCancel(error)) {
+                        console.log('Request canceled', error);
+                    }
+                    this._unregisterRequest(requestId);
+                    reject(error);
+                });
         });
         promise.id = requestId;
         return promise;
     }
+
     /**
      * Отменяет активный request по request.id
-     * @param {string} id   request id 
+     * @param {string} id   request id
      */
     cancelRequest(id) {
         let i = this._requests.findIndex(item => {
             return item.id == id;
         });
-        if(i < 0) {
+        if (i < 0) {
             return;
         }
         let item = this._requests[i];
         item.source.cancel('canceled');
         this._requests.splice(i, 1);
     }
+
     /**
      * Проверка Response
      */
     isResponseCorrect(response) {
         return typeof response.data === 'object' || response.data === 'OK'
     }
+
     /**
      * Редирект на аутентификацию
      */
     goToAuth() {
         document.location.href = Config.data.api.http.loginURL;
     }
+
     /**
      * Отменяет все активные request
      */
@@ -94,6 +99,7 @@ export default class ServiceTransport {
         });
         this._requests = [];
     }
+
     /**
      * Возвращает базовый url апи
      * @return {string}
@@ -101,6 +107,7 @@ export default class ServiceTransport {
     getBaseUrl() {
         return this.options.baseURL;
     }
+
     /**
      * @private
      */
@@ -109,6 +116,7 @@ export default class ServiceTransport {
             id, source
         });
     }
+
     /**
      * @private
      */

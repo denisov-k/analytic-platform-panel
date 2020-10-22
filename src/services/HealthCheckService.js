@@ -20,6 +20,7 @@ export default class HealthCheckService extends Service {
      * @return {Promise}    then(data)
      * data ~ @see below
      */
+
     /*
     [ { id, name, lastReloadTime } ]
     */
@@ -34,7 +35,7 @@ export default class HealthCheckService extends Service {
                     status('Engine address', data.qlikStatus.address),
                     status('Engine version', data.qlikStatus.engineVersion),
                     status('Engine status', data.qlikStatus.error ? data.qlikStatus.error : 'OK',
-                        data.qlikStatus.error ? statuses.DANGER : statuses.SUCCESS ),
+                        data.qlikStatus.error ? statuses.DANGER : statuses.SUCCESS),
                     //status('QRS status', data.qrsStatus),
                 ]
             };
@@ -56,6 +57,6 @@ export default class HealthCheckService extends Service {
             };
 
             return [qlikStatus, boxStatus, mongoStatus];
-        }, 'get', { withCredentials: true })
+        }, 'get', {withCredentials: true})
     }
 }

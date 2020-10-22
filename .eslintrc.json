@@ -10,5 +10,7 @@
     "no-console": "off",
     "no-unused-vars": "off"
   },
-  "extends": ["plugin:vue/essential"]
+  "extends": [
+    "plugin:vue/essential"
+  ]
 }

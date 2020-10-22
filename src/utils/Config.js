@@ -8,12 +8,12 @@ let Config = {
     data: null,
     rev: 'n/a',
     init() {
-        if(!p) {
+        if (!p) {
             p = new Promise((resolve, reject) => {
-                return Promise.all([ this._loadEnv(ENV_CURRENT), this._loadRev() ]).then(([ envRespose, revResponse ]) => {
+                return Promise.all([this._loadEnv(ENV_CURRENT), this._loadRev()]).then(([envRespose, revResponse]) => {
                     if (typeof envRespose.data != "object")
                         return reject('Bad config file');
-                    this.data = { ...envRespose.data };
+                    this.data = {...envRespose.data};
                     this.rev = revResponse.data.rev;
                     resolve(this.data);
                 });

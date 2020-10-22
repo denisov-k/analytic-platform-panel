@@ -1,11 +1,11 @@
 module.exports = {
     filenameHashing: true,
-    publicPath: '',    
+    publicPath: '',
     chainWebpack: config => {
     },
     devServer: {
         watchOptions: {
             poll: true
-        } 
+        }
     },
 };

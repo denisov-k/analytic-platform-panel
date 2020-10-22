@@ -4,13 +4,13 @@ import UsersService from './../services/UsersService';
 import Config from "../utils/Config";
 
 const Session = {
-    state: { 
+    state: {
         user: {},
         status: '',
     },
-    mutations: { 
+    mutations: {
         [Mutations.SET_USER](state, user) {
-            state.user = { ...state.user, ...user };
+            state.user = {...state.user, ...user};
         },
         [Mutations.AUTH_ERROR](state, err) {
             state.status = 'error'

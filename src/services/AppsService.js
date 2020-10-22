@@ -10,7 +10,7 @@ export default class AppsService extends Service {
      * data ~ <id>
      */
     upload(request) {
-        let { file, name } = request;
+        let {file, name} = request;
 
         let params = {
             "app-name": name,
@@ -30,11 +30,13 @@ export default class AppsService extends Service {
             },
         });
     }
+
     /**
      * Возвращает список приложений
      * @return {Promise}    then(data)
      * data ~ @see below
      */
+
     /*
     [ { id, name, lastReloadTime } ]
     */
@@ -50,11 +52,13 @@ export default class AppsService extends Service {
             });
         });
     }
+
     /**
      * Начинает процесс перезагрузки приложения
      * @return {Promise}    then(data)
      * data ~ @see below
      */
+
     /*
     [ { id, name, lastReloadTime } ]
     */
@@ -68,11 +72,13 @@ export default class AppsService extends Service {
             return response.data
         }, 'post');
     }
+
     /**
      * Удаляет приложения
      * @return {Promise}    then(data)
      * data ~ @see below
      */
+
     /*
     [ { id, name, lastReloadTime } ]
     */
