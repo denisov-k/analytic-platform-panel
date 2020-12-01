@@ -16,8 +16,6 @@
           </div>
         </div>
       </div>
-
-
       <div class="navigation-button" @click="onNavigationButtonClick">
         <img src="@/assets/images/menu-icon.png">
       </div>

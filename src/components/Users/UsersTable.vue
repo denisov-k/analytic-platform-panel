@@ -9,7 +9,7 @@
       </h2>
       <p class="uk-text-muted uk-margin-remove">{{ $route.meta.viewDescription }}</p>
     </div>
-    <div class="uk-overflow-auto" v-if="entitesFiltered.length">
+    <div class="uk-overflow-auto" v-if="entitiesFiltered.length">
       <table class="uk-table uk-table-hover uk-table-divider uk-text-nowrap">
         <thead>
         <tr>
@@ -60,7 +60,7 @@
 
     <div class="methods-list-bottom">
       <div class="pages">
-        <vk-pagination :page.sync="page" :perPage="perPage" :total="entitesFiltered.length">
+        <vk-pagination :page.sync="page" :perPage="perPage" :total="entitiesFiltered.length">
           <vk-pagination-page-prev></vk-pagination-page-prev>
           <vk-pagination-pages></vk-pagination-pages>
           <vk-pagination-page-next></vk-pagination-page-next>
@@ -141,13 +141,13 @@ export default {
     }
   },
   computed: {
-    entitesFiltered: function () {
+    entitiesFiltered: function () {
       let q = this.entitiesSearchQuery;
       return q.length ? this.entities.filter((item) => item.email && item.email.indexOf(q) >= 0 || item.username && item.username.indexOf(q) >= 0) : this.entities;
     },
     pageEntities: function () {
       let s = (this.page - 1) * this.perPage;
-      return this.entitesFiltered.slice(s, s + this.perPage);
+      return this.entitiesFiltered.slice(s, s + this.perPage);
     },
     entityToDeleteUsername: function () {
       if (!this.entityToDeleteId) {

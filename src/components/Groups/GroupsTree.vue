@@ -1,6 +1,6 @@
 <template>
   <div class="group-tree">
-    <div class="group" v-for="(group, groupIndex) in groupsTree" v-bind:key="groupIndex">
+    <div class="group" v-for="(group, groupIndex) in pageEntities" v-bind:key="groupIndex">
       <v-collapse-wrapper v-on:beforeToggle="beforeToggle">
 
         <div class="header" v-collapse-toggle>
@@ -78,6 +78,15 @@
         </div>
       </v-collapse-wrapper>
     </div>
+    <div class="uk=float-left">
+      <div class="pages">
+        <vk-pagination :page.sync="page" :perPage="perPage" :total="entitiesFiltered.length">
+          <vk-pagination-page-prev></vk-pagination-page-prev>
+          <vk-pagination-pages></vk-pagination-pages>
+          <vk-pagination-page-next></vk-pagination-page-next>
+        </vk-pagination>
+      </div>
+    </div>
     <div class="uk-float-right">
       <vk-button type="primary" @click="addGroup">Добавить группу</vk-button>
     </div>
@@ -95,19 +104,32 @@ export default {
   components: {},
   data() {
     return {
-      groupsTree: [],
-      groupsTreeOriginal: []
+      entities: [],
+      entitiesSort: {},
+      entitiesSearchQuery: '',
+      entitiesSearchDelay: 250,
+      page: 1,
+      perPage: 10,
     }
   },
   mounted() {
     this.getGroupsList()
   },
-  computed: {},
+  computed: {
+    entitiesFiltered: function () {
+      let q = this.entitiesSearchQuery;
+      return q.length ? this.entities.filter((item) => item.email && item.email.indexOf(q) >= 0 || item.username && item.username.indexOf(q) >= 0) : this.entities;
+    },
+    pageEntities: function () {
+      let s = (this.page - 1) * this.perPage;
+      return this.entitiesFiltered.slice(s, s + this.perPage);
+    }
+  },
   methods: {
     getGroupsList() {
 
       groupsManager.getList().then(list => {
-        this.groupsTree = list.map(item => {
+        this.entities = list.map(item => {
           return {
             ...item,
             newName: item.name,
@@ -127,7 +149,7 @@ export default {
 
     deleteGroup(group) {
       groupsManager.delete(group._id).then(() => {
-        this.groupsTree.splice(this.groupsTree.findIndex(item => item._id === group._id), 1)
+        this.entities.splice(this.entities.findIndex(item => item._id === group._id), 1)
       })
     },
     deleteFilter(group, filterIndex) {
@@ -182,7 +204,7 @@ export default {
 
       groupsManager.create(name).then(groupId => {
 
-        let node = {
+        let group = {
           _id: groupId,
           id: groupId,
           name: name,
@@ -190,7 +212,9 @@ export default {
           filters: []
         };
 
-        this.groupsTree.push(node);
+        this.entities.push(group);
+
+        this.page = Math.ceil(this.entitiesFiltered.length / this.perPage);
       })
     },
     beforeToggle($el) {
