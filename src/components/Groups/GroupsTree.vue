@@ -1,84 +1,86 @@
 <template>
   <div class="group-tree">
-    <div class="group" v-for="(group, groupIndex) in pageEntities" v-bind:key="groupIndex">
-      <v-collapse-wrapper v-on:beforeToggle="beforeToggle">
+    <div class="groups-list">
+      <div class="group" v-for="(group, groupIndex) in pageEntities" v-bind:key="groupIndex">
+        <v-collapse-wrapper v-on:beforeToggle="beforeToggle">
 
-        <div class="header" v-collapse-toggle>
-          <vk-icons-users></vk-icons-users>
+          <div class="header" v-collapse-toggle>
+            <vk-icons-users></vk-icons-users>
 
-          <div class="name">
-            <input class="input-value" v-model="group.newName" placeholder="Название группы">
-            <div class="accept-changes-button" v-show="group.newName !== group.name"
-                 v-on:click="saveValue(group, group)">
-              <vk-icons-check></vk-icons-check>
-            </div>
-          </div>
-          <span class="sub-title">Группа ({{ group.filters.length }})</span>
-
-          <div class="manage-buttons">
-            <div class="add-node" v-on:click.stop.prevent="addFilter(group)">
-              <vk-icons-plus-circle></vk-icons-plus-circle>
-            </div>
-            <div class="remove-node" v-on:click.stop.prevent="deleteGroup(group)">
-              <vk-icons-close></vk-icons-close>
-            </div>
-          </div>
-        </div>
-
-        <div class="my-content" v-collapse-content>
-          <span v-if="!group.filters.length">Список фильтров пуст</span>
-
-          <div class="filter" v-for="(filter, filterIndex) in group.filters" v-bind:key="filterIndex">
-
-            <v-collapse-wrapper v-on:beforeToggle="beforeToggle">
-              <div class="header" v-collapse-toggle>
-                <vk-icons-thumbnails></vk-icons-thumbnails>
-
-                <div class="name">
-                  <input class="input-value" v-model="filter.newName" placeholder="Поле в Qlik">
-                  <div class="accept-changes-button" v-show="filter.newName !== filter.name"
-                       v-on:click="saveValue(filter, group)">
-                    <vk-icons-check></vk-icons-check>
-                  </div>
-                </div>
-                <span class="sub-title">Фильтр ({{ filter.values.length }})</span>
-                <div class="manage-buttons">
-                  <div class="add-node" v-on:click.stop.prevent="addValue(group, filterIndex)">
-                    <vk-icons-plus-circle></vk-icons-plus-circle>
-                  </div>
-                  <div class="remove-node" v-on:click.stop.prevent="deleteFilter(group, filterIndex)">
-                    <vk-icons-close></vk-icons-close>
-                  </div>
-                </div>
+            <div class="name">
+              <input class="input-value" v-model="group.newName" placeholder="Название группы">
+              <div class="accept-changes-button" v-show="group.newName !== group.name"
+                   v-on:click="saveValue(group, group)">
+                <vk-icons-check></vk-icons-check>
               </div>
+            </div>
+            <span class="sub-title">Группа ({{ group.filters.length }})</span>
 
-              <div class="my-content" v-collapse-content>
-                <div class="value" v-for="(value, valueIndex) in filter.values" v-bind:key="valueIndex">
-                  <div class="header">
-                    <vk-icons-hashtag></vk-icons-hashtag>
-                    <div class="name">
-                      <input class="input-value" v-model="value.newName" placeholder="Значение фильтра">
-                      <div class="accept-changes-button" v-show="value.newName !== value.name"
-                           v-on:click="saveValue(value, group)">
-                        <vk-icons-check></vk-icons-check>
-                      </div>
+            <div class="manage-buttons">
+              <div class="add-node" v-on:click.stop.prevent="addFilter(group)">
+                <vk-icons-plus-circle></vk-icons-plus-circle>
+              </div>
+              <div class="remove-node" v-on:click.stop.prevent="deleteGroup(group)">
+                <vk-icons-close></vk-icons-close>
+              </div>
+            </div>
+          </div>
+
+          <div class="my-content" v-collapse-content>
+            <span v-if="!group.filters.length">Список фильтров пуст</span>
+
+            <div class="filter" v-for="(filter, filterIndex) in group.filters" v-bind:key="filterIndex">
+
+              <v-collapse-wrapper v-on:beforeToggle="beforeToggle">
+                <div class="header" v-collapse-toggle>
+                  <vk-icons-thumbnails></vk-icons-thumbnails>
+
+                  <div class="name">
+                    <input class="input-value" v-model="filter.newName" placeholder="Поле в Qlik">
+                    <div class="accept-changes-button" v-show="filter.newName !== filter.name"
+                         v-on:click="saveValue(filter, group)">
+                      <vk-icons-check></vk-icons-check>
                     </div>
-                    <span class="sub-title">Значение</span>
-                    <div class="manage-buttons">
-                      <div class="remove-node" v-on:click.stop.prevent="deleteValue(group, filterIndex, valueIndex)">
-                        <vk-icons-close></vk-icons-close>
-                      </div>
+                  </div>
+                  <span class="sub-title">Фильтр ({{ filter.values.length }})</span>
+                  <div class="manage-buttons">
+                    <div class="add-node" v-on:click.stop.prevent="addValue(group, filterIndex)">
+                      <vk-icons-plus-circle></vk-icons-plus-circle>
+                    </div>
+                    <div class="remove-node" v-on:click.stop.prevent="deleteFilter(group, filterIndex)">
+                      <vk-icons-close></vk-icons-close>
                     </div>
                   </div>
                 </div>
-              </div>
-            </v-collapse-wrapper>
 
+                <div class="my-content" v-collapse-content>
+                  <div class="value" v-for="(value, valueIndex) in filter.values" v-bind:key="valueIndex">
+                    <div class="header">
+                      <vk-icons-hashtag></vk-icons-hashtag>
+                      <div class="name">
+                        <input class="input-value" v-model="value.newName" placeholder="Значение фильтра">
+                        <div class="accept-changes-button" v-show="value.newName !== value.name"
+                             v-on:click="saveValue(value, group)">
+                          <vk-icons-check></vk-icons-check>
+                        </div>
+                      </div>
+                      <span class="sub-title">Значение</span>
+                      <div class="manage-buttons">
+                        <div class="remove-node" v-on:click.stop.prevent="deleteValue(group, filterIndex, valueIndex)">
+                          <vk-icons-close></vk-icons-close>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </v-collapse-wrapper>
+
+            </div>
           </div>
-        </div>
-      </v-collapse-wrapper>
+        </v-collapse-wrapper>
+      </div>
     </div>
-    <div class="uk=float-left">
+    <div class="entities-control">
       <div class="pages">
         <vk-pagination :page.sync="page" :perPage="perPage" :total="entitiesFiltered.length">
           <vk-pagination-page-prev></vk-pagination-page-prev>
@@ -86,11 +88,10 @@
           <vk-pagination-page-next></vk-pagination-page-next>
         </vk-pagination>
       </div>
+      <div class="uk-float-right">
+        <vk-button type="primary" @click="addGroup">Добавить группу</vk-button>
+      </div>
     </div>
-    <div class="uk-float-right">
-      <vk-button type="primary" @click="addGroup">Добавить группу</vk-button>
-    </div>
-    <div class=""></div>
   </div>
 </template>
 
@@ -226,6 +227,14 @@ export default {
 </script>
 
 <style lang="less" rel="stylesheet/less">
+
+.pages {
+  display: inline-block;
+}
+
+.uk-pagination {
+  margin: auto;
+}
 
 .name {
   position: relative;
