@@ -314,7 +314,7 @@ div:hover > .manage-buttons {
   border: 1px solid #bfbfbf;
   padding: 4px;
   border-radius: 4px;
-  width: 350px;
+  width: 300px;
 }
 
 .sub-title {
