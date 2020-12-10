@@ -22,8 +22,14 @@ const Session = {
 
                 let service = new UsersService();
                 service.getCurrent().then((user) => {
-                    context.commit(Mutations.SET_USER, user);
-                    resolve();
+
+                    if (user.isAdmin) {
+                        context.commit(Mutations.SET_USER, user);
+                        resolve();
+                    } else {
+                        document.body.innerHTML = 'Access denied';
+                    }
+
                 }).catch((err) => {
                     const authURL = Config.data.api.http.loginURL + '?redirect=' + encodeURIComponent(window.location.href);
 
