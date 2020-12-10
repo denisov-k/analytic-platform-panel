@@ -12,6 +12,7 @@ export default class EndpointsService extends Service {
             appID: '',
             rowLimit: 10000,
             enabled: true,
+            anonymousAccess: false,
             suppressZero: false,
             sectionAccess: false,
             dimensions: [],

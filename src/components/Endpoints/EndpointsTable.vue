@@ -16,9 +16,10 @@
         <tr>
           <th>Путь</th>
           <th>Приложение</th>
-          <th>D/M</th>
+          <th title="Кол-во измерений и мер">И/М</th>
           <th>Макс. кол-во записей</th>
           <th>Доступ метода</th>
+          <th>Анонимный доступ</th>
           <th>Ограничение нулей</th>
           <th>Section access</th>
           <th class="uk-table-shrink"></th>
@@ -34,6 +35,9 @@
           <td>{{ item.rowLimit }}</td>
           <td>
             <div class="icon" v-if="item.enabled"><i class="mdi mdi-check"></i></div>
+          </td>
+          <td>
+            <div class="icon" v-if="item.anonymousAccess"><i class="mdi mdi-check"></i></div>
           </td>
           <td>
             <div class="icon" v-if="item.suppressZero"><i class="mdi mdi-check"></i></div>

@@ -200,6 +200,14 @@
     <div class="uk-margin-small">
       <label>
                 <span class="uk-checkbox-switch uk-margin-small-right">
+                    <input type="checkbox" v-model="entity.anonymousAccess"><span></span>
+                </span>
+        <span class="uk-form-label">Анонимный доступ</span>
+      </label>
+    </div>
+    <div class="uk-margin-small">
+      <label>
+                <span class="uk-checkbox-switch uk-margin-small-right">
                     <input type="checkbox" v-model="entity.enabled"><span></span>
                 </span>
         <span class="uk-form-label">Доступ метода</span>
