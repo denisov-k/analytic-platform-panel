@@ -1,7 +1,9 @@
 <template>
   <at :members="hints" :ats="initSymbols">
-    <div class="expression-input uk-input uk-form-small" type="text" placeholder="Expression"
-         contenteditable @blur="onChangeExpression">{{ value }}
+    <div class="expression-input uk-input uk-form-small" type="text"
+         placeholder="Expression"
+         contenteditable @blur="onChangeExpression">
+      <div v-text="value"></div>
     </div>
   </at>
 </template>

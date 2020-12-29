@@ -1,6 +1,6 @@
 {
   "name": "gost-analytic-platform-panel",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -13,6 +13,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.13.2",
     "lodash": "^4.17.20",
+    "textarea-caret": "^3.1.0",
     "uikit": "^3.5.8",
     "vue": "^2.6.12",
     "vue-at": "^2.3.2",

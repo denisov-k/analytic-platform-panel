@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <v-collapse-group :onlyOneActive="false">
+    <v-collapse-group :onlyOneActive="false" style="overflow: unset;">
       <v-collapse-wrapper class="uk-margin-small" :active="dimensionCollapseActive"
                           @onStatusChange="(data) => dimensionCollapseActive = data.status">
         <div>
@@ -84,7 +84,7 @@
         </div>
       </v-collapse-wrapper>
     </v-collapse-group>
-    <v-collapse-group :onlyOneActive="false">
+    <v-collapse-group :onlyOneActive="false" style="overflow: unset;">
       <v-collapse-wrapper class="uk-margin-small" :active="measureCollapseActive"
                           @onStatusChange="(data) => measureCollapseActive = data.status">
         <div>
