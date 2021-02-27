@@ -41,9 +41,10 @@
       <label class="uk-form-label">Groups</label>
       <div class="uk-form-controls">
         <div class="uk-inline uk-display-block">
-          <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.groups.$error }"
+          <multiselect class="groups-select" :class="{ 'uk-form-danger': $v.entity.groups.$error }"
                        v-model="$v.entity.groups.$model" :multiple="true"
-                       :options="groups" placeholder="Выберите группы" label="name" :searchable="false" track-by="_id">
+                       :options="groups" placeholder="Выберите группы" label="name" :searchable="true" track-by="_id" :closeOnSelect=false>
+            <template slot="option" slot-scope="props"><span class="group-item">{{ props.option.name }}</span></template>
             <template slot="noOptions">Список пуст</template>
             <template slot="noResult">Ничего не найдено</template>
           </multiselect>
@@ -130,3 +131,26 @@ export default {
   }
 }
 </script>
+<style>
+.groups-select {
+  width: 100%;
+  min-height: 40px;
+  box-sizing: border-box;
+  outline: none;
+
+  background: #f4f7fb url("data:image/svg+xml;charset=utf-8,%3Csvg width='24' height='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%234A4A4A' d='M12 1L9 6h6zM12 13L9 8h6z'/%3E%3C/svg%3E") no-repeat 100% 50%;
+  vertical-align: middle;
+  display: inline-block;
+  padding: 8px 10px;
+  line-height: 25px;
+}
+.groups-select .multiselect__input {
+  outline: none;
+}
+.groups-select .multiselect__content-wrapper {
+  border: 1px solid #dadada;
+}
+.group-item {
+  line-height: 40px;
+}
+</style>

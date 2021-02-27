@@ -112,6 +112,7 @@ import _ from 'lodash';
 import UsersService from '@/services/UsersService';
 import UserEditor from '@/components/Users/UserEditor';
 import ApiErrorModal from '@/components/ApiErrorModal';
+import GroupsService from "@/services/GroupsService";
 
 const SORT_ASC = 'asc';
 const SORT_DESC = 'desc';
@@ -158,17 +159,24 @@ export default {
     }
   },
   created() {
-    this.service = new UsersService();
+    this.userService = new UsersService();
+    this.groupsService = new GroupsService();
+
     this.loading = true;
-    Promise.all([this.service.getGroupsList(), this.service.getList()]).then(([groups, users]) => {
+
+    const requests = [this.groupsService.getList(), this.userService.getList()];
+
+    Promise.all(requests).then(([groups, users]) => {
+
       this.groups = groups;
       this.entities = users;
       this.loading = false;
-    })
-        .catch(this.apiErrorHandler);
+
+    }).catch(this.apiErrorHandler);
   },
   beforeDestroy() {
-    this.service.transport.cancelAllRequests();
+    this.userService.transport.cancelAllRequests();
+    this.groupsService.transport.cancelAllRequests();
   },
   methods: {
     toggleSort: function (field) {

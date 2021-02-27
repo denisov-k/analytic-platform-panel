@@ -103,9 +103,9 @@ export default class UsersService extends Service {
      * Возвращает список ролей
      * @return {Promise}    then(data)
      */
-    getGroupsList() {
+    /*getGroupsList() {
         return new Promise((resolve) => {
             resolve(['admin_tech', 'admin_business']);
         })
-    }
+    }*/
 }
