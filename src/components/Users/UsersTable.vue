@@ -219,7 +219,7 @@ export default {
       }
       let entity = this.$refs.editor.entity;
       this.loading = true;
-      this.service.save(entity).then((resEntity) => {
+      this.userService.save(entity).then((resEntity) => {
         if (entity._id == '') {
           this.$set(this.entities, this.entities.length, resEntity);
         } else {
@@ -235,7 +235,7 @@ export default {
     },
     onDeleteConfirmSubmitClick: function () {
       this.loading = true;
-      this.service.delete(this.entityToDeleteId).then(() => {
+      this.userService.delete(this.entityToDeleteId).then(() => {
         this.entities = this.entities.filter((elem) => elem._id != this.entityToDeleteId);
         this.entityToDeleteId = null;
         this.isDeleteConfirmShow = false;
