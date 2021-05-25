@@ -34,12 +34,21 @@ export default {
   }
 }
 </script>
-<style src="@/assets/css/kill_real_patch.css"></style>
 <style>
+@font-face {
+  font-family: "PT Sans Narrow";
+  src: url("assets/fonts/PTSansNarrow-Bold.ttf") format("ttf");
+}
+#app {
+  background: #f7f7f7;
+}
+#app-content {
+  position: inherit;
+}
+
 #body-grid {
   background: #f7f7f7 !important;
 }
-
 #body-grid > div:first-child {
   position: fixed !important;
   z-index: 1;

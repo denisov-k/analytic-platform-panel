@@ -278,7 +278,6 @@ export default {
         minLength: minLength(1)
       },
       rowLimit: {
-        required,
         numeric,
         minValue: minValue(0)
       },

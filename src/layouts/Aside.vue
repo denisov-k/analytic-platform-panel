@@ -1,5 +1,5 @@
 <template>
-  <div class="uk-width-medium uk-position-relative uk-height-1-1">
+  <div class="sidebar uk-position-relative uk-height-1-1">
     <div class="layouts--aside uk-width-medium uk-height-1-1">
       <div class="uk-flex uk-flex-column uk-height-1-1">
         <div class="menu-holder">
@@ -40,6 +40,10 @@ export default {
 }
 </script>
 <style>
+.sidebar {
+  width: 230px;
+}
+
 .version-info {
   padding: 0px 10px;
   color: #babfc3;

@@ -10,7 +10,7 @@
   "dependencies": {
     "@vuikit/icons": "^0.8.1",
     "@vuikit/theme": "^0.8.1",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "element-ui": "^2.13.2",
     "lodash": "^4.17.20",
     "textarea-caret": "^3.1.0",
@@ -19,7 +19,7 @@
     "vue-at": "^2.3.2",
     "vue-directive-tooltip": "^1.6.3",
     "vue-multiselect": "^2.1.5",
-    "vue-router": "^3.4.5",
+    "vue-router": "^3.5.1",
     "vue-tree-list": "^1.4.6",
     "vue2-collapse": "^1.0.15",
     "vuelidate": "^0.7.5",
