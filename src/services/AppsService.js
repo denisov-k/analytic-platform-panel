@@ -68,7 +68,7 @@ export default class AppsService extends Service {
             appID: appId
         };
 
-        return this.transport.request(`${scope}/doReload`, params, (response) => {
+        return this.transport.request(`${scope}/reload`, params, (response) => {
             return response.data
         }, 'post');
     }
@@ -93,4 +93,13 @@ export default class AppsService extends Service {
         }, 'post');
     }
 
+    getScript(appId) {
+        let params = {
+            appId: appId
+        };
+
+        return this.transport.request(`${scope}/script`, params, (response) => {
+            return response.data
+        }, 'get');
+    }
 }

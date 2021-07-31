@@ -50,6 +50,24 @@ export default new Router({
             children: [],
         },
         {
+            path: '/apps/script_editor',
+            name: 'script_editor',
+            components: {
+                default: () => import(/* webpackChunkName: "view-api-methods" */ '@/views/ScriptEditor.vue')
+            },
+            meta: {
+                title: 'Редактор загрузочного скрипта',
+                description: '',
+                viewTitle: 'Редактор загрузочного скрипта',
+                viewDescription: '',
+                icon: 'i/i-api.svg',
+                visible: false,
+                authGroups: [],
+                authRedirect: {'name': 'home'}
+            },
+            children: [],
+        },
+        {
             path: '/users',
             name: 'users',
             components: {

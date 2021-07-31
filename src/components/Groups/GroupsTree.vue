@@ -101,7 +101,7 @@ import GroupsService from "../../services/GroupsService";
 const groupsManager = new GroupsService();
 
 export default {
-  name: "TreeExample",
+  name: "GroupsTree",
   components: {},
   data() {
     return {

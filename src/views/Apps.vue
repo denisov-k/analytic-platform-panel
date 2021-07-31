@@ -50,6 +50,7 @@
                 </button>
                 <vk-dropdown class="uk-border-rounded" v-if="!isActionConfirmShow()">
                   <ul class="uk-nav uk-dropdown-nav">
+                    <li><a @click="onRowEditScriptClick(item)">Редактировать скрипт</a></li>
                     <li><a @click="onRowReloadClick(item)">Перезагрузить</a></li>
                     <li><a @click="onRowDownloadClick(item)">Скачать</a></li>
                     <li><a @click="onRowDeleteClick(item)">Удалить</a></li>
@@ -183,6 +184,14 @@ export default {
       return action ? action === this.inProgressAction : !!this.inProgressAction;
     },
 
+    onRowEditScriptClick: function (entity) {
+      this.inProgressAction = 'script_edit';
+      this.entityForAction = entity;
+
+      let routeData = this.$router.resolve({name: 'script_editor', query: { appId: entity.id }});
+
+      window.open(routeData.href, '_blank');
+    },
     onRowDeleteClick: function (entity) {
       this.inProgressAction = 'delete';
       this.entitiesToDeleteId = [entity.id];
