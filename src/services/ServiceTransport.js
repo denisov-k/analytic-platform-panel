@@ -41,12 +41,9 @@ export default class ServiceTransport {
             this._registerRequest(requestId, source);
             this.axios.request(request)
                 .then((response) => {
-
                     this._unregisterRequest(requestId);
-                    if (!this.isResponseCorrect(response))
-                        this.goToAuth();
-                    else
-                        resolve(responseHandler ? responseHandler(response) : response);
+
+                    resolve(responseHandler ? responseHandler(response) : response);
                 })
                 .catch((error) => {
                     if (axios.isCancel(error)) {

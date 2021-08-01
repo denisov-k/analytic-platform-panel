@@ -102,4 +102,15 @@ export default class AppsService extends Service {
             return response.data
         }, 'get');
     }
+
+    setScript(appId, script) {
+        let params = {
+            appId,
+            script
+        };
+
+        return this.transport.request(`${scope}/script`, params, (response) => {
+            return response.data
+        }, 'post');
+    }
 }

@@ -17,55 +17,11 @@
           <p class="uk-text-muted uk-margin-remove">{{ $route.meta.viewDescription }}</p>
         </div>
 
-
-        <div class="uk-overflow-auto" v-if="entitesFiltered.length">
-          <table class="uk-table uk-table-hover uk-table-divider">
-            <thead>
-            <tr>
-              <th class="uk-width-1-3">
-                                  <span class="uk-link" @click="toggleSort('name')">Название<div class="icon">
-                                    <i class="mdi"
-                                       :class="{ 'mdi-chevron-up': entitiesSort['name'] === 'asc', 'mdi-chevron-down': entitiesSort['name'] === 'desc', 'mdi-sort-variant': entitiesSort['name'] == null }"></i>
-                                  </div></span>
-              </th>
-              <th>
-                                  <span class="uk-link" @click="toggleSort('stream')">Stream<div class="icon">
-                                    <i class="mdi"
-                                       :class="{ 'mdi-chevron-up': entitiesSort['stream'] === 'asc', 'mdi-chevron-down': entitiesSort['stream'] === 'desc', 'mdi-sort-variant': entitiesSort['stream'] == null }"></i>
-                                  </div></span>
-              </th>
-              <th class="uk-width-1-3">ID</th>
-              <th class="uk-table-shrink uk-text-nowrap">Время перезагрузки</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="item in pageEntities" :key="item.id">
-              <td>{{ item.name }}</td>
-              <td>{{ item.stream }}</td>
-              <td>{{ item.id }}</td>
-              <td class="uk-text-nowrap">{{ item.lastReloadTime }}</td>
-              <td>
-                <button class="uk-button uk-button-none" @mouseover="dropdownShowEntityId = item._id">
-                  <div class="icon"><i class="mdi mdi-dots-vertical"></i></div>
-                </button>
-                <vk-dropdown class="uk-border-rounded" v-if="!isActionConfirmShow()">
-                  <ul class="uk-nav uk-dropdown-nav">
-                    <li><a @click="onRowEditScriptClick(item)">Редактировать скрипт</a></li>
-                    <li><a @click="onRowReloadClick(item)">Перезагрузить</a></li>
-                    <li><a @click="onRowDownloadClick(item)">Скачать</a></li>
-                    <li><a @click="onRowDeleteClick(item)">Удалить</a></li>
-                  </ul>
-                </vk-dropdown>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="uk-text-muted" v-else>Нет записей</div>
+        <apps-list v-if="entities.length" :apps="pageEntities" :actions="appActions"></apps-list>
 
         <div class="apps-list-bottom">
           <div class="pages">
-            <vk-pagination :page.sync="page" :perPage="perPage" :total="entitesFiltered.length">
+            <vk-pagination :page.sync="page" :perPage="perPage" :total="entitiesFiltered.length">
               <vk-pagination-page-prev></vk-pagination-page-prev>
               <vk-pagination-pages></vk-pagination-pages>
               <vk-pagination-page-next></vk-pagination-page-next>
@@ -106,6 +62,15 @@
           </div>
         </vk-modal>
 
+        <vk-modal center :overflow-auto="false" size="large" v-show="isActionConfirmShow('script_edit')">
+          <script-editor :app="entityForAction" ref="script_editor"></script-editor>
+          <div class="uk-text-right" slot="footer">
+            <vk-spinner class="uk-margin-right" v-if="loading"></vk-spinner>
+            <vk-button class="uk-margin-right" @click="cancelAction">Отмена</vk-button>
+            <vk-button type="primary" @click="onEditConfirmSubmitClick">Сохранить</vk-button>
+          </div>
+        </vk-modal>
+
         <api-error-modal :show="isApiErrorShow" :error="apiError"></api-error-modal>
       </vk-card>
     </section>
@@ -114,13 +79,16 @@
 <script>
 import AppsService from '../services/AppsService';
 import ApiErrorModal from '../components/ApiErrorModal';
+import AppsList from '../components/Apps/List';
+import ScriptEditor from "@/components/Apps/ScriptEditor";
 
 const SORT_ASC = 'asc';
 const SORT_DESC = 'desc';
 
 export default {
   components: {
-    ApiErrorModal
+    ScriptEditor,
+    ApiErrorModal, AppsList
   },
   data() {
     return {
@@ -128,44 +96,46 @@ export default {
       inProgressAction: '',
       apiError: '',
       entities: [],
-      entitiesSort: {},
       entitiesSearchQuery: '',
       entitiesSearchDelay: 250,
       entityForAction: {},
       files: [],
       page: 1,
       perPage: 10,
+      appActions: [
+        { label: "Редактировать скрипт", func: this.onRowEditScriptClick },
+        { label: "Перезагрузить", func: this.onRowReloadClick },
+        { label: "Скачать", func: this.onRowDownloadClick },
+        { label: "Удалить", func: this.onRowDeleteClick },
+      ]
     }
   },
   computed: {
-    entitesFiltered: function () {
+    entitiesFiltered: function () {
       let q = this.entitiesSearchQuery;
       return q.length ? this.entities.filter((item) => item.name && item.name.indexOf(q) >= 0 || item.id && item.id.indexOf(q) >= 0) : this.entities;
     },
     pageEntities: function () {
-      if (this.entitesFiltered.length / this.perPage < this.page)
-        this.setPage(Math.ceil(this.entitesFiltered.length / this.perPage));
+      if (this.entitiesFiltered.length / this.perPage < this.page)
+        this.setPage(Math.ceil(this.entitiesFiltered.length / this.perPage));
 
       let s = (this.page - 1) * this.perPage;
 
-      return this.entitesFiltered.slice(s, s + this.perPage);
+      return this.entitiesFiltered.slice(s, s + this.perPage);
     }
   },
   mounted() {
-    /*const fileInput = document.getElementById('fileinput');
 
-    fileInput.onchange = function(file) {
-        console.log(fileInput.files)
-    };*/
   },
   created() {
     this.service = new AppsService();
+
     this.loading = true;
+
     this.service.getList().then((apps) => {
       this.entities = apps;
       this.loading = false;
-    })
-        .catch(this.apiErrorHandler);
+    }).catch(this.apiErrorHandler);
 
   },
   beforeDestroy() {
@@ -187,10 +157,6 @@ export default {
     onRowEditScriptClick: function (entity) {
       this.inProgressAction = 'script_edit';
       this.entityForAction = entity;
-
-      let routeData = this.$router.resolve({name: 'script_editor', query: { appId: entity.id }});
-
-      window.open(routeData.href, '_blank');
     },
     onRowDeleteClick: function (entity) {
       this.inProgressAction = 'delete';
@@ -220,6 +186,9 @@ export default {
         this.inProgressAction = '';
       })
     },
+    onEditConfirmSubmitClick: function () {
+      this.service.saveScript(this.entityForAction, this.$refs.script_editor.script)
+    },
     removeEntityFromList: function (entity) {
       const entityIndex = this.entities.indexOf(entity);
       this.entities.splice(entityIndex, 1);
@@ -237,17 +206,6 @@ export default {
     },
     setPage: function (value) {
       this.page = value;
-    },
-    toggleSort: function (field) {
-      let s = this.entitiesSort[field];
-      s = (s == null) ? SORT_ASC : s;
-      this.entities.sort((a, b) => {
-        let ac = String(a[field]) || '';
-        let bc = String(b[field]) || '';
-        let n = ac.localeCompare(bc);
-        return (s == SORT_ASC) ? n : n * -1;
-      });
-      this.$set(this.entitiesSort, field, (s == SORT_ASC) ? SORT_DESC : SORT_ASC);
     },
   }
 }

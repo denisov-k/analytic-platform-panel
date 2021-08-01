@@ -8,11 +8,9 @@
         </transition>
       </div>
       <div class="uk-width-expand uk-position-relative">
-        <div id="app-content">
-          <transition name="app-router-fade" mode="out-in">
-            <router-view :key="defaultViewKey"></router-view>
-          </transition>
-        </div>
+        <transition name="app-router-fade" mode="out-in">
+          <router-view :key="defaultViewKey" id="app-content"></router-view>
+        </transition>
       </div>
     </vk-grid>
   </div>
@@ -49,15 +47,15 @@ export default {
 #body-grid {
   background: #f7f7f7 !important;
 }
-#body-grid > div:first-child {
+/*#body-grid > div:first-child {
   position: fixed !important;
   z-index: 1;
   height: calc(100% - 60px);
-}
+}*/
 
-#body-grid > div:nth-child(2) {
+/*#body-grid > div:nth-child(2) {
   margin-left: 230px;
-}
+}*/
 
 @media only screen and (max-width: 868px) {
   #body-grid > div {
