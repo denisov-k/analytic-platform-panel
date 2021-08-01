@@ -65,7 +65,7 @@ export default class AppsService extends Service {
     startReload(appId) {
 
         let params = {
-            appID: appId
+            appId
         };
 
         return this.transport.request(`${scope}/reload`, params, (response) => {
@@ -85,7 +85,7 @@ export default class AppsService extends Service {
     delete(appId) {
 
         let params = {
-            appID: appId
+            appId
         };
 
         return this.transport.request(`${scope}/delete`, params, (response) => {
