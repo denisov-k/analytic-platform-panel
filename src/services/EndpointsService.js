@@ -9,7 +9,8 @@ export default class EndpointsService extends Service {
         return {
             _id: '',
             path: '',
-            appID: '',
+            appId: '',
+            app: {},
             rowLimit: 10000,
             enabled: true,
             anonymousAccess: false,
@@ -68,7 +69,7 @@ export default class EndpointsService extends Service {
         "dynamicDimensions":true,
         "_id":"5c17ec3822c4ce310c1b68b3",
         "path":"rt/profile_info",
-        "appID":"18effe1e-c98d-4540-86ef-2e3608143239",
+        "appId":"18effe1e-c98d-4540-86ef-2e3608143239",
     }
     ]
     */
@@ -102,7 +103,7 @@ export default class EndpointsService extends Service {
     [ { id, name, lastReloadTime } ]
     */
     getFields(appId) {
-        return this.transport.request(`admin/apps/getFields?app=${appId}`, {}, (response) => {
+        return this.transport.request(`admin/apps/fields?appId=${appId}`, {}, (response) => {
             return response.data;
         });
     }
@@ -116,7 +117,7 @@ export default class EndpointsService extends Service {
      */
     create(appId, path) {
         let params = {
-            app: appId,
+            appId: appId,
             path: path
         };
         return this.transport.request(`${scope}/create`, params, (response) => response.data.id, 'post')
@@ -136,9 +137,9 @@ export default class EndpointsService extends Service {
                 return {name, expression};
             }
         };
-        let {appID, _id, dimensions, measures, filters, ...params} = methodEntity;
+        let {appId, _id, dimensions, measures, filters, ...params} = methodEntity;
         params.id = _id;
-        params.app = appID;
+        params.appId = appId;
         params.dimensions = dimensions.map(decorator);
         params.measures = measures.map(decorator);
         params.filters = filters.map(decorator);
