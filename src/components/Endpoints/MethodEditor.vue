@@ -136,83 +136,12 @@
         </div>
       </v-collapse-wrapper>
     </v-collapse-group>
-    <!--<v-collapse-group :onlyOneActive="false">
-        <v-collapse-wrapper class="uk-margin-small" :active="filterCollapseActive" @onStatusChange="(data) => filterCollapseActive = data.status">
-            <div>
-                <span class="icon">
-                    <i class="mdi mdi mdi-chevron-up mdi-18px" v-if="filterCollapseActive"></i>
-                    <i class="mdi mdi mdi-chevron-down mdi-18px" v-else></i>
-                </span>
-                <vk-button type="text" v-collapse-toggle>Фильтр  ({{ entityFilters.length }})</vk-button>
-                <vk-button class="uk-margin-small-left" type="link">
-                    <div class="icon"><i class="mdi mdi-plus-circle-outline mdi-18px"></i></div>
-                </vk-button>
-                <vk-dropdown class="uk-border-rounded" uk-dropdown>
-                    <ul class="uk-nav uk-dropdown-nav">
-                        <li><a @click="onParamAddBtnClick(entity.filters, 'id')"><div class="icon uk-margin-small-right"><i class="mdi mdi-pound mdi-18px"></i></div>ID</a></li>
-                        <li><a @click="onParamAddBtnClick(entity.filters, 'expression')"><div class="icon uk-margin-small-right"><i class="mdi mdi-variable mdi-18px"></i></div>Expression</a></li>
-                    </ul>
-                </vk-dropdown>
-            </div>
-            <div v-collapse-content>
-                <vk-grid class="uk-flex-middle uk-margin-small-top" gutter="collapse" v-for="(item, i) in $v.entity.filters.$each.$iter" :key="i">
-                    <div class="uk-width-expand">
-                        <input class="uk-input uk-form-small" :class="{ 'uk-form-danger': item.name.$error }" type="text" placeholder="Название" v-model="item.name.$model">
-                    </div>
-                    <div class="uk-width-auto">
-                        <span class="uk-margin-small-left uk-margin-small-right">
-                            <div class="icon">
-                                <i class="mdi mdi-pound mdi-18px" v-if="item.type.$model == 'id'"></i>
-                                <i class="mdi mdi-variable mdi-18px" v-else></i>
-                            </div>
-                        </span>
-                    </div>
-                    <div class="uk-width-expand">
-                        <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.id.$model" v-if="item.type.$model == 'id'">
-                        <expression-input  :hints="fields"  v-model="item.expression.$model" v-else></expression-input>
-                    </div>
-                    <div class="uk-width-auto">
-                        <vk-button class="uk-margin-small-left" type="link" @click="onParamDeleteBtnClick(entity.filters, i)">
-                            <div class="icon"><i class="mdi mdi-trash-can-outline mdi-18px"></i></div>
-                        </vk-button>
-                    </div>
-                </vk-grid>
-            </div>
-        </v-collapse-wrapper>
-    </v-collapse-group>-->
 
-    <div class="uk-margin-small">
-      <label>
-                <span class="uk-checkbox-switch uk-margin-small-right">
-                    <input type="checkbox" v-model="entity.suppressZero"><span></span>
-                </span>
-        <span class="uk-form-label">Схлопывать нули</span>
-      </label>
-    </div>
-    <div class="uk-margin-small">
-      <label>
-                <span class="uk-checkbox-switch uk-margin-small-right">
-                    <input type="checkbox" v-model="entity.sectionAccess"><span></span>
-                </span>
-        <span class="uk-form-label">Разграничение данных</span>
-      </label>
-    </div>
-    <div class="uk-margin-small">
-      <label>
-                <span class="uk-checkbox-switch uk-margin-small-right">
-                    <input type="checkbox" v-model="entity.anonymousAccess"><span></span>
-                </span>
-        <span class="uk-form-label">Анонимный доступ</span>
-      </label>
-    </div>
-    <div class="uk-margin-small">
-      <label>
-                <span class="uk-checkbox-switch uk-margin-small-right">
-                    <input type="checkbox" v-model="entity.enabled"><span></span>
-                </span>
-        <span class="uk-form-label">Доступ метода</span>
-      </label>
-    </div>
+    <method-option :value.sync="entity.suppressZero" label="Схлопывать нули"></method-option>
+    <method-option :value.sync="entity.sectionAccess" label="Разграничение данных"></method-option>
+    <method-option :value.sync="entity.anonymousAccess" label="Анонимный доступ"></method-option>
+    <method-option :value.sync="entity.enabled" label="Доступ метода"></method-option>
+
     <datalist id="fields">
       <option value="default" label="Default"></option>
     </datalist>
@@ -235,7 +164,7 @@ let defaultFilterEntity = EndpointsService.methodFilterEntity;
 let defaultMeasureEntity = EndpointsService.methodMeasureEntity;
 
 export default {
-  components: {Multiselect, ExpressionInput},
+  components: { Multiselect, ExpressionInput, MethodOption },
   data() {
     return {
       selectedApp: {},

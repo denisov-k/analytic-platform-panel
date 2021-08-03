@@ -2,7 +2,7 @@
   <at-ta :members="hints" :ats="initSymbols" ref="at">
     <div class="expression-input uk-input uk-form-small" type="text"
          placeholder="Expression"
-         contenteditable v-click-outside="onInputUnfocused">
+         contenteditable v-click-outside="onInputUnfocused" @blur="onChangeExpression">
       <div v-text="value"></div>
     </div>
   </at-ta>
@@ -32,8 +32,8 @@ export default {
     }
   },
   methods: {
-    onChangeExpression: function (value) {
-      this.$emit('input', value)
+    onChangeExpression: function (event) {
+      this.$emit('input', event.target.innerText)
     },
     onInputUnfocused(event) {
       this.$refs.at.closePanel()

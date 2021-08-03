@@ -2,9 +2,9 @@
   <div class="uk-margin-small">
     <label>
       <span class="uk-checkbox-switch uk-margin-small-right">
-          <input type="checkbox" :value="value"><span></span>
+          <input type="checkbox" :checked="value" @change="$emit('update:value', $event.target.checked)"><span></span>
       </span>
-      <span class="uk-form-label">Схлопывать нули</span>
+      <span class="uk-form-label">{{ label }}</span>
     </label>
   </div>
 </template>
@@ -13,7 +13,14 @@
 export default {
   name: "MethodOption",
   props: {
-    value: Boolean
+    value: {
+      type: Boolean,
+      required: true
+    },
+    label: {
+      type: String,
+      required: true
+    }
   }
 }
 </script>
