@@ -224,9 +224,10 @@ import {required, numeric, minLength, minValue} from 'vuelidate/lib/validators';
 
 import Multiselect from 'vue-multiselect';
 import ExpressionInput from './ExpressionInput';
-import EndpointsService from '../../services/EndpointsService';
-import Service from '../../services/Service';
-import _ from 'lodash';
+import MethodOption from './MethodOption';
+
+import EndpointsService from '@/services/EndpointsService';
+
 
 let defaultEntity = EndpointsService.methodEntity;
 let defaultDimensionEntity = EndpointsService.methodDimensionEntity;
