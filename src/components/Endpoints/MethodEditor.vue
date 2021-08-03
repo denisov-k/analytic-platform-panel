@@ -13,9 +13,9 @@
       <label class="uk-form-label">Приложение</label>
       <div class="uk-form-controls">
         <div class="uk-inline uk-display-block">
-          <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.appID.$error }"
-                       v-model="$v.entity.appID.$model" :options="appIds" :custom-label="multiselectCustomLabel"
-                       placeholder="Выберите приложение" @select="updateFields($v.entity.appID.$model)">
+          <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.$error }" v-model="entity.app"
+                        :options="apps" label="name" trackBy="id"
+                       placeholder="Выберите приложение">
             <template slot="noOptions">Список пуст</template>
             <template slot="noResult">Ничего не найдено</template>
           </multiselect>
@@ -219,7 +219,9 @@
   </form>
 </template>
 <script>
+import _ from 'lodash';
 import {required, numeric, minLength, minValue} from 'vuelidate/lib/validators';
+
 import Multiselect from 'vue-multiselect';
 import ExpressionInput from './ExpressionInput';
 import EndpointsService from '../../services/EndpointsService';
@@ -235,6 +237,7 @@ export default {
   components: {Multiselect, ExpressionInput},
   data() {
     return {
+      selectedApp: {},
       entity: defaultEntity(),
       dimensionCollapseActive: true,
       measureCollapseActive: true,
@@ -243,26 +246,19 @@ export default {
     }
   },
   props: {
-    appIds: {
+    apps: {
       type: Array,
       default: function () {
         return [];
-      }
-    },
-    appNames: {
-      type: Object,
-      default: function () {
-        return {}
       }
     }
   },
   watch: {
     entity: {
       handler(nValue, oValue) {
-        if (nValue.appID === oValue.appID)
-          return;
-        const appID = nValue.appID;
-        this.updateFields(appID);
+        const appId = nValue.app ? nValue.app.id : nValue.appId;
+
+        this.updateFields(appId);
       },
       deep: true
     },
@@ -273,7 +269,7 @@ export default {
         required,
         minLength: minLength(2)
       },
-      appID: {
+      appId: {
         required,
         minLength: minLength(1)
       },
@@ -335,7 +331,7 @@ export default {
     }
   },
   created() {
-    this.transport = new Service().transport;
+    this.service = new EndpointsService;
   },
   computed: {
     entityMeasures: function () {
@@ -349,19 +345,18 @@ export default {
     },
   },
   methods: {
-    updateFields(appID) {
-      var self = this;
-
-      (new EndpointsService).getFields(appID).then(data => {
-        self.fields = data.map((item) => item.qName);
-      })
+    updateFields(appId) {
+      if (appId)
+        this.service.getFields(appId).then(data => {
+          this.fields = data.map((item) => item.qName);
+        })
     },
     onExpressionChange(value, item) {
 
       this.entity.item.expression = value;
     },
     multiselectCustomLabel(option) {
-      return this.appNames[option];
+      return option
     },
     reset() {
       this.entity = defaultEntity();
@@ -403,6 +398,9 @@ export default {
     },
     onParamDeleteBtnClick: function (collection, i) {
       collection.splice(i, 1);
+    },
+    onAppSelect(item) {
+      console.log(item)
     }
   }
 }

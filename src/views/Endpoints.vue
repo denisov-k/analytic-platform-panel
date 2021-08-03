@@ -10,7 +10,7 @@
 import EndpointsTable from "@/components/Endpoints/EndpointsTable";
 
 export default {
-  name: "Users",
+  name: "Endpoints",
   components: {
     EndpointsTable
   }

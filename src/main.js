@@ -13,12 +13,14 @@ import AuthUtils from './utils/AuthUtils';
 import ElementUI from 'element-ui';
 
 import VueTreeList from 'vue-tree-list'
+import vClickOutside from 'v-click-outside'
 
 
 import 'vue-directive-tooltip/src/css/index.scss';
 import './assets/css/style.less';
 import 'element-ui/lib/theme-chalk/index.css';
 
+Vue.use(vClickOutside)
 Vue.use(VueTreeList)
 Vue.use(ElementUI);
 Vue.use(Vuikit);

@@ -30,7 +30,7 @@
           <td>
             <export-link :url="item.url" :title="item.path"></export-link>
           </td>
-          <td>{{ getAppName(item.appID) }}</td>
+          <td :title="item.appId" @click="saveToClipboard(item.appId)">{{ item.app.name }}</td>
           <td>{{ item.dimensions.length }}/{{ item.measures.length }}</td>
           <td>{{ item.rowLimit }}</td>
           <td>
@@ -88,9 +88,7 @@
     <vk-modal center :overflow-auto="false" size="large" :show.sync="isDeleteConfirmShow">
       <!--<vk-modal-close @click="isDeleteConfirmShow = false"></vk-modal-close>-->
       <vk-modal-title slot="header">Удаление метода</vk-modal-title>
-      <p>Вы уверены, что хотите удалить метод <b>{{ entityToDeleteName }}</b> приложения <b>{{
-          entityToDeleteAppName
-        }}</b>?</p>
+      <p>Вы уверены, что хотите удалить метод <b>{{ entityToDeleteName }}</b>?</p>
       <div class="uk-text-right" slot="footer">
         <vk-spinner class="uk-margin-right" v-if="loading"></vk-spinner>
         <vk-button class="uk-margin-right" @click="isDeleteConfirmShow = false">Отмена</vk-button>
@@ -101,7 +99,7 @@
     <vk-modal center :overflow-auto="false" stuck size="xlarge" :show.sync="isEditorShow">
       <!--<vk-modal-close @click="isEditorShow = false"></vk-modal-close>-->
       <vk-modal-title slot="header">Редактор метода</vk-modal-title>
-      <method-editor :app-ids="appIds" :app-names="appNames" ref="editor"></method-editor>
+      <method-editor :apps="apps" ref="editor"></method-editor>
       <div class="uk-text-right" slot="footer">
         <vk-spinner class="uk-margin-right" v-if="loading"></vk-spinner>
         <!--<vk-button @click="onEditorDownloadClick" class="">Скачать</vk-button>-->
@@ -134,8 +132,6 @@ export default {
       loading: false,
       apiError: '',
       apps: [],
-      appIds: [],
-      appNames: {},
       entities: [],
       entitiesSearchQuery: '',
       entitiesSearchDelay: 250,
@@ -145,8 +141,8 @@ export default {
       isDeleteConfirmShow: false,
       isApiErrorShow: false,
       exportFormats: [
-        {title: 'CSV формат', param: 'csv'},
-        {title: 'Qlik формат', param: 'qlik'},
+        { title: 'CSV формат', param: 'csv' },
+        { title: 'Qlik формат', param: 'qlik' },
       ]
     }
   },
@@ -169,13 +165,6 @@ export default {
       }
       let entity = this.entities[this.entityToDeleteIndex];
       return entity ? entity.path : '';
-    },
-    entityToDeleteAppName: function () {
-      if (this.entityToDeleteIndex < 0) {
-        return '';
-      }
-      let entity = this.entities[this.entityToDeleteIndex];
-      return entity ? this.getAppName(entity.appID) : '';
     }
   },
   created() {
@@ -189,19 +178,21 @@ export default {
   },
   methods: {
     loadData() {
-      let p = [
+      let requests = [
         this.appsService.getList(),
         this.apiMethodsService.getList()
       ];
+
       this.loading = true;
-      Promise.all(p).then((data) => {
-        let [apps, entities] = data;
-        let o = {};
-        apps.forEach(elem => o[elem.id] = elem.name);
+
+      Promise.all(requests).then(([apps, entities]) => {
         this.apps = apps;
-        this.appNames = o;
-        this.appIds = apps.map((elem) => elem.id);
         this.entities = entities;
+
+        entities.forEach(entity => {
+          entity.app = apps.find(app => app.id === entity.appId)
+        })
+
         this.loading = false;
       })
           .catch(this.apiErrorHandler);
@@ -215,13 +206,6 @@ export default {
     },
     setPage: function (value) {
       this.page = value;
-    },
-    getApiMethodPathUrl: function (path) {
-      return `${Config.data.api.http.baseURL}/api/${path}`;
-    },
-    getAppName: function (appId) {
-      let app = this.apps.find((elem) => elem.id == appId);
-      return app == null ? appId : app.name;
     },
     apiErrorHandler: function (error) {
       this.loading = false;
@@ -238,7 +222,7 @@ export default {
       if (entity._id == '') {
         this.loading = true;
         // создаем
-        this.apiMethodsService.create(entity.appID, entity.path).then((entityId) => {
+        this.apiMethodsService.create(entity.appId, entity.path).then((entityId) => {
           entity._id = entityId;
           // сохр.
           this.apiMethodsService.save(entity).then((result) => {
@@ -297,6 +281,9 @@ export default {
     },
     onEditorDownloadClick: function () {
       console.log(this, arguments)
+    },
+    saveToClipboard(value) {
+      navigator.clipboard.writeText(value)
     }
   }
 }

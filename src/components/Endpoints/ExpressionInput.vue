@@ -1,18 +1,18 @@
 <template>
-  <at :members="hints" :ats="initSymbols">
+  <at-ta :members="hints" :ats="initSymbols" ref="at">
     <div class="expression-input uk-input uk-form-small" type="text"
          placeholder="Expression"
-         contenteditable @blur="onChangeExpression">
+         contenteditable v-click-outside="onInputUnfocused">
       <div v-text="value"></div>
     </div>
-  </at>
+  </at-ta>
 </template>
 
 <script>
-import At from 'vue-at'
+import AtTa  from 'vue-at'
 
 export default {
-  components: {At},
+  components: {AtTa },
   props: {
     hints: {
       type: Array,
@@ -28,12 +28,15 @@ export default {
   data() {
     return {
       html: '',
-      initSymbols: ['=', '"', '.', '+', '*', '/']
+      initSymbols: ['=', '"', '.', '+', '*', '/'],
     }
   },
   methods: {
-    onChangeExpression: function (event) {
-      this.$emit('input', event.target.innerText)
+    onChangeExpression: function (value) {
+      this.$emit('input', value)
+    },
+    onInputUnfocused(event) {
+      this.$refs.at.closePanel()
     }
   },
   created() {

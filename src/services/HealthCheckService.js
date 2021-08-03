@@ -52,6 +52,8 @@ export default class HealthCheckService extends Service {
                 title: 'MongoDB',
                 data: [
                     status('Host', data.mongoStatus.host),
+                    status('Port', data.mongoStatus.port),
+                    status('DB', data.mongoStatus.db),
                     status('Status', data.mongoStatus.status, statuses.SUCCESS),
                 ]
             };

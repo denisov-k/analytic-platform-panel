@@ -37,5 +37,6 @@ export default {
   .script-area {
     width: 100%;
     height: 100%;
+    white-space: nowrap;
   }
 </style>

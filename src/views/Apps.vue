@@ -187,7 +187,7 @@ export default {
       })
     },
     onEditConfirmSubmitClick: function () {
-      this.service.saveScript(this.entityForAction, this.$refs.script_editor.script)
+      this.service.setScript(this.entityForAction.id, this.$refs.script_editor.script)
     },
     removeEntityFromList: function (entity) {
       const entityIndex = this.entities.indexOf(entity);

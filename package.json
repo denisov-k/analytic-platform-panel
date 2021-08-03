@@ -15,9 +15,11 @@
     "lodash": "^4.17.20",
     "textarea-caret": "^3.1.0",
     "uikit": "^3.5.8",
+    "v-click-outside": "^3.1.2",
     "vue": "^2.6.12",
     "vue-at": "^2.3.2",
     "vue-directive-tooltip": "^1.6.3",
+    "vue-final-modal": "^2.4.1",
     "vue-multiselect": "^2.1.5",
     "vue-router": "^3.5.1",
     "vue-tree-list": "^1.4.6",
@@ -38,25 +40,6 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.12"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
   },
   "browserslist": [
     "> 1%",
