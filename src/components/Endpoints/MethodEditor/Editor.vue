@@ -13,7 +13,7 @@
       <label class="uk-form-label">Приложение</label>
       <div class="uk-form-controls">
         <div class="uk-inline uk-display-block">
-          <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.$error }" v-model="entity.app"
+          <multiselect class="uk-select" :class="{ 'uk-form-danger': $v.entity.app.$error }" v-model="entity.app"
                         :options="apps" label="name" trackBy="id"
                        placeholder="Выберите приложение">
             <template slot="noOptions">Список пуст</template>
@@ -31,59 +31,7 @@
         </div>
       </div>
     </div>
-    <v-collapse-group :onlyOneActive="false" style="overflow: unset;">
-      <v-collapse-wrapper class="uk-margin-small" :active="dimensionCollapseActive"
-                          @onStatusChange="(data) => dimensionCollapseActive = data.status">
-        <div>
-                    <span class="icon">
-                        <i class="mdi mdi mdi-chevron-up mdi-18px" v-if="dimensionCollapseActive"></i>
-                        <i class="mdi mdi mdi-chevron-down mdi-18px" v-else></i>
-                    </span>
-          <vk-button type="text" v-collapse-toggle>Измерения ({{ entityDimensions.length }})</vk-button>
-          <vk-button class="uk-margin-small-left" type="link">
-            <div class="icon"><i class="mdi mdi-plus-circle-outline mdi-18px"></i></div>
-          </vk-button>
-          <vk-dropdown class="uk-border-rounded">
-            <ul class="uk-nav uk-dropdown-nav">
-              <li><a @click="onParamAddBtnClick(entity.dimensions, 'id')">
-                <div class="icon uk-margin-small-right"><i class="mdi mdi-pound mdi-18px"></i></div>
-                ID</a></li>
-              <li><a @click="onParamAddBtnClick(entity.dimensions, 'expression')">
-                <div class="icon uk-margin-small-right"><i class="mdi mdi-variable mdi-18px"></i></div>
-                Expression</a></li>
-            </ul>
-          </vk-dropdown>
-        </div>
-        <div v-collapse-content>
-          <vk-grid class="uk-flex-middle uk-margin-small-top" gutter="collapse"
-                   v-for="(item, i) in $v.entity.dimensions.$each.$iter" :key="i">
-            <div class="uk-width-expand">
-              <input class="uk-input uk-form-small" :class="{ 'uk-form-danger': item.name.$error }" type="text"
-                     placeholder="Название" v-model="item.name.$model">
-            </div>
-            <div class="uk-width-auto">
-                            <span class="uk-margin-small-left uk-margin-small-right">
-                                <div class="icon">
-                                    <i class="mdi mdi-pound mdi-18px" v-if="item.type.$model == 'id'"></i>
-                                    <i class="mdi mdi-variable mdi-18px" v-else></i>
-                                </div>
-                            </span>
-            </div>
-            <div class="uk-width-expand">
-              <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.id.$model"
-                     v-if="item.type.$model == 'id'">
-              <expression-input :hints="fields" v-model="item.expression.$model" v-else></expression-input>
-
-            </div>
-            <div class="uk-width-auto">
-              <vk-button class="uk-margin-small-left" type="link" @click="onParamDeleteBtnClick(entity.dimensions, i)">
-                <div class="icon"><i class="mdi mdi-trash-can-outline mdi-18px"></i></div>
-              </vk-button>
-            </div>
-          </vk-grid>
-        </div>
-      </v-collapse-wrapper>
-    </v-collapse-group>
+    <dimensions-list :fields="fields" :list.sync="entity.dimensions"></dimensions-list>
     <v-collapse-group :onlyOneActive="false" style="overflow: unset;">
       <v-collapse-wrapper class="uk-margin-small" :active="measureCollapseActive"
                           @onStatusChange="(data) => measureCollapseActive = data.status">
@@ -148,15 +96,14 @@
   </form>
 </template>
 <script>
-import _ from 'lodash';
-import {required, numeric, minLength, minValue} from 'vuelidate/lib/validators';
+import { required, numeric, minLength, minValue } from 'vuelidate/lib/validators';
 
 import Multiselect from 'vue-multiselect';
+import DimensionsList from './DimensionsList'
 import ExpressionInput from './ExpressionInput';
 import MethodOption from './MethodOption';
 
 import EndpointsService from '@/services/EndpointsService';
-
 
 let defaultEntity = EndpointsService.methodEntity;
 let defaultDimensionEntity = EndpointsService.methodDimensionEntity;
@@ -164,7 +111,7 @@ let defaultFilterEntity = EndpointsService.methodFilterEntity;
 let defaultMeasureEntity = EndpointsService.methodMeasureEntity;
 
 export default {
-  components: { Multiselect, ExpressionInput, MethodOption },
+  components: { Multiselect, ExpressionInput, MethodOption, DimensionsList },
   data() {
     return {
       selectedApp: {},
@@ -199,9 +146,8 @@ export default {
         required,
         minLength: minLength(2)
       },
-      appId: {
-        required,
-        minLength: minLength(1)
+      app: {
+        required
       },
       rowLimit: {
         numeric,
@@ -241,7 +187,7 @@ export default {
           id: {},
         }
       },
-      filters: {
+      variables: {
         $each: {
           name: {
             required,
@@ -253,9 +199,7 @@ export default {
               return n <= 1;
             }
           },
-          expression: {},
-          type: {},
-          id: {},
+          qName: {},
         }
       }
     }
@@ -285,12 +229,9 @@ export default {
 
       this.entity.item.expression = value;
     },
-    multiselectCustomLabel(option) {
-      return option
-    },
     reset() {
       this.entity = defaultEntity();
-      this.uncollapseAll();
+      // this.uncollapseAll();
       this.validationReset();
     },
     validationTouch() {
@@ -302,7 +243,7 @@ export default {
     validationIsValid() {
       return !this.$v.$invalid;
     },
-    uncollapseAll() {
+    /*uncollapseAll() {
       this.dimensionCollapseActive = true;
       this.measureCollapseActive = true;
       this.filterCollapseActive = true;
@@ -311,7 +252,7 @@ export default {
       this.dimensionCollapseActive = false;
       this.measureCollapseActive = false;
       this.filterCollapseActive = false;
-    },
+    },*/
     onParamAddBtnClick: function (collection, type) {
       let paramEntity;
       if (collection == this.entity.dimensions) {

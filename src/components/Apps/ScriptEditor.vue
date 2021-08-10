@@ -38,5 +38,8 @@ export default {
     width: 100%;
     height: 100%;
     white-space: nowrap;
+    border-color: #b5b5b5;
+    border-radius: 3px;
+    margin: 10px 0;
   }
 </style>

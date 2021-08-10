@@ -82,9 +82,6 @@ import ApiErrorModal from '../components/ApiErrorModal';
 import AppsList from '../components/Apps/List';
 import ScriptEditor from "@/components/Apps/ScriptEditor";
 
-const SORT_ASC = 'asc';
-const SORT_DESC = 'desc';
-
 export default {
   components: {
     ScriptEditor,

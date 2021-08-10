@@ -96,7 +96,7 @@
       </div>
     </vk-modal>
 
-    <vk-modal center :overflow-auto="false" stuck size="xlarge" :show.sync="isEditorShow">
+    <vk-modal center :overflow-auto="false" stuck size="xlarge" :show.sync="isEditorShow" class="modal-method-editor">
       <!--<vk-modal-close @click="isEditorShow = false"></vk-modal-close>-->
       <vk-modal-title slot="header">Редактор метода</vk-modal-title>
       <method-editor :apps="apps" ref="editor"></method-editor>
@@ -115,7 +115,7 @@ import _ from 'lodash';
 import EndpointsService from '@/services/EndpointsService';
 import AppsService from '@/services/AppsService';
 import ApiErrorModal from '@/components/ApiErrorModal';
-import MethodEditor from '@/components/Endpoints/MethodEditor';
+import MethodEditor from '@/components/Endpoints/MethodEditor/index';
 import ExportLink from "@/components/Endpoints/ExportLink";
 import Config from '@/utils/Config';
 
@@ -190,7 +190,7 @@ export default {
         this.entities = entities;
 
         entities.forEach(entity => {
-          entity.app = apps.find(app => app.id === entity.appId)
+          entity.app = apps.find(app => app.id === entity.appId) || {};
         })
 
         this.loading = false;

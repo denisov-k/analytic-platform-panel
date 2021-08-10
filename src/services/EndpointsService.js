@@ -18,7 +18,7 @@ export default class EndpointsService extends Service {
             sectionAccess: false,
             dimensions: [],
             measures: [],
-            filters: []
+            variables: []
         }
     }
 
@@ -81,15 +81,16 @@ export default class EndpointsService extends Service {
             return elem;
         };
         let filter = (elem) => elem != null;
+
         let handler = (response) => {
             response.data.forEach((elem) => {
                 elem.url = `${Config.data.api.http.baseURL}/api/${elem.path}`;
                 elem.dimensions = elem.dimensions.filter(filter).map(decorator);
                 elem.measures = elem.measures.filter(filter).map(decorator);
-                elem.filters = elem.filters.filter(filter).map(decorator);
             });
             return response.data;
         }
+
         return this.transport.request(`${scope}/list`, {}, handler);
     }
 
@@ -137,12 +138,16 @@ export default class EndpointsService extends Service {
                 return {name, expression};
             }
         };
-        let {appId, _id, dimensions, measures, filters, ...params} = methodEntity;
+
+        let { _id, app, dimensions, measures, variables, ...params} = methodEntity;
+
         params.id = _id;
-        params.appId = appId;
+        params.appId = app.id;
         params.dimensions = dimensions.map(decorator);
         params.measures = measures.map(decorator);
-        params.filters = filters.map(decorator);
+        params.variables = variables;
+        params.filters = [];
+
         return this.transport.request(`${scope}/save`, params, this.defaultResponseHandler, 'post');
     }
 

@@ -45,6 +45,9 @@
 </template>
 
 <script>
+const SORT_ASC = 'asc';
+const SORT_DESC = 'desc';
+
 export default {
   name: "List",
   props: {
