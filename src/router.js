@@ -108,6 +108,26 @@ export default new Router({
                 authRedirect: {'name': 'home'}
             },
             children: [],
+        },
+        {
+            path: '/role_models',
+            name: 'role_models',
+            components: {
+                header: Header,
+                aside: Aside,
+                default: () => import(/* webpackChunkName: "view-api-methods" */ '@/views/RoleModels.vue')
+            },
+            meta: {
+                title: 'Ролевая модель',
+                description: 'В данном разделе вы можете создавать, удалять и редактировать группы и их фильтры для данных',
+                viewTitle: 'Ролевая модель',
+                viewDescription: '',
+                icon: 'i/i-api.svg',
+                visible: true,
+                authGroups: [],
+                authRedirect: {'name': 'home'}
+            },
+            children: [],
         }
     ]
 })

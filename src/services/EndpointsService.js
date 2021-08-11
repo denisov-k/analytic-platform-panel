@@ -18,6 +18,7 @@ export default class EndpointsService extends Service {
             sectionAccess: false,
             dimensions: [],
             measures: [],
+            filters: [],
             variables: []
         }
     }
@@ -110,6 +111,21 @@ export default class EndpointsService extends Service {
     }
 
     /**
+     * Возвращает список переменных
+     * @return {Promise}    then(data)
+     * data ~ @see below
+     */
+
+    /*
+    [ { id, name, lastReloadTime } ]
+    */
+    getVariables(appId) {
+        return this.transport.request(`admin/apps/variables?appId=${appId}`, {}, (response) => {
+            return response.data;
+        });
+    }
+
+    /**
      * Создает новый метод
      * @param {string} appId    id приложения @see AppsService.getList()
      * @param {string} path     путь метода @example 'myapi/method'
@@ -139,14 +155,14 @@ export default class EndpointsService extends Service {
             }
         };
 
-        let { _id, app, dimensions, measures, variables, ...params} = methodEntity;
+        let { _id, app, dimensions, measures, filters, variables, ...params} = methodEntity;
 
         params.id = _id;
         params.appId = app.id;
         params.dimensions = dimensions.map(decorator);
         params.measures = measures.map(decorator);
         params.variables = variables;
-        params.filters = [];
+        params.filters = filters.map(decorator);
 
         return this.transport.request(`${scope}/save`, params, this.defaultResponseHandler, 'post');
     }

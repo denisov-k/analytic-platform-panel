@@ -31,59 +31,10 @@
         </div>
       </div>
     </div>
-    <dimensions-list :fields="fields" :list.sync="entity.dimensions"></dimensions-list>
-    <v-collapse-group :onlyOneActive="false" style="overflow: unset;">
-      <v-collapse-wrapper class="uk-margin-small" :active="measureCollapseActive"
-                          @onStatusChange="(data) => measureCollapseActive = data.status">
-        <div>
-                    <span class="icon">
-                        <i class="mdi mdi mdi-chevron-up mdi-18px" v-if="measureCollapseActive"></i>
-                        <i class="mdi mdi mdi-chevron-down mdi-18px" v-else></i>
-                    </span>
-          <vk-button type="text" v-collapse-toggle>Мера ({{ entityMeasures.length }})</vk-button>
-          <vk-button class="uk-margin-small-left" type="link">
-            <div class="icon"><i class="mdi mdi-plus-circle-outline mdi-18px"></i></div>
-          </vk-button>
-          <vk-dropdown class="uk-border-rounded">
-            <ul class="uk-nav uk-dropdown-nav">
-              <li><a @click="onParamAddBtnClick(entity.measures, 'id')">
-                <div class="icon uk-margin-small-right"><i class="mdi mdi-pound mdi-18px"></i></div>
-                ID</a></li>
-              <li><a @click="onParamAddBtnClick(entity.measures, 'expression')">
-                <div class="icon uk-margin-small-right"><i class="mdi mdi-variable mdi-18px"></i></div>
-                Expression</a></li>
-            </ul>
-          </vk-dropdown>
-        </div>
-        <div v-collapse-content>
-          <vk-grid class="uk-flex-middle uk-margin-small-top" gutter="collapse"
-                   v-for="(item, i) in $v.entity.measures.$each.$iter" :key="i">
-            <div class="uk-width-expand">
-              <input class="uk-input uk-form-small" :class="{ 'uk-form-danger': item.name.$error }" type="text"
-                     placeholder="Название" v-model="item.name.$model">
-            </div>
-            <div class="uk-width-auto">
-                            <span class="uk-margin-small-left uk-margin-small-right">
-                                <div class="icon">
-                                    <i class="mdi mdi-pound mdi-18px" v-if="item.type.$model == 'id'"></i>
-                                    <i class="mdi mdi-variable mdi-18px" v-else></i>
-                                </div>
-                            </span>
-            </div>
-            <div class="uk-width-expand">
-              <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.id.$model"
-                     v-if="item.type.$model == 'id'">
-              <expression-input :hints="fields" v-model="item.expression.$model" v-else></expression-input>
-            </div>
-            <div class="uk-width-auto">
-              <vk-button class="uk-margin-small-left" type="link" @click="onParamDeleteBtnClick(entity.measures, i)">
-                <div class="icon"><i class="mdi mdi-trash-can-outline mdi-18px"></i></div>
-              </vk-button>
-            </div>
-          </vk-grid>
-        </div>
-      </v-collapse-wrapper>
-    </v-collapse-group>
+    <fields-list :fields="fields" :list.sync="entity.dimensions" caption="Измерения"></fields-list>
+    <fields-list :fields="fields" :list.sync="entity.measures" caption="Меры"></fields-list>
+    <fields-list :fields="fields" :list.sync="entity.filters" caption="Фильтры"></fields-list>
+    <variables-list :variables="variables" :list.sync="entity.variables" caption="Переменные"></variables-list>
 
     <method-option :value.sync="entity.suppressZero" label="Схлопывать нули"></method-option>
     <method-option :value.sync="entity.sectionAccess" label="Разграничение данных"></method-option>
@@ -96,11 +47,11 @@
   </form>
 </template>
 <script>
-import { required, numeric, minLength, minValue } from 'vuelidate/lib/validators';
+import validations from './validations';
 
 import Multiselect from 'vue-multiselect';
-import DimensionsList from './DimensionsList'
-import ExpressionInput from './ExpressionInput';
+import FieldsList from './FieldsList'
+import VariablesList from './VariablesList'
 import MethodOption from './MethodOption';
 
 import EndpointsService from '@/services/EndpointsService';
@@ -111,7 +62,7 @@ let defaultFilterEntity = EndpointsService.methodFilterEntity;
 let defaultMeasureEntity = EndpointsService.methodMeasureEntity;
 
 export default {
-  components: { Multiselect, ExpressionInput, MethodOption, DimensionsList },
+  components: { Multiselect, MethodOption, FieldsList, VariablesList },
   data() {
     return {
       selectedApp: {},
@@ -119,7 +70,8 @@ export default {
       dimensionCollapseActive: true,
       measureCollapseActive: true,
       filterCollapseActive: true,
-      fields: []
+      fields: [],
+      variables: []
     }
   },
   props: {
@@ -133,76 +85,15 @@ export default {
   watch: {
     entity: {
       handler(nValue, oValue) {
-        const appId = nValue.app ? nValue.app.id : nValue.appId;
+        console.log(nValue.app, oValue.app)
+        if (nValue.app.id === oValue.app.id)
+          return;
 
-        this.updateFields(appId);
+        this.updateFields(nValue.app.id);
+        this.updateVariables(nValue.app.id);
       },
       deep: true
     },
-  },
-  validations: {
-    entity: {
-      path: {
-        required,
-        minLength: minLength(2)
-      },
-      app: {
-        required
-      },
-      rowLimit: {
-        numeric,
-        minValue: minValue(0)
-      },
-      dimensions: {
-        $each: {
-          name: {
-            required,
-            minLength: minLength(2),
-            isUniq: function (val) {
-              let n = this.entity.dimensions.reduce((acc, elem) => {
-                return (elem.name == val) ? acc + 1 : acc;
-              }, 0);
-              return n <= 1;
-            }
-          },
-          expression: {},
-          type: {},
-          id: {},
-        }
-      },
-      measures: {
-        $each: {
-          name: {
-            required,
-            minLength: minLength(2),
-            isUniq: function (val) {
-              let n = this.entity.measures.reduce((acc, elem) => {
-                return (elem.name == val) ? acc + 1 : acc;
-              }, 0);
-              return n <= 1;
-            }
-          },
-          expression: {},
-          type: {},
-          id: {},
-        }
-      },
-      variables: {
-        $each: {
-          name: {
-            required,
-            minLength: minLength(2),
-            isUniq: function (val) {
-              let n = this.entity.filters.reduce((acc, elem) => {
-                return (elem.name == val) ? acc + 1 : acc;
-              }, 0);
-              return n <= 1;
-            }
-          },
-          qName: {},
-        }
-      }
-    }
   },
   created() {
     this.service = new EndpointsService;
@@ -224,10 +115,16 @@ export default {
         this.service.getFields(appId).then(data => {
           this.fields = data.map((item) => item.qName);
         })
+      else
+        this.fields = [];
     },
-    onExpressionChange(value, item) {
-
-      this.entity.item.expression = value;
+    updateVariables(appId) {
+      if (appId)
+        this.service.getVariables(appId).then(data => {
+          this.variables = data.map((item) => item.qName);
+        })
+      else
+        this.variables = [];
     },
     reset() {
       this.entity = defaultEntity();
@@ -253,27 +150,8 @@ export default {
       this.measureCollapseActive = false;
       this.filterCollapseActive = false;
     },*/
-    onParamAddBtnClick: function (collection, type) {
-      let paramEntity;
-      if (collection == this.entity.dimensions) {
-        paramEntity = defaultDimensionEntity();
-      } else if (collection == this.entity.measures) {
-        paramEntity = defaultMeasureEntity();
-      } else if (collection == this.entity.filters) {
-        paramEntity = defaultFilterEntity();
-      }
-      if (paramEntity) {
-        paramEntity.type = type;
-        collection.push(paramEntity);
-      }
-    },
-    onParamDeleteBtnClick: function (collection, i) {
-      collection.splice(i, 1);
-    },
-    onAppSelect(item) {
-      console.log(item)
-    }
-  }
+  },
+  validations
 }
 </script>
 

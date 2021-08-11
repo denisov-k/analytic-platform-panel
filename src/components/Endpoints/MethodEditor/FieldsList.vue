@@ -6,7 +6,7 @@
             <i class="mdi mdi mdi-chevron-up mdi-18px" v-if="collapsed"></i>
             <i class="mdi mdi mdi-chevron-down mdi-18px" v-else></i>
         </span>
-        <vk-button type="text" v-collapse-toggle>Измерения ({{ list.length }})</vk-button>
+        <vk-button type="text" v-collapse-toggle>{{ caption }} ({{ list.length }})</vk-button>
         <vk-button class="uk-margin-small-left" type="link">
           <div class="icon"><i class="mdi mdi-plus-circle-outline mdi-18px"></i></div>
         </vk-button>
@@ -20,7 +20,7 @@
             <li><a @click="onParamAddBtnClick('expression')">
               <div class="icon uk-margin-small-right">
                 <i class="mdi mdi-variable mdi-18px"></i>
-              </div>Expression</a>
+              </div>Выражение</a>
             </li>
           </ul>
         </vk-dropdown>
@@ -69,7 +69,7 @@ class Field {
 }
 
 export default {
-  name: "DimensionsList",
+  name: "FieldsList",
   components: {
     ExpressionInput
   },
@@ -80,7 +80,8 @@ export default {
     },
     fields: {
       type: Array
-    }
+    },
+    caption: String
   },
   data() {
     return {

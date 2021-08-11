@@ -16,7 +16,7 @@
         <tr>
           <th>Путь</th>
           <th>Приложение</th>
-          <th title="Кол-во измерений и мер">И/М</th>
+          <th title="Кол-во измерений и мер">И/М/Ф/П</th>
           <th>Макс. кол-во записей</th>
           <th>Доступ метода</th>
           <th>Анонимный доступ</th>
@@ -31,7 +31,7 @@
             <export-link :url="item.url" :title="item.path"></export-link>
           </td>
           <td :title="item.appId" @click="saveToClipboard(item.appId)">{{ item.app.name }}</td>
-          <td>{{ item.dimensions.length }}/{{ item.measures.length }}</td>
+          <td>{{ item.dimensions.length }}/{{ item.measures.length }}/{{ item.variables.length }}</td>
           <td>{{ item.rowLimit }}</td>
           <td>
             <div class="icon" v-if="item.enabled"><i class="mdi mdi-check"></i></div>
