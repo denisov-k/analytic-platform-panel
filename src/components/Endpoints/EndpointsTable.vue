@@ -76,7 +76,7 @@
           <div class="uk-form-icon">
             <div class="icon"><i class="mdi mdi-magnify"></i></div>
           </div>
-          <input class="uk-input" type="search" placeholder="Путь метода" v-model="entitiesSearchQuery">
+          <input class="uk-input" type="search" placeholder="Приложение или адрес метода" v-model="entitiesSearchQuery">
         </div>
         <a class="icon" @click="entitiesSearchQuery = ''" v-if="entitiesSearchQuery.length > 0"><i
             class="mdi mdi-close"></i></a>
@@ -160,8 +160,8 @@ export default {
         return entity.path && entity.path.indexOf(query) >= 0
       }
       function isAppMatch(entity, query) {
-        console.log(entity)
-        return entity.path && entity.path.indexOf(query) >= 0
+        console.log(entity, query)
+        return entity.app && entity.app.indexOf(query) >= 0
       }
 
       return this.entities.filter((item) =>
