@@ -115,12 +115,16 @@ import _ from 'lodash';
 import EndpointsService from '@/services/EndpointsService';
 import AppsService from '@/services/AppsService';
 import ApiErrorModal from '@/components/ApiErrorModal';
-import MethodEditor from '@/components/Endpoints/MethodEditor/index';
-import ExportLink from "@/components/Endpoints/ExportLink";
+
+import MethodEditor from './MethodEditor/index';
+import ExportLink from "./ExportLink";
+import AppsList from "./AppsList";
+
 import Config from '@/utils/Config';
 
 export default {
   components: {
+    AppsList,
     ApiErrorModal,
     MethodEditor,
     ExportLink
@@ -148,8 +152,20 @@ export default {
   },
   computed: {
     entitesFiltered: function () {
-      let q = this.entitiesSearchQuery;
-      return q.length ? this.entities.filter((item) => item.path && item.path.indexOf(q) >= 0) : this.entities;
+
+      if (!this.entitiesSearchQuery.length)
+        return this.entities;
+
+      function isPathMatch(entity, query) {
+        return entity.path && entity.path.indexOf(query) >= 0
+      }
+      function isAppMatch(entity, query) {
+        console.log(entity)
+        return entity.path && entity.path.indexOf(query) >= 0
+      }
+
+      return this.entities.filter((item) =>
+          isPathMatch(item, this.entitiesSearchQuery) || isAppMatch(item, this.entitiesSearchQuery));
     },
     pageEntities: function () {
       if (this.entitesFiltered.length / this.perPage < this.page)

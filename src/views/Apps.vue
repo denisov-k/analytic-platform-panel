@@ -9,7 +9,7 @@
 import AppsTable from "@/components/Apps/AppsTable";
 
 export default {
-  name: "AppsTable",
+  name: "Apps",
   components: {
     AppsTable
   }
