@@ -147,13 +147,13 @@ export default {
         return this.entities;
 
       function isUsernameMatch(entity, query) {
-        return item.username && item.username.indexOf(q) >= 0
+        return entity.username && entity.username.indexOf(query) >= 0
       }
       function isEmailMatch(entity, query) {
-        return item.email && item.email.indexOf(q) >= 0
+        return entity.email && entity.email.indexOf(query) >= 0
       }
       function isGroupMatch(entity, query) {
-        return item.groups.some(group => group.name.includes(query))
+        return entity.groups.some(group => group.name.includes(query))
       }
 
       return this.entities.filter((item) => isUsernameMatch(item, this.entitiesSearchQuery)
