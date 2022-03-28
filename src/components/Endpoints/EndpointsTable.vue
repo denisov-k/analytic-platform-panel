@@ -118,13 +118,11 @@ import ApiErrorModal from '@/components/ApiErrorModal';
 
 import MethodEditor from './MethodEditor/index';
 import ExportLink from "./ExportLink";
-import AppsList from "./AppsList";
 
 import Config from '@/utils/Config';
 
 export default {
   components: {
-    AppsList,
     ApiErrorModal,
     MethodEditor,
     ExportLink
@@ -160,7 +158,6 @@ export default {
         return entity.path && entity.path.indexOf(query) >= 0
       }
       function isAppMatch(entity, query) {
-        console.log(entity, query)
         return entity.app.name && entity.app.name.indexOf(query) >= 0
       }
 

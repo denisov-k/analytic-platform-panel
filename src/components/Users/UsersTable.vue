@@ -143,8 +143,21 @@ export default {
   },
   computed: {
     entitiesFiltered: function () {
-      let q = this.entitiesSearchQuery;
-      return q.length ? this.entities.filter((item) => item.email && item.email.indexOf(q) >= 0 || item.username && item.username.indexOf(q) >= 0) : this.entities;
+      if (!this.entitiesSearchQuery.length)
+        return this.entities;
+
+      function isUsernameMatch(entity, query) {
+        return item.username && item.username.indexOf(q) >= 0
+      }
+      function isEmailMatch(entity, query) {
+        return item.email && item.email.indexOf(q) >= 0
+      }
+      function isGroupMatch(entity, query) {
+        return item.groups.some(group => group.name.includes(query))
+      }
+
+      return this.entities.filter((item) => isUsernameMatch(item, this.entitiesSearchQuery)
+          || isEmailMatch(item, this.entitiesSearchQuery) || isGroupMatch(item, this.entitiesSearchQuery));
     },
     pageEntities: function () {
       let s = (this.page - 1) * this.perPage;

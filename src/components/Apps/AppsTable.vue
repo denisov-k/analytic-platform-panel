@@ -76,7 +76,7 @@
 import AppsService from '@/services/AppsService';
 
 import ApiErrorModal from '@/components/ApiErrorModal';
-import AppsList from './List';
+import AppsList from './AppsList';
 import ScriptEditor from "./ScriptEditor";
 
 export default {

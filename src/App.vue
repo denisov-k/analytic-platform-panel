@@ -7,11 +7,9 @@
           <router-view name="aside"></router-view>
         </transition>
       </div>
-      <div class="uk-width-expand uk-position-relative">
-        <transition name="app-router-fade" mode="out-in">
-          <router-view :key="defaultViewKey" id="app-content"></router-view>
-        </transition>
-      </div>
+      <transition name="app-router-fade" mode="out-in">
+        <router-view :key="defaultViewKey" id="app-content" class="uk-width-expand uk-position-relative"></router-view>
+      </transition>
     </vk-grid>
   </div>
 </template>
@@ -68,6 +66,10 @@ export default {
 }*/
 
 @media only screen and (max-width: 868px) {
+  #app-content {
+    position: inherit;
+  }
+
   #body-grid > div {
     position: fixed !important;
   }
@@ -75,7 +77,7 @@ export default {
   #body-grid > div:first-child {
     z-index: 1;
     transition: left 0.4s linear;
-    top: 0px;
+    top: 0;
     left: -231px;
     border-right: 1px solid #dcdcdc;
     height: 100%;
@@ -85,7 +87,7 @@ export default {
   }
 
   #body-grid > div:nth-child(2) {
-    margin-left: 0px;
+    margin-left: 0;
     position: inherit !important;
     display: inline-grid;
   }
@@ -99,23 +101,7 @@ export default {
   }
 
   #app-content section {
-    padding: 10px;
-  }
-
-  .search-input-container {
-    max-width: 100%;
-  }
-
-  .uk-card-body {
-    padding: 15px 15px !important;
-  }
-
-  .uk-card-header {
-    padding: 15px 15px !important;
-  }
-
-  .uk-card-header h2 {
-    font-size: 22px;
+    padding: 60px 10px 10px;
   }
 }
 </style>

@@ -56,7 +56,7 @@ export default {
 </script>
 <style scoped>
 .layouts--header {
-  background: #f5f5f5 !important;
+  background: #f5f5f5;
   z-index: 2;
   height: 68px;
   box-shadow: 0 1px 12px 3px rgba(218, 217, 217, 0.5);
@@ -79,7 +79,7 @@ export default {
   line-height: 56px;
   font-weight: bold;
   color: #276377;
-  margin: 0px 10px;
+  margin: 0 10px;
   display: inline-block;
   /*line-height: 56px;*/
 }
@@ -87,7 +87,7 @@ export default {
 .logo-icon {
   width: 40px;
   display: inline-block;
-  margin: 10px 0px;
+  margin: 10px 0;
   float: left;
   -webkit-filter: opacity(.4) drop-shadow(0 0 0 #0468c1);
 }
@@ -150,7 +150,7 @@ export default {
   height: 40px;
   display: none;
   float: right;
-  margin: 5px 0px 5px 0px;
+  margin: 5px 0 5px 0;
   -webkit-filter: opacity(.4) drop-shadow(0 0 0 #0468c1);
 }
 
