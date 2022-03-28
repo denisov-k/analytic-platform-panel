@@ -39,6 +39,9 @@ export default {
 }
 #app {
   background: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 #app-content {
   position: inherit;

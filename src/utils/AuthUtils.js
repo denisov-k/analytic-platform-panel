@@ -1,10 +1,10 @@
 export default {
-    hasGroupsAll(userGroups, groups) {
-        let intersect = userGroups.filter((elem) => groups.includes(elem));
-        return intersect.length == groups.length;
+    hasGroupsAll(userGroups, routeGroups) {
+        let intersect = userGroups.filter((elem) => routeGroups.includes(elem));
+        return intersect.length === routeGroups.length;
     },
-    hasGroupsAny(userGroups, groups) {
-        let intersect = userGroups.filter((elem) => groups.includes(elem));
-        return intersect.length > 0;
+    hasGroupsAny(userGroups, routeGroups) {
+        let intersect = userGroups.filter((elem) => routeGroups.includes(elem));
+        return !routeGroups.length || intersect.length > 0;
     }
 }

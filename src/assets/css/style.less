@@ -168,22 +168,7 @@ a.active-exact {
     }
 }
 
-#app {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background: @global-app-background;
-}
-#app-content {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    flex-grow: 1;
-    min-height: 0px; // @see https://codepen.io/sulfurious/pen/eWPBjY?editors=1100
-    overflow: auto;
-}
+
 
 .app-router-fade {
     &-enter-active, &-leave-active {
@@ -196,7 +181,3 @@ a.active-exact {
 
 @import './include/layouts/aside.less';
 @import './include/layouts/header.less';
-@import './include/views/home.less';
-@import './include/views/auth.less';
-@import './include/views/circles.less';
-@import './include/views/profile.less';
