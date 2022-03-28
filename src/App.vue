@@ -44,7 +44,14 @@ export default {
   height: 100vh;
 }
 #app-content {
-  position: inherit;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  flex-grow: 1;
+  min-height: 0;
+  overflow: auto;
 }
 
 #body-grid {

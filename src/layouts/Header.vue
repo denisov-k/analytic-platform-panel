@@ -2,7 +2,7 @@
   <div class="layouts--header">
     <div class="logo" v-on:click="onLogoClick">
       <img class="logo-icon" src="@/assets/images/logo-icon.png">
-      <span>Gost Analytic Platform</span>
+      <span>Analytic Platform</span>
     </div>
     <div class="right-header-part">
       <div class="profile-button">
