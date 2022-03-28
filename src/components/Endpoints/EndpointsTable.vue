@@ -161,7 +161,7 @@ export default {
       }
       function isAppMatch(entity, query) {
         console.log(entity, query)
-        return entity.app && entity.app.indexOf(query) >= 0
+        return entity.app.name && entity.app.name.indexOf(query) >= 0
       }
 
       return this.entities.filter((item) =>
