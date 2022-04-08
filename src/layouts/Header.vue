@@ -1,12 +1,12 @@
 <template>
   <div class="layouts--header">
     <div class="logo" v-on:click="onLogoClick">
-      <img class="logo-icon" src="@/assets/images/logo-icon.png">
+      <img class="logo-icon" src="@/assets/images/logo-icon.png" alt="Platform logo">
       <span>Analytic Platform</span>
     </div>
     <div class="buttons-group">
       <div class="profile-button">
-        <img class="avatar" src="@/assets/images/avatar.png">
+        <img class="avatar" src="@/assets/images/avatar.png" alt="User avatar">
         <div class="user-menu">
           <div>
             <span>Это вы: {{ username }}</span>
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="navigation-button" @click="onNavigationButtonClick">
-        <img src="@/assets/images/menu-icon.png">
+        <img src="@/assets/images/menu-icon.png" alt="Menu icon">
       </div>
     </div>
   </div>
@@ -67,9 +67,8 @@ export default {
 }
 
 .logo {
-  display: inline-block;
+  display: flex;
   margin: 5px 20px;
-  height: 58px;
 }
 
 .logo:hover {
@@ -90,14 +89,15 @@ export default {
 
 .logo-icon {
   width: 40px;
+  height: max-content;
   display: inline-block;
-  margin: 10px 0;
+  margin: auto;
   float: left;
   -webkit-filter: opacity(.4) drop-shadow(0 0 0 #0468c1);
 }
 
 .buttons-group {
-  display: inline-block;
+  display: flex;
   float: right;
   margin-right: 10px;
   vertical-align: middle;
@@ -174,12 +174,12 @@ export default {
   }
 
   .logo img {
-    width: 24px !important;
+    width: 30px;
   }
 
   img.avatar {
-    width: 32px !important;
-    height: 32px !important;
+    width: 30px;
+    height: auto;
   }
 
   .navigation-button {
@@ -187,10 +187,15 @@ export default {
   }
 
   .profile-button {
-    margin: 9px;
+    margin: auto 8px;
     width: unset;
     height: unset;
   }
 
+}
+@media only screen and (max-width: 400px) {
+  .logo span {
+    display: none;
+  }
 }
 </style>

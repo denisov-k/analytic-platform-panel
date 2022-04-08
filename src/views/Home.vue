@@ -54,15 +54,15 @@ export default {
     #welcome span {
       text-transform: uppercase;
       line-height: 1;
-      font-size: 5.5vw;
+      font-size: 5vmax;
       text-align: center;
       overflow: hidden;
       text-decoration: none;
       -webkit-transition: all 0.5s;
       transition: all 0.5s;
-      font-family: 'Berkshire Swash', cursive;
+      /*font-family: 'Berkshire Swash', cursive;*/
       background-color: #d6d6d6;
-      color: transparent;
+      /*color: transparent;*/
       text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.5);
       -webkit-background-clip: text;
       user-select: none;
@@ -102,7 +102,7 @@ export default {
       font-size: 0.875rem;
       text-transform: uppercase;
       font-weight: 700;
-      margin: 0px 0px 5px 0px;
+      margin: 0 0 5px 0;
     }
     .status-card .component-title {
       font-weight: 700 !important;

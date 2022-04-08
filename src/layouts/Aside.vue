@@ -41,11 +41,11 @@ export default {
 </script>
 <style>
 .sidebar {
-  width: 230px;
+  max-width: 230px;
 }
 
 .version-info {
-  padding: 0px 10px;
+  padding: 0 10px;
   color: #babfc3;
   user-select: none;
 }
@@ -56,7 +56,7 @@ export default {
 }
 
 .uk-padding-small {
-  padding: 0px 5px !important;
+  padding: 0 5px !important;
   display: inline-block;
 }
 </style>
