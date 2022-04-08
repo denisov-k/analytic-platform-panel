@@ -4,7 +4,7 @@
       <img class="logo-icon" src="@/assets/images/logo-icon.png">
       <span>Analytic Platform</span>
     </div>
-    <div class="right-header-part">
+    <div class="buttons-group">
       <div class="profile-button">
         <img class="avatar" src="@/assets/images/avatar.png">
         <div class="user-menu">
@@ -56,6 +56,10 @@ export default {
 </script>
 <style scoped>
 .layouts--header {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   background: #f5f5f5;
   z-index: 2;
   height: 68px;
@@ -92,7 +96,7 @@ export default {
   -webkit-filter: opacity(.4) drop-shadow(0 0 0 #0468c1);
 }
 
-.right-header-part {
+.buttons-group {
   display: inline-block;
   float: right;
   margin-right: 10px;
@@ -158,16 +162,10 @@ export default {
   margin-top: 5px;
 }
 
-@media only screen and (min-width: 868px) {
-  .menu-button {
-    display: none;
-  }
-}
-
 @media only screen and (max-width: 868px) {
   .layouts--header {
     height: 50px;
-    min-height: 50px !important;
+
   }
 
   .logo span {

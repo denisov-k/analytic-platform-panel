@@ -42,14 +42,11 @@ export default {
   height: 100vh;
 }
 #app-content {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  flex-grow: 1;
-  min-height: 0;
-  overflow: auto;
+
+}
+
+#app-content section {
+  padding: 90px 10px 10px;
 }
 
 #body-grid {
@@ -65,15 +62,14 @@ export default {
   margin-left: 230px;
 }*/
 
+#body-grid > .uk-first-column {
+  position: fixed !important;
+}
+#body-grid > div:nth-child(2) {
+  margin-left: 220px;
+}
+
 @media only screen and (max-width: 868px) {
-  #app-content {
-    position: inherit;
-  }
-
-  #body-grid > div {
-    position: fixed !important;
-  }
-
   #body-grid > div:first-child {
     z-index: 1;
     transition: left 0.4s linear;
@@ -88,8 +84,6 @@ export default {
 
   #body-grid > div:nth-child(2) {
     margin-left: 0;
-    position: inherit !important;
-    display: inline-grid;
   }
 
   #body-grid.showNavigation > div:first-child {
