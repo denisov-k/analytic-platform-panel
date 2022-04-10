@@ -16,7 +16,7 @@ import vClickOutside from 'v-click-outside'
 
 import './assets/css/style.less';
 
-Vue.use(vClickOutside)
+
 Vue.use(VueTreeList)
 Vue.use(Vuikit);
 Vue.use(VuikitIcons);

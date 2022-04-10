@@ -26,10 +26,10 @@
         </vk-dropdown>
       </div>
       <div v-collapse-content>
-        <vk-grid class="uk-flex-middle uk-margin-small-top" gutter="collapse" v-for="(item, i) in list" :key="i">
-          <div class="uk-width-expand">
-            <input class="uk-input uk-form-small" :class="{ 'uk-form-danger': item.name.$error }" type="text"
-                   placeholder="Название" v-model="item.name">
+        <vk-grid class="field-item uk-flex-middle uk-margin-small-top" gutter="collapse" v-for="(item, i) in list" :key="i">
+          <div class="input-container">
+            <textarea class="input" :class="{ 'uk-form-danger': item.name.$error }"
+                   placeholder="Метка" v-model="item.name"></textarea>
           </div>
           <div class="uk-width-auto">
             <span class="uk-margin-small-left uk-margin-small-right">
@@ -39,14 +39,12 @@
               </div>
             </span>
           </div>
-          <div class="uk-width-expand">
-            <input class="uk-input uk-form-small" type="text" placeholder="ID" v-model="item.id"
-                   v-if="item.type === 'id'">
+          <div class="input-container">
+            <textarea class="input" placeholder="ID" v-model="item.id" v-if="item.type === 'id'"></textarea>
             <expression-input :hints="fields" :value.sync="item.expression" v-else></expression-input>
-
           </div>
-          <div class="uk-width-auto">
-            <vk-button class="uk-margin-small-left" type="link" @click="onParamDeleteBtnClick(list, i)">
+          <div class="delete-button-container uk-width-auto" @click="onParamDeleteBtnClick(list, i)">
+            <vk-button class="delete-button" type="link">
               <div class="icon"><i class="mdi mdi-trash-can-outline mdi-18px"></i></div>
             </vk-button>
           </div>
@@ -100,5 +98,50 @@ export default {
 </script>
 
 <style scoped>
+  .field-item {
+    height: 30px;
+  }
+  .field-item:focus-within {
+    height: 100px;
+  }
+
+  .input-container {
+    flex: 1;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    height: 100%;
+  }
+  .delete-button-container {
+    margin-left: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .delete-button {
+    border: 1px solid #c8c8c8;
+  }
+  .delete-button:hover {
+    background-color: #ff33332e;
+  }
+
+  >>> .input {
+    display: block;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    color: #4a4a4a;
+    background-color: #DEEAEC;
+    line-height: 18px;
+    text-align: start;
+    font-family: sans-serif;
+    resize: none;
+    word-break: break-all;
+    overflow: hidden;
+  }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="layouts--header">
     <div class="logo" v-on:click="onLogoClick">
-      <img class="logo-icon" src="@/assets/images/logo-icon.png" alt="Platform logo">
+      <inline-svg :src="require('@/assets/images/logo-icon.svg')"  class="logo-icon" />
       <span>Analytic Platform</span>
     </div>
     <div class="buttons-group">
@@ -26,8 +26,12 @@
 // FIXME: Move user-menu in standalone component
 import Config from '../utils/Config';
 
+import InlineSvg from 'vue-inline-svg';
 
 export default {
+  components: {
+    InlineSvg
+  },
   data() {
     return {
       avatarUrl: '' //'url(/img/avatar.a5e81f19.png)'
@@ -46,7 +50,7 @@ export default {
       window.location.href = Config.data.api.http.logoutURL;
     },
     "onNavigationButtonClick": function () {
-      this.$parent.navigationIsHide = !this.$parent.navigationIsHide;
+      this.$parent.showNavigation = !this.$parent.showNavigation;
     }
   },
   created: function () {
@@ -62,7 +66,7 @@ export default {
   justify-content: space-between;
   background: #f5f5f5;
   z-index: 2;
-  height: 68px;
+  height: 60px;
   box-shadow: 0 1px 12px 3px rgba(218, 217, 217, 0.5);
 }
 
@@ -76,24 +80,21 @@ export default {
 }
 
 .logo > span {
-  /*font-family: "PTSansNarrow-Bold";
-  font-size: 26px;*/
-  font-size: 24px;
-  line-height: 56px;
+  font-size: 22px;
   font-weight: bold;
   color: #276377;
   margin: 0 10px;
   display: inline-block;
-  /*line-height: 56px;*/
+  align-self: center;
 }
 
 .logo-icon {
-  width: 40px;
-  height: max-content;
+  width: 31px;
+  height: -webkit-fill-available;
   display: inline-block;
   margin: auto;
   float: left;
-  -webkit-filter: opacity(.4) drop-shadow(0 0 0 #0468c1);
+  fill: #276377;
 }
 
 .buttons-group {
@@ -141,21 +142,20 @@ export default {
 }
 
 .profile-button {
-  width: 46px;
-  height: 46px;
+  width: 30px;
+  height: 30px;
   display: inline-block;
-  margin: 11px;
+  margin: auto 3px;
   border-radius: 50%;
   overflow: hidden;
 }
 
 .navigation-button {
-  width: 40px;
-  height: 40px;
-  display: none;
+  width: 46px;
+  height: 46px;
   float: right;
-  margin: 5px 0 5px 0;
   -webkit-filter: opacity(.4) drop-shadow(0 0 0 #0468c1);
+  margin: auto 0;
 }
 
 .logout {
@@ -187,7 +187,6 @@ export default {
   }
 
   .profile-button {
-    margin: auto 8px;
     width: unset;
     height: unset;
   }

@@ -1,18 +1,18 @@
 <template>
-  <at :members="hints" :ats="initSymbols" ref="at">
-    <div class="expression-input uk-input uk-form-small" type="text"
-         placeholder="Expression"
-         contenteditable v-click-outside="onInputUnfocused" @blur="onChangeExpression">
-    <div v-text="value"></div>
-    </div>
-  </at>
+  <at-ta :members="hints" :ats="initSymbols" ref="at">
+    <textarea class="input" type="text"
+         placeholder="Expression" :value="value"
+         @blur="onInputUnfocused" @input="onChangeExpression">
+
+    </textarea>
+  </at-ta>
 </template>
 
 <script>
-import At  from 'vue-at'
+import AtTa from 'vue-at/dist/vue-at-textarea' // for textarea
 
 export default {
-  components: { At },
+  components: { AtTa },
   props: {
     hints: {
       type: Array,
@@ -22,22 +22,21 @@ export default {
     },
     value: {
       type: String,
-      default: ''
+      default: 'default'
     }
   },
   data() {
     return {
-      inputValue: '',
       initSymbols: ['=', '"', '.', '+', '*', '/'],
     }
   },
   methods: {
     onChangeExpression: function (event) {
-      this.$emit('update:value', event.target.innerText);
+      this.$emit('update:value', event.target.value)
       this.$nextTick()
     },
     onInputUnfocused(event) {
-      this.$refs.at.closePanel()
+      setTimeout(() => this.$refs.at.closePanel(), 500)
     }
   },
   created() {
@@ -47,21 +46,18 @@ export default {
 </script>
 <style>
 .expression-input {
-  overflow-x: auto;
-  overflow-y: hidden;
   word-break: break-all;
   white-space: nowrap;
   overflow: hidden;
 }
-
 .expression-input:focus {
+  overflow-y: auto;
   height: 100px !important;
-  white-space: normal !important;
-  line-height: 20px;
-  padding: 5px;
+  white-space: normal;
 }
 
 .atwho-wrap {
+  height: 100%;
   position: inherit;
 }
 

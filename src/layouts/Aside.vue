@@ -41,7 +41,7 @@ export default {
 </script>
 <style>
 .sidebar {
-  max-width: 230px;
+  max-width: 215px;
 }
 
 .version-info {
