@@ -3,6 +3,7 @@ import App from './App.vue'
 import store from './store/store'
 import router from './router'
 import Config from './utils/Config';
+
 import Vuikit from 'vuikit';
 import VuikitIcons from '@vuikit/icons';
 import VueCollapse from 'vue2-collapse';
@@ -11,13 +12,8 @@ import Vuelidate from 'vuelidate';
 import SessionActions from './store/store-session-actions';
 import AuthUtils from './utils/AuthUtils';
 
-import VueTreeList from 'vue-tree-list'
-import vClickOutside from 'v-click-outside'
-
 import './assets/css/style.less';
 
-
-Vue.use(VueTreeList)
 Vue.use(Vuikit);
 Vue.use(VuikitIcons);
 Vue.use(VueCollapse);

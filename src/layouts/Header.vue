@@ -6,18 +6,11 @@
     </div>
     <div class="buttons-group">
       <div class="profile-button">
-        <img class="avatar" src="@/assets/images/avatar.png" alt="User avatar">
-        <div class="user-menu">
-          <div>
-            <span>Это вы: {{ username }}</span>
-          </div>
-          <div class="logout">
-            <a @click="onLogoutClick">Выйти из аккаунта</a>
-          </div>
-        </div>
+        <inline-svg :src="require('@/assets/images/profile-icon.svg')"  class="avatar" />
+        <user-info></user-info>
       </div>
       <div class="navigation-button" @click="onNavigationButtonClick">
-        <img src="@/assets/images/menu-icon.png" alt="Menu icon">
+        <inline-svg :src="require('@/assets/images/menu-icon.svg')" />
       </div>
     </div>
   </div>
@@ -26,30 +19,24 @@
 // FIXME: Move user-menu in standalone component
 import Config from '../utils/Config';
 
+import UserInfo from "@/components/UserInfo";
 import InlineSvg from 'vue-inline-svg';
 
 export default {
   components: {
-    InlineSvg
+    InlineSvg,
+    UserInfo
   },
   data() {
     return {
       avatarUrl: '' //'url(/img/avatar.a5e81f19.png)'
     }
   },
-  computed: {
-    username: function () {
-      return this.$store.state.session.user.username
-    }
-  },
   methods: {
-    "onLogoClick": function () {
+    onLogoClick: function () {
       window.location.href = '/';
     },
-    "onLogoutClick": function () {
-      window.location.href = Config.data.api.http.logoutURL;
-    },
-    "onNavigationButtonClick": function () {
+    onNavigationButtonClick: function () {
       this.$parent.showNavigation = !this.$parent.showNavigation;
     }
   },
@@ -89,7 +76,7 @@ export default {
 }
 
 .logo-icon {
-  width: 31px;
+  width: 30px;
   height: -webkit-fill-available;
   display: inline-block;
   margin: auto;
@@ -102,6 +89,7 @@ export default {
   float: right;
   margin-right: 10px;
   vertical-align: middle;
+  fill: #276377;
 }
 
 .username {
@@ -113,49 +101,40 @@ export default {
 }
 
 .avatar {
-  opacity: 0.8;
-  transition: opacity 0.2s ease-in-out;
-  -webkit-filter: opacity(.4) drop-shadow(0 0 0 #000000);
+
 }
 
-.user-menu {
-  display: none;
-  /*opacity: 0;
-  transition: opacity .2s ease-in-out;*/
 
-  position: absolute;
-  width: 250px;
-  right: 35px;
-  background-color: white;
-  border: 1px solid #d4d4d4;
-  border-radius: 6px;
-  padding: 14px;
-}
 
-.profile-button:hover .user-menu {
+.profile-button:hover .user-info-container {
   display: block;
   /*opacity: 1;*/
 }
 
 .profile-button:hover .avatar {
-  opacity: 1;
+
 }
 
 .profile-button {
   width: 30px;
   height: 30px;
   display: inline-block;
-  margin: auto 3px;
+  margin: auto 4px;
   border-radius: 50%;
   overflow: hidden;
 }
 
 .navigation-button {
-  width: 46px;
-  height: 46px;
+  width: 18px;
   float: right;
-  -webkit-filter: opacity(.4) drop-shadow(0 0 0 #0468c1);
-  margin: auto 0;
+  margin: auto 4px;
+  display: flex;
+  padding: 6px;
+  cursor: pointer;
+}
+.navigation-button:hover {
+  background-color: #dedede;
+  border-radius: 15px;
 }
 
 .logout {
@@ -173,22 +152,12 @@ export default {
     line-height: 42px !important;
   }
 
-  .logo img {
-    width: 30px;
-  }
-
-  img.avatar {
-    width: 30px;
-    height: auto;
-  }
-
   .navigation-button {
-    display: inline-block;
+
   }
 
   .profile-button {
-    width: unset;
-    height: unset;
+
   }
 
 }

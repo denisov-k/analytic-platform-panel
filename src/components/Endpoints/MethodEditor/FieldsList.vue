@@ -124,6 +124,7 @@ export default {
   }
   .delete-button:hover {
     background-color: #ff33332e;
+    color: unset;
   }
 
   >>> .input {

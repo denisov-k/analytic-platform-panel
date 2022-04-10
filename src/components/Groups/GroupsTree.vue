@@ -267,6 +267,10 @@ export default {
   padding: 5px 5px 5px 8px;
   cursor: pointer;
 }
+.header {
+  display: flex;
+  align-items: center;
+}
 
 .filter {
   /*border: 1px solid black;*/
@@ -318,7 +322,8 @@ div:hover > .manage-buttons {
 }
 
 .sub-title {
-  float: right;
+  margin-right: 0;
+  margin-left: auto;
   padding-right: 10px;
   font-size: 12px;
   line-height: 22px;
