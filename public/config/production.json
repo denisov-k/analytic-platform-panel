@@ -1,9 +1,9 @@
 {
     "api": {
         "http" : {
-            "baseURL": "https://rfs-gap.gost-group.com",
-            "loginURL": "https://rfs-gap.gost-group.com/auth",
-            "logoutURL": "https://rfs-gap.gost-group.com/auth/logout",
+            "baseURL": "http://localhost:3000/",
+            "loginURL": "http://localhost:3000/auth",
+            "logoutURL": "http://localhost:3000/logout",
             "timeout": 60000 
         }
     }

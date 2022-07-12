@@ -52,6 +52,7 @@
             <vk-dropdown class="uk-border-rounded"
                          v-if="dropdownShowEntityId === item._id && !isEditorShow && !isDeleteConfirmShow">
               <ul class="uk-nav uk-dropdown-nav">
+                <li><a @click="onRowDuplicateClick(item)">Дублировать</a></li>
                 <li><a @click="onRowEditClick(item)">Изменить</a></li>
                 <li><a @click="onRowDeleteClick(item, i)">Удалить</a></li>
               </ul>
@@ -280,6 +281,11 @@ export default {
     },
     onCreateBtnClick: function () {
       this.showEditor();
+    },
+    onRowDuplicateClick: function (entity) {
+      let dup = { ...entity, _id: '' };
+
+      this.showEditor(dup);
     },
     onRowEditClick: function (entity) {
       this.showEditor(entity);

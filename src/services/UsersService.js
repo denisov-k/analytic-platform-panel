@@ -23,21 +23,16 @@ export default class UsersService extends Service {
      * data ~ @see userEntity()
      */
     getCurrent() {
-
         let callback = function (response) {
             if (typeof response.data !== 'object')
                 document.location.href = Config.data.api.http.loginURL;
-            else
-                return response.data;
+
+            response.data.groups = response.data.groups.map(item => item.name);
+
+            return response.data;
         }
 
-        return this.transport.request(`auth/info`, {}, callback, 'get', {withCredentials: true});
-        // @TODO вызов апи нужен здесь вместо заглушки
-        /*return new Promise((resolve) => {
-            let user = UsersService.userEntity();
-            user.roles = [ UsersService.ROLE_ADMIN_BUSINESS, UsersService.ROLE_ADMIN_TECH ];
-            resolve(user);
-        });*/
+        return this.transport.request(`auth/info`, {}, callback, 'get');
     }
 
     /**
@@ -67,7 +62,7 @@ export default class UsersService extends Service {
      */
     save(entity) {
         let {_id, ...params} = entity;
-        if (_id != '') {
+        if (_id !== '') {
             params.id = _id;
         }
 
