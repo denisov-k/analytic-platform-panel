@@ -33,13 +33,11 @@
     </div>
     <fields-list :fields="fields" :list.sync="entity.dimensions" caption="Измерения"></fields-list>
     <fields-list :fields="fields" :list.sync="entity.measures" caption="Меры"></fields-list>
-    <fields-list :fields="fields" :list.sync="entity.filters" caption="Фильтры"></fields-list>
-    <fields-list :fields="variables" :list.sync="entity.variables" caption="Переменные"></fields-list>
 
-    <method-option :value.sync="entity.suppressZero" label="Схлопывать нули"></method-option>
-    <method-option :value.sync="entity.sectionAccess" label="Разграничение данных"></method-option>
-    <method-option :value.sync="entity.anonymousAccess" label="Анонимный доступ"></method-option>
-    <method-option :value.sync="entity.enabled" label="Доступ метода"></method-option>
+    <Option :value.sync="entity.suppressZero" label="Схлопывать нули"></Option>
+    <Option :value.sync="entity.sectionAccess" label="Разграничение данных"></Option>
+    <Option :value.sync="entity.anonymousAccess" label="Анонимный доступ"></Option>
+    <Option :value.sync="entity.enabled" label="Доступ метода"></Option>
 
     <datalist id="fields">
       <option value="default" label="Default"></option>
@@ -51,20 +49,19 @@ import validations from './validations';
 
 import Multiselect from 'vue-multiselect';
 import FieldsList from './FieldsList'
-import VariablesList from './VariablesList'
-import MethodOption from './MethodOption';
+import Option from './Option';
 
 import EndpointsService from '@/services/EndpointsService';
+import AppsService from '@/services/AppsService';
 
-let defaultEntity = EndpointsService.methodEntity;
+let defaultEntity = EndpointsService.endpoint;
 
 export default {
-  components: { Multiselect, MethodOption, FieldsList, VariablesList },
+  components: { Multiselect, Option, FieldsList },
   data() {
     return {
       entity: defaultEntity(),
-      fields: [],
-      variables: []
+      fields: []
     }
   },
   props: {
@@ -84,24 +81,18 @@ export default {
     },
   },
   created() {
-    this.service = new EndpointsService;
+    this.endpointsService = new EndpointsService;
+    this.appsService = new AppsService;
   },
   computed: {
 
   },
   methods: {
-    updateFields(appId) {
+    updateFields(sourceId) {
       this.fields = [];
 
-      this.service.getFields(appId).then(data => {
+      this.appsService.getFields(sourceId).then(data => {
         this.fields = data.map((item) => item.qName);
-      })
-    },
-    updateVariables(appId) {
-      this.variables = [];
-
-      this.service.getVariables(appId).then(data => {
-        this.variables = data.map((item) => item.qName);
       })
     },
     reset() {
@@ -118,8 +109,7 @@ export default {
       return !this.$v.$invalid;
     },
     onAppChange(app) {
-      this.updateFields(app.id);
-      this.updateVariables(app.id);
+      this.updateFields(app.sourceId);
     }
   },
   validations

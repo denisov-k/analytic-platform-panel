@@ -10,22 +10,17 @@
                  :class="{ 'mdi-chevron-up': entitiesSort['name'] === 'asc', 'mdi-chevron-down': entitiesSort['name'] === 'desc', 'mdi-sort-variant': entitiesSort['name'] == null }"></i>
             </div></span>
           </th>
-          <th>
-            <span class="uk-link" @click="toggleSort('stream')">Stream<div class="icon">
-              <i class="mdi"
-                 :class="{ 'mdi-chevron-up': entitiesSort['stream'] === 'asc', 'mdi-chevron-down': entitiesSort['stream'] === 'desc', 'mdi-sort-variant': entitiesSort['stream'] == null }"></i>
-            </div></span>
-          </th>
-          <th class="uk-width-1-3">ID</th>
-          <th class="uk-table-shrink uk-text-nowrap">Время перезагрузки</th>
+          <th class="uk-width-1-3">Источник</th>
+          <th class="uk-width-1-3">Фильтры</th>
+          <th class="uk-width-1-3">Переменные</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="item in apps" :key="item.id">
           <td>{{ item.name }}</td>
-          <td>{{ item.stream }}</td>
-          <td>{{ item.id }}</td>
-          <td class="uk-text-nowrap">{{ item.lastReloadTime }}</td>
+          <td>{{ item.source.name }}</td>
+          <td>{{ item.filters.length }}</td>
+          <td>{{ item.variables.length }}</td>
           <td>
             <button class="uk-button uk-button-none">
               <div class="icon"><i class="mdi mdi-dots-vertical"></i></div>

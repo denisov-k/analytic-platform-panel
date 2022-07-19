@@ -1,10 +1,10 @@
 {
-    "api": {
-        "http" : {
-            "baseURL": "http://localhost:3000",
-            "loginURL": "http://localhost:8080/",
-            "logoutURL": "http://localhost:3000/auth/logout",
-            "timeout": 20000
-        }
+  "api": {
+    "http" : {
+      "baseURL": "https://qlik-platform01.muztorg.ru/",
+      "loginURL": "https://qlik-platform01.muztorg.ru/auth",
+      "logoutURL": "https://qlik-platform01.muztorg.ru/auth/logout",
+      "timeout": 20000
     }
+  }
 }

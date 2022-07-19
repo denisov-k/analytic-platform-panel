@@ -1,14 +1,9 @@
 <template>
   <vk-card>
     <div slot="header">
-      <div class="uk-float-right" v-if="false">
-        <vk-button type="primary" @click="onUploadAppClick">Загрузить приложение</vk-button>
-        <div class="hiddenfile">
-          <input name="upload" accept=".qvf" type="file"
-                 id="fileinput" ref="myFiles" @change="onAppFileSelect"/>
-        </div>
+      <div class="uk-float-right">
+        <vk-button type="primary" @click="onCreateBtnClick">Создать</vk-button>
       </div>
-
       <h2 class="uk-margin-remove">{{ $route.meta.viewTitle }}
         <vk-spinner class="uk-margin-left" v-if="loading"></vk-spinner>
       </h2>
@@ -30,7 +25,7 @@
           <div class="uk-form-icon">
             <div class="icon"><i class="mdi mdi-magnify"></i></div>
           </div>
-          <input class="uk-input" type="search" placeholder="Название приложения или ID"
+          <input class="uk-input" type="search" placeholder="Название приложения"
                  v-model="entitiesSearchQuery">
         </div>
         <a class="icon" @click="entitiesSearchQuery = ''" v-if="entitiesSearchQuery.length > 0"><i
@@ -61,11 +56,23 @@
     </vk-modal>
 
     <vk-modal center :overflow-auto="false" size="large" v-show="isActionConfirmShow('script_edit')">
-      <script-editor :app="entityForAction" ref="script_editor"></script-editor>
+      <!-- <script-editor :app="entityForAction" ref="script_editor"></script-editor>-->
       <div class="uk-text-right" slot="footer">
         <vk-spinner class="uk-margin-right" v-if="loading"></vk-spinner>
         <vk-button class="uk-margin-right" @click="cancelAction">Отмена</vk-button>
         <vk-button type="primary" @click="onEditConfirmSubmitClick">Сохранить</vk-button>
+      </div>
+    </vk-modal>
+
+    <vk-modal center :overflow-auto="false" stuck size="xlarge" :show.sync="isEditorShow" class="modal-method-editor">
+      <!--<vk-modal-close @click="isEditorShow = false"></vk-modal-close>-->
+      <vk-modal-title slot="header">Редактор приложения</vk-modal-title>
+      <app-editor :sources="sources" ref="editor"></app-editor>
+      <div class="uk-text-right" slot="footer">
+        <vk-spinner class="uk-margin-right" v-if="loading"></vk-spinner>
+        <!--<vk-button @click="onEditorDownloadClick" class="">Скачать</vk-button>-->
+        <vk-button @click="isEditorShow = false" class="uk-margin-right">Отмена</vk-button>
+        <vk-button @click="onEditorSubmitClick" type="primary">Сохранить</vk-button>
       </div>
     </vk-modal>
 
@@ -77,37 +84,42 @@ import AppsService from '@/services/AppsService';
 
 import ApiErrorModal from '@/components/ApiErrorModal';
 import AppsList from './AppsList';
+import AppEditor from './Editor';
 import ScriptEditor from "./ScriptEditor";
+import _ from "lodash";
 
 export default {
   components: {
-    ScriptEditor,
-    ApiErrorModal, AppsList
+    ApiErrorModal, AppsList, AppEditor
   },
   data() {
     return {
-      isApiErrorShow: false,
-      inProgressAction: '',
+      appActions: [
+        /*{ label: "Редактировать скрипт", func: this.onRowEditScriptClick },
+        { label: "Перезагрузить", func: this.onRowReloadClick },
+        { label: "Скачать", func: this.onRowDownloadClick },*/
+        { label: "Редактировать", func: this.onRowEditClick },
+        { label: "Удалить", func: this.onRowDeleteClick },
+      ],
       apiError: '',
       entities: [],
       entitiesSearchQuery: '',
       entitiesSearchDelay: 250,
       entityForAction: {},
       files: [],
+      isApiErrorShow: false,
+      isEditorShow: false,
+      inProgressAction: '',
+      sources: [],
       page: 1,
       perPage: 10,
-      appActions: [
-        { label: "Редактировать скрипт", func: this.onRowEditScriptClick },
-        { label: "Перезагрузить", func: this.onRowReloadClick },
-        { label: "Скачать", func: this.onRowDownloadClick },
-        { label: "Удалить", func: this.onRowDeleteClick },
-      ]
+      loading: false,
     }
   },
   computed: {
     entitiesFiltered: function () {
       let q = this.entitiesSearchQuery;
-      return q.length ? this.entities.filter((item) => item.name && item.name.indexOf(q) >= 0 || item.id && item.id.indexOf(q) >= 0) : this.entities;
+      return q.length ? this.entities.filter((item) => (item.name) && (item.name.indexOf(q) >= 0)) : this.entities;
     },
     pageEntities: function () {
       if (this.entitiesFiltered.length / this.perPage < this.page)
@@ -123,14 +135,7 @@ export default {
   },
   created() {
     this.service = new AppsService();
-
-    this.loading = true;
-
-    this.service.getList().then((apps) => {
-      this.entities = apps;
-      this.loading = false;
-    }).catch(this.apiErrorHandler);
-
+    this.loadData();
   },
   beforeDestroy() {
     this.service.transport.cancelAllRequests();
@@ -147,7 +152,26 @@ export default {
     isActionConfirmShow: function (action) {
       return action ? action === this.inProgressAction : !!this.inProgressAction;
     },
+    onCreateBtnClick: function () {
+      this.showEditor();
+    },
+    onEditorSubmitClick() {
+      let entity = this.$refs.editor.entity,
+          index = this.entities.findIndex((elem) => elem._id === entity._id);
 
+      this.loading = true;
+
+      this.service.save(entity).then((result) => {
+        if (index)
+          this.$set(this.entities, index, entity);
+
+        this.loading = false;
+      })
+          .catch(this.apiErrorHandler);
+    },
+    onRowEditClick: function (entity) {
+      this.showEditor(entity);
+    },
     onRowEditScriptClick: function (entity) {
       this.inProgressAction = 'script_edit';
       this.entityForAction = entity;
@@ -170,7 +194,7 @@ export default {
       document.getElementById('fileinput').click();
     },
     onDeleteConfirmSubmitClick: function () {
-      this.service.delete(this.entityForAction.id).then(() => {
+      this.service.delete(this.entityForAction._id).then(() => {
         this.removeEntityFromList(this.entityForAction);
         this.inProgressAction = '';
       })
@@ -200,6 +224,33 @@ export default {
     },
     setPage: function (value) {
       this.page = value;
+    },
+    showEditor: function (method = null) {
+      this.$refs.editor.reset();
+      if (method != null) {
+        this.$refs.editor.entity = _.cloneDeep(method);
+      }
+      this.isEditorShow = true;
+    },
+    loadData() {
+      let requests = [
+        this.service.getList(),
+        this.service.getSources()
+      ];
+
+      this.loading = true;
+
+      Promise.all(requests).then(([entities, sources]) => {
+        this.sources = sources;
+        this.entities = entities;
+
+        entities.forEach(entity => {
+          entity.source = sources.find(source => source.id === entity.sourceId) || null;
+        })
+
+        this.loading = false;
+      })
+          .catch(this.apiErrorHandler);
     },
   }
 }
