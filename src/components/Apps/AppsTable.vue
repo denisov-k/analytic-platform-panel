@@ -167,6 +167,7 @@ export default {
 
         this.loading = false;
       })
+          .finally(this.isEditorShow = false)
           .catch(this.apiErrorHandler);
     },
     onRowEditClick: function (entity) {

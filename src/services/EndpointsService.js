@@ -101,7 +101,7 @@ export default class EndpointsService extends Service {
     let { _id, app, dimensions, measures, ...params} = methodEntity;
 
     params.id = _id;
-    params.sourceId = app.sourceId;
+    params.app = app._id;
     params.dimensions = dimensions.map(decorator);
     params.measures = measures.map(decorator);
 

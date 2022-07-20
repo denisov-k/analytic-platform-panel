@@ -204,7 +204,7 @@ export default {
         this.entities = entities;
 
         entities.forEach(entity => {
-          entity.app = apps.find(app => app.id === entity.appId) || {};
+          entity.app = apps.find(app => app._id === entity.app) || {};
         })
 
         this.loading = false;
