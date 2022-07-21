@@ -42,7 +42,7 @@ import AppsService from '@/services/AppsService';
 let defaultEntity = AppsService.app;
 
 export default {
-  components: { Multiselect, FieldsList, VariablesList },
+  components: { Multiselect, FieldsList },
   data() {
     return {
       entity: defaultEntity(),
@@ -76,12 +76,18 @@ export default {
     updateFields(sourceId) {
       this.fields = [];
 
+      if (!sourceId)
+        return;
+
       this.service.getFields(sourceId).then(data => {
         this.fields = data.map((item) => item.qName);
       })
     },
     updateVariables(sourceId) {
       this.variables = [];
+
+      if (!sourceId)
+        return;
 
       this.service.getVariables(sourceId).then(data => {
         this.variables = data.map((item) => item.qName);

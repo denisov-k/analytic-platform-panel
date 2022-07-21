@@ -91,6 +91,9 @@ export default {
     updateFields(sourceId) {
       this.fields = [];
 
+      if (!sourceId)
+        return;
+
       this.appsService.getFields(sourceId).then(data => {
         this.fields = data.map((item) => item.qName);
       })

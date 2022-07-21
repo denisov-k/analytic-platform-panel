@@ -4,6 +4,7 @@
       <table class="uk-table uk-table-hover uk-table-divider">
         <thead>
         <tr>
+          <th class="uk-width-1-3">ID</th>
           <th class="uk-width-1-3">
             <span class="uk-link" @click="toggleSort('name')">Название<div class="icon">
               <i class="mdi"
@@ -17,6 +18,7 @@
         </thead>
         <tbody>
         <tr v-for="item in apps" :key="item.id">
+          <td>{{ item._id }}</td>
           <td>{{ item.name }}</td>
           <td>{{ item.source.name }}</td>
           <td>{{ item.filters.length }}</td>
